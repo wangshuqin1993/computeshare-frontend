@@ -13,7 +13,7 @@ let router = createRouter({
           name: "Home",
           component: () => import('@/views/resource/index.vue'),
           meta: {
-            sidebarMap: ['云服务器'],
+            sidebarMap: ['Resource'],
           }
         },
         {

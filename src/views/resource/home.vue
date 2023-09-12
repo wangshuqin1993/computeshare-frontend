@@ -28,7 +28,6 @@ const selectedKeys = ref<any>(['']);
 const menuRouterList = ref<any>([]);
 
 onBeforeMount(() => {
-    console.log('router', router.options.routes)
     const dashboard: any = router.options.routes.find((val) => { return val.path === '/' });
     
     dashboard.children.map((val: any) => {
@@ -36,13 +35,11 @@ onBeforeMount(() => {
             menuRouterList.value.push(val)
         }
     })
-    console.log(1111,menuRouterList.value)
 })
 
 watch(() => router.currentRoute.value,
   (value) => {
     selectedKeys.value = value.meta.sidebarMap;
-    console.log(222222,selectedKeys.value)
   }, { deep: true, immediate: true }
 )
 
