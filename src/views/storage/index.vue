@@ -1,6 +1,7 @@
 <!-- 文件存储 -->
 <template>
-文件存储
+
+<div class="w-full text-white text-center">文件存储</div>
 </template>
 
 <script setup lang="ts">

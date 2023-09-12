@@ -6,11 +6,12 @@ let router = createRouter({
     {
       path: "/",
       redirect: '/dashboard/home',
+      component: () => import('@/views/resource/home.vue'),
       children: [
         {
           path: "/dashboard/home",
           name: "Home",
-          component: () => import('@/views/resource/home.vue'),
+          component: () => import('@/views/resource/index.vue'),
           meta: {
             sidebarMap: ['云服务器'],
           }

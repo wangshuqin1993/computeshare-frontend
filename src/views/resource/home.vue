@@ -4,11 +4,11 @@
         <div class="dashboard-index-left">
             <a-menu v-model:selectedKeys="selectedKeys" style="width: 312px">
                 <a-menu-item v-for="item in menuRouterList" :key="item.name">
-                    <!-- <router-link :to="item.name"> -->
+                    <router-link :to="item.name">
                         <div>
                             <span class="text-[16px]-[#fff] mr-[10px]">{{ sidebarName[item.name] }}</span>
                         </div>
-                    <!-- </router-link> -->
+                    </router-link>
                 </a-menu-item>
             </a-menu>
         </div>

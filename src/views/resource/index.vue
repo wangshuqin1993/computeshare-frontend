@@ -1,6 +1,6 @@
 <!-- 我的资源 -->
 <template>
-我的资源
+<div class="w-full text-white text-center">我的资源</div>
 </template>
 
 <script setup lang="ts">
