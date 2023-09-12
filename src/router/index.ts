@@ -22,6 +22,7 @@ let router = createRouter({
           component: () => import('@/views/resource/index.vue'),
           meta: {
             isShow: true,
+            sidebarMap: ['Resource'],
           }
         },
         {
@@ -30,6 +31,7 @@ let router = createRouter({
           component: () => import('@/views/script/index.vue'),
           meta: {
             isShow: true,
+            sidebarMap: ['Script'],
           }
         },
         {
@@ -38,6 +40,7 @@ let router = createRouter({
           component: () => import('@/views/storage/index.vue'),
           meta: {
             isShow: true,
+            sidebarMap: ['Storage'],
           }
         },
       ]
