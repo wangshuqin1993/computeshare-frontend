@@ -5,8 +5,41 @@ let router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: () => import('@/views/resource/index.vue'),
+      redirect:'/dashboard/home',
+      children:[
+        {
+          path: "/dashboard/home",
+          name: "Home",
+          component: () => import('@/views/resource/home.vue'),
+          meta: {
+            sidebarMap: ['云服务器'],
+          }
+        },
+        {
+          path: "/dashboard/resource",
+          name: "Resource",
+          component: () => import('@/views/resource/index.vue'),
+          meta: {
+            isShow: true,
+          }
+        },
+        {
+          path: "/dashboard/script",
+          name: "Script",
+          component: () => import('@/views/script/index.vue'),
+          meta: {
+            isShow: true,
+          }
+        },
+        {
+          path: "/dashboard/storage",
+          name: "Storage",
+          component: () => import('@/views/storage/index.vue'),
+          meta: {
+            isShow: true,
+          }
+        },
+      ]
     },
     {
       path: "/login",
