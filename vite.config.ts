@@ -16,7 +16,7 @@ export default defineConfig({
     host: '0.0.0.0', //ip地址
     port: 5177, //端口号
     open: false, //启动后是否自动打开浏览器
-    proxy:{
+    proxy: {
       "/api": {
         // target: "https://d.cess.cloud/",
         changeOrigin: true, //是否跨域

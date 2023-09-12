@@ -1,10 +1,10 @@
-<script setup lang="ts">
 
-</script>
 
 <template>
-共享算力
+<login></login>
 </template>
-
+<script setup lang="ts">
+import login from '@/views/login/index.vue'
+</script>
 <style scoped lang="less">
 </style>
