@@ -76,6 +76,7 @@ watch(() => router.currentRoute.value,
   height: 60px;
   line-height: 60px;
   width: 100%;
+  margin: 0;
 }
 :deep(.ant-menu-dark .ant-menu-item-selected){
   background-color: #1890FF;
