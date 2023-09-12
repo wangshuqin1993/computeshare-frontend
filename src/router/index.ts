@@ -7,6 +7,11 @@ let router = createRouter({
       path: "/",
       name: "home",
       component: () => import('@/views/resource/index.vue'),
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import('@/views/login/index.vue'),
     }
   ],
   // 每次切换路由页面滚动到顶部
