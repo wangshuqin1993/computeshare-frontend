@@ -5,8 +5,8 @@ let router = createRouter({
   routes: [
     {
       path: "/",
-      redirect:'/dashboard/home',
-      children:[
+      redirect: '/dashboard/home',
+      children: [
         {
           path: "/dashboard/home",
           name: "Home",

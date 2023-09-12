@@ -34,7 +34,7 @@
                 <a-form-item name="code" >
                   <div class="flex">
                     <a-input class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" />
-                    <a-button type="primary" class="ant-btn-s w-[170px]">图片校验码</a-button>
+                    <CaptchaInput ></CaptchaInput>
                   </div>
                 </a-form-item>
               </a-form>
@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import CaptchaInput from '@/components/CaptchaInput.vue';
 
 const activeKey = ref("1");
 const isChecked = ref(false);
