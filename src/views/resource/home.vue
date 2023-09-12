@@ -1,16 +1,18 @@
 <!-- 壳子 -->
 <template>
-    <div class="flex dashboard-index bg-[#1D1C1A] rounded-[12px]">
+    <div class="flex dashboard-index rounded-[12px]">
         <div class="dashboard-index-left">
-            <a-menu v-model:selectedKeys="selectedKeys" style="width: 312px">
-                <a-menu-item v-for="item in menuRouterList" :key="item.name">
-                    <router-link :to="item.name">
-                        <div>
-                            <span class="text-[16px]-[#fff] mr-[10px]">{{ sidebarName[item.name] }}</span>
-                        </div>
-                    </router-link>
-                </a-menu-item>
-            </a-menu>
+          <img src="@/assets/images/menu-logo.png" class="h-[38px] my-[32px] mx-[24px]" />
+          <a-menu theme="dark" v-model:selectedKeys="selectedKeys" style="width: 312px">
+              <a-menu-item v-for="item in menuRouterList" :key="item.name">
+                  <router-link :to="item.name">
+                      <div class="flex items-center">
+                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] mr-[17px]" />
+                        <span>{{ sidebarName[item.name] }}</span>
+                      </div>
+                  </router-link>
+              </a-menu-item>
+          </a-menu>
         </div>
         <div class="p-[32px] dashboard-index-right">
             <router-view />
@@ -21,8 +23,10 @@
 <script setup lang="ts">
 import { watch, ref, onBeforeMount } from 'vue';
 import { useRouter } from "vue-router";
+import useAssets from "@/stores/useAssets";
 import { sidebarName } from '@/enums/index'
 
+const { getImageURL } = useAssets();
 const router = useRouter();
 const selectedKeys = ref<any>(['']);
 const menuRouterList = ref<any>([]);
@@ -51,11 +55,29 @@ watch(() => router.currentRoute.value,
   min-height: calc(100% - 114px);
 
   .dashboard-index-left{
-
+    height: 100vh;
+    background: #001529;
+    box-shadow: 2px 0px 6px 0px rgba(0,21,41,0.35);
   }
 
   .dashboard-index-right {
     flex: 1;
   }
+}
+:deep(.ant-menu){
+  font-size: 16px; 
+  font-weight: 500;
+}
+:deep(.ant-menu .ant-menu-item){
+  border-radius: 0px;
+}
+:deep(.ant-menu-vertical .ant-menu-item){
+  padding-left: 24px;
+  height: 60px;
+  line-height: 60px;
+  width: 100%;
+}
+:deep(.ant-menu-dark .ant-menu-item-selected){
+  background-color: #1890FF;
 }
 </style>
