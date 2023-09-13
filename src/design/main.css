@@ -4,54 +4,19 @@
 @tailwind utilities;
 
 
-
-.activity-card{
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  background-image: linear-gradient(180deg, #010314 0%, #030528 100%),linear-gradient(90deg, rgba(92, 100, 255, 1), rgba(64, 236, 225, 1));
-  background-clip: padding-box, border-box;
-  background-origin: border-box;
-  font-family: PingFangSC-Regular, PingFang SC;
+::-webkit-scrollbar {
+  /* 设置竖向滚动条的宽度 */
+  width: 5px;
+  /* 设置横向滚动条的高度 */
+  height: 5px;
 }
-
-.activity-bg{
-  background: url("@/assets/images/activity-bg1.png") no-repeat center ;
-  background-size: 100% ;
+::-webkit-scrollbar-thumb {
+  /* //滑块部分 */
+  border-radius: 35px;
+  background-color: rgba(144,147,153,.3);
 }
-.activity-title-text{
-  width: 836px;
-  height: 178px;
-  font-size: 73px;
-  font-family: Montserrat-Bold, Montserrat;
-  font-weight: bold;
-  color: #FFFFFF;
-  line-height: 89px;
-  background: linear-gradient(137deg, #60638B 0%, #F9F9F9 18%, #FFFFFF 56%, #60638B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.open-link-css,.open-link-css .svg-icon{
-  color: #E2B578;
-}
-.open-link-css .svg-icon{
-  color: #E2B578;
-}
-.open-link-css:hover,.open-link-css .svg-icon:hover{
-  color: #E4C08F;
-}
-.open-link-css:active,.open-link-css .svg-icon:active{
-  color: #CE9C58;
-}
-
-
-.text-link{
-  color: #017AFF;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration-line: underline;
-}
-.text-link:hover{
-  color: #858fff;
+::-webkit-scrollbar-track {
+  /* //轨道部分 */
+  background-color: rgba(144,147,153,.3);
+  border-radius: 35px;
 }

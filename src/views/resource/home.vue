@@ -14,8 +14,9 @@
               </a-menu-item>
           </a-menu>
         </div>
-        <div class="p-[32px] dashboard-index-right">
-            <router-view />
+        <div class="dashboard-index-right bg-[#F6F6FB] h-screen overflow-hidden">
+          <Header />
+          <router-view />
         </div>
     </div>
 </template>
@@ -24,6 +25,7 @@
 import { watch, ref, onBeforeMount } from 'vue';
 import { useRouter } from "vue-router";
 import useAssets from "@/stores/useAssets";
+import Header from "@/components/Header.vue";
 import { sidebarName } from '@/enums/index'
 
 const { getImageURL } = useAssets();

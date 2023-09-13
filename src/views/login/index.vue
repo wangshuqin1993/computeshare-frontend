@@ -15,7 +15,7 @@
                 <a-form-item name="code" >
                   <div class="flex">
                     <a-input class="w-[302px] mr-[10px]" v-model:value="formNoteData.code" placeholder="请输入验证码" allow-clear autocomplete="off" />
-                    <a-button type="primary" class="ant-btn-s w-[170px]">获取验证码</a-button>
+                    <a-button type="primary" class="ant-btn-s">获取验证码</a-button>
                   </div>
                 </a-form-item>
               </a-form>
