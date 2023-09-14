@@ -1,6 +1,6 @@
 <!-- 文件存储 -->
 <template>
-  <div class="m-[20px]">
+  <div class="m-[20px]" v-if="false">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
       <UploadFile :suffixNames="suffixNames"></UploadFile>
     </div>
