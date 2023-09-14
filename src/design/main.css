@@ -12,11 +12,11 @@
 }
 ::-webkit-scrollbar-thumb {
   /* //滑块部分 */
-  border-radius: 35px;
-  background-color: rgba(144,147,153,.3);
+  border-radius: 3px;
+  background-color: #DBE1EA;
 }
 ::-webkit-scrollbar-track {
   /* //轨道部分 */
-  background-color: rgba(144,147,153,.3);
-  border-radius: 35px;
+  background-color: #DBE1EA;
+  border-radius: 3px;
 }

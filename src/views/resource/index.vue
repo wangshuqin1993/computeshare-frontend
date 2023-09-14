@@ -19,7 +19,7 @@
                   </div>
                   <div v-else-if="status === 4" class="tips-css">启动实例</div>
                   <div v-else-if="status === 5" class="tips-css">删除实例</div>
-                  <div v-else class="text-[#B7B7B7] px-[20px] py-[10px]">暂无操作</div>
+                  <div v-else class="tips-css-none">暂无操作</div>
                 </div>
               </template>
               <img src="@/assets/images/more.svg" class="w-[28px] cursor-pointer" />
@@ -60,7 +60,7 @@ import { ref } from "vue";
 import { resourceStatus } from '@/enums/index'
 import Footer from "./footer.vue"
 
-const noData = ref(false);
+const noData = ref(true);
 const status = ref(2);
 </script>
 
@@ -77,18 +77,6 @@ const status = ref(2);
 .card-sub-title{
   font-size: 14px;
   color: #8C8C8C;
-}
-.tips-css{
-  color: #606266;
-  cursor: pointer;
-  padding: 10px 20px;
-}
-.tips-css:hover{
-  background-color: #F5F7FA;
-}
-.tips-css:active{
-  background-color: #F5F7FA;
-  color: #1989FA;
 }
 .border-t{
   border-top: 1px solid #E9E9E9;

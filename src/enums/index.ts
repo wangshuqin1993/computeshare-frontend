@@ -10,3 +10,9 @@ export enum resourceStatus {
   '已停止' = 4,
   '已过期' = 5,
 }
+export enum executeStatus {
+  '待执行' = 1,
+  '执行中' = 2,
+  '已完成' = 3,
+  '已取消' = 4,
+}

@@ -5,7 +5,7 @@
     <img src="@/assets/images/login-pic.jpg" class=" h-screen w-[600px]" />
     <div class="right-w flex justify-center items-center">
         <div class="card-div p-[54px] relative">
-          <div class="text-[36px] text-[#2E2E2E] font-medium mb-[36px] text-center">登录共享算力</div>
+          <div class="text-[36px] text-[#2E2E2E] font-medium mb-[36px] text-center">登录天天数链共享算力</div>
           <a-tabs v-model:activeKey="activeKey">
             <a-tab-pane key="1" :tab="[isLogin?'短信登录':'短信注册']">
               <a-form :model="formNoteData" layout="vertical" ref="formRef" :rules="formRules">
@@ -40,8 +40,11 @@
               </a-form>
             </a-tab-pane>
           </a-tabs>
-          <div class="absolute bottom-[54px] text-center w-[482px]">
-            <a-radio v-model:checked="isChecked"></a-radio>未注册手机号验证后将自动创建账号，登录即代表您已同意<label class="text-[#017AFF]">服务条款、隐私政策</label>
+          <div class="absolute bottom-[54px] w-[482px]">
+            <div class="flex items-start">
+              <a-radio v-model:checked="isChecked"></a-radio>
+              <div>未注册手机号验证后将自动创建账号，登录即代表您已同意<div class="text-[#017AFF]">服务条款、隐私政策</div></div>
+            </div>
             <a-button type="primary" class="ant-btn-l w-full my-[20px]">{{ isLogin?'登录':'注册' }}</a-button>
             <!-- <div class="text-[#484FFF] cursor-pointer" @click="goRegister">{{ isLogin?'注册账户':'已有账号登录' }}</div> -->
           </div>

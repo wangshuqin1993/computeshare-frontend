@@ -14,7 +14,7 @@
               </a-menu-item>
           </a-menu>
         </div>
-        <div class="dashboard-index-right bg-[#F6F6FB] h-screen overflow-hidden">
+        <div class="dashboard-index-right bg-[#F6F6FB] h-screen "><!-- 方便开发，暂时注释 overflow-hidden -->
           <Header />
           <router-view />
         </div>
