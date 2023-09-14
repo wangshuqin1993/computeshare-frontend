@@ -60,7 +60,7 @@ import { ref } from "vue";
 import { resourceStatus } from '@/enums/index'
 import Footer from "./footer.vue"
 
-const noData = ref(true);
+const noData = ref(false);
 const status = ref(2);
 </script>
 
