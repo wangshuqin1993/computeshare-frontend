@@ -1,7 +1,7 @@
 <template>
   <a-modal :footer="null" title="创建实例" width="930px" centered="true" v-model:open="createVisible" @cancel="handleCancel">
     <div class="mt-[30px] ">
-      <a-form :model="formData" ref="formRef" :rules="formRules">
+      <a-form :model="formData" ref="formRef" :rules="formRules" :label-col="labelCol">
         <a-form-item label="规格：" name="param1">
           <a-radio-group v-model:value="formData.param1">
             <a-radio-button value="1">2核 4GB</a-radio-button>
@@ -12,7 +12,6 @@
             <a-radio-button value="1">Linux 3.2104 LTS 64位</a-radio-button>
             <a-radio-button value="2">Ubuntu 22.04 64位 UEFI版</a-radio-button>
             <a-radio-button value="3">CentOS 8.4 64位 SCC版</a-radio-button>
-            <a-radio-button value="4">CentOS 8.4 64位 SCC版</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="使用时长：" name="param3">
@@ -41,6 +40,7 @@ const props = defineProps({
 });
 const { createVisible } = toRefs(props);
 const emit = defineEmits(["handleCancelCreate"])
+const labelCol = { style: { width: '120px' } };
 const loading = ref(false);
 const formRef = ref();
 const formData = reactive({
