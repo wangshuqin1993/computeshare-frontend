@@ -5,7 +5,7 @@
       <UploadFile :suffixNames="suffixNames"></UploadFile>
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
-      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination">
+      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
         <template #bodyCell="{ column, text }">
           <template v-if="column.dataIndex === 'action'">
             <a-tooltip placement="left" color="#FFFFFF">
@@ -85,4 +85,11 @@ const getTableData = (page:number = pagination.current, size:number = pagination
 </script>
 
 <style scoped lang="less">
+.scroll-max-h{
+  max-height: calc(100vh - 691px);
+}
+:deep(.ant-table-tbody){
+  max-height: calc(100vh - 691px);
+  overflow-y: auto;
+}
 </style>

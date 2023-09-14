@@ -1,7 +1,15 @@
 <template>
   <div class="bg-[#FFFFFF]">
     <div class="top-css py-[18px] px-[40px] flex justify-end">
-      <div class="bg-[#A6DBFF] h-[36px] w-[36px] rounded-full"></div>
+      <a-tooltip placement="bottom" color="#FFFFFF">
+        <template #title>
+          <div class="text-[14px]">
+            <div class="tips-css">账户设置</div>
+            <div class="tips-css">退出</div>
+          </div>
+        </template>
+        <div class="bg-[#A6DBFF] h-[36px] w-[36px] rounded-full cursor-pointer"></div>
+      </a-tooltip>
     </div>
     <div class="h-[130px] px-[40px] flex justify-between items-center">
       <div class="menu-title">{{ sidebarName[curBarName] }}</div>
