@@ -1,4 +1,3 @@
-<!-- 我的资源 -->
 <template>
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">

@@ -14,7 +14,7 @@
               </a-menu-item>
           </a-menu>
         </div>
-        <div class="dashboard-index-right bg-[#F6F6FB] h-screen "><!-- 方便开发，暂时注释 overflow-hidden -->
+        <div class="dashboard-index-right bg-[#F6F6FB] h-screen overflow-hidden">
           <Header />
           <router-view />
         </div>
@@ -27,20 +27,28 @@ import { useRouter } from "vue-router";
 import useAssets from "@/stores/useAssets";
 import Header from "@/components/Header.vue";
 import { sidebarName } from '@/enums/index'
+import { log } from 'console';
 
 const { getImageURL } = useAssets();
 const router = useRouter();
+const curBarName = ref(router.currentRoute.value.name);
 const selectedKeys = ref<any>(['']);
 const menuRouterList = ref<any>([]);
 
 onBeforeMount(() => {
-    const dashboard: any = router.options.routes.find((val) => { return val.path === '/' });
-    
-    dashboard.children.map((val: any) => {
-        if (val.meta?.isShow) {
-            menuRouterList.value.push(val)
+  const dashboard: any = router.options.routes.find((val) => { return val.path === '/' });
+  
+  dashboard.children.map((val: any) => {
+    if (val.meta?.isShow) {
+      if (curBarName.value === 'User') {
+        if (val.name === 'User') {
+          menuRouterList.value.push(val)
         }
-    })
+      } else if(val.name !== 'User'){
+        menuRouterList.value.push(val)
+      }
+    }
+  })
 })
 
 watch(() => router.currentRoute.value,
@@ -81,6 +89,6 @@ watch(() => router.currentRoute.value,
   margin: 0;
 }
 :deep(.ant-menu-dark .ant-menu-item-selected){
-  background-color: #1890FF;
+  background-color: #484FFF;
 }
 </style>

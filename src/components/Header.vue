@@ -4,7 +4,7 @@
       <a-tooltip placement="bottom" color="#FFFFFF">
         <template #title>
           <div class="text-[14px]">
-            <div class="tips-css">账户设置</div>
+            <div class="tips-css" @click="goUser">账户设置</div>
             <div class="tips-css">退出</div>
           </div>
         </template>
@@ -27,6 +27,10 @@ import CreateModal from "@/views/resource/create.vue";
 const router = useRouter();
 const curBarName = ref(router.currentRoute.value.name);
 const createVisible = ref(false);
+
+const goUser = () => {
+  window.open("/dashboard/user");
+}
 
 watch(() => router.currentRoute.value,
   (value) => {

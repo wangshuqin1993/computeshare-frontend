@@ -1,7 +1,7 @@
 <template>
   <a-modal :footer="null" title="创建实例" width="930px" centered="true" v-model:open="createVisible" @cancel="handleCancel">
     <div class="mt-[30px] ">
-      <a-form :model="formData" ref="importFormRef" :rules="formRules">
+      <a-form :model="formData" ref="formRef" :rules="formRules">
         <a-form-item label="规格：" name="param1">
           <a-radio-group v-model:value="formData.param1">
             <a-radio-button value="1">2核 4GB</a-radio-button>
@@ -42,6 +42,7 @@ const props = defineProps({
 const { createVisible } = toRefs(props);
 const emit = defineEmits(["handleCancelCreate"])
 const loading = ref(false);
+const formRef = ref();
 const formData = reactive({
   param1: '1',
   param2: '2',
@@ -62,6 +63,7 @@ const handleCancel = () => {
   emit('handleCancelCreate');
 }
 const handleCreate = () => {
+  formRef.value.validate()
   console.log("create.....");
 }
 </script>
