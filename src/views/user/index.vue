@@ -1,5 +1,5 @@
 <template>
-  <div class="m-[20px] scroll-max-h overflow-y-auto">
+  <div class="m-[20px] scroll-max-h overflow-y-auto" v-if="false">
     <div class="bg-[#FFFFFF] rounded-[2px] px-[40px] py-[20px]">
       <div class="text-[18px] font-medium">账户信息</div>
       <div class="my-[40px] bg-[#A6DBFF] h-[144px] w-[144px] rounded-full"></div>

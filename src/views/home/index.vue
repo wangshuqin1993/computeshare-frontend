@@ -27,7 +27,6 @@ import { useRouter } from "vue-router";
 import useAssets from "@/stores/useAssets";
 import Header from "@/components/Header.vue";
 import { sidebarName } from '@/enums/index'
-import { log } from 'console';
 
 const { getImageURL } = useAssets();
 const router = useRouter();

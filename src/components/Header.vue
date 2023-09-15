@@ -5,7 +5,7 @@
         <template #title>
           <div class="text-[14px]">
             <div class="tips-css" @click="goUser">账户设置</div>
-            <div class="tips-css">退出</div>
+            <div class="tips-css" @click="logout">退出</div>
           </div>
         </template>
         <div class="bg-[#A6DBFF] h-[36px] w-[36px] rounded-full cursor-pointer"></div>
@@ -30,6 +30,11 @@ const createVisible = ref(false);
 
 const goUser = () => {
   window.open("/dashboard/user");
+}
+
+const logout = () => {
+  localStorage.removeItem('token')
+  router.push('/login')
 }
 
 watch(() => router.currentRoute.value,
