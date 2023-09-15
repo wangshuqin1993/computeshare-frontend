@@ -54,8 +54,7 @@ const formRules = computed(() => {
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
   return {
-    mobile: [requiredRule('请输入手机号')],
-    code: [requiredRule('请输入验证码')],
+    param4: [requiredRule('请输入实例名称')],
   };
 });
 

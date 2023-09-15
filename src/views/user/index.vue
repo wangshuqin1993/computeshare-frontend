@@ -113,21 +113,40 @@ const formRules = computed(() => {
 }); 
 const formMobileRules = computed(() => {
   return {
-    mobile: [requiredRule('请输入手机号')],
+    mobile: [requiredRule('请输入手机号'), { validator: checkMobile, trigger: "change" }],
   };
 });
 const formPwdRules = computed(() => {
   return {
-    pwd: [requiredRule('请输入密码')],
+    pwd: [requiredRule('请输入密码'), { validator: checkPwd, trigger: "change" }],
   };
 });
 
-const checkName = () => {
-  // let reg1 = /^[\u4e00-\u9fa5]{2,}[A-Za-z0-9_-]*{2,32}$/;
-  let reg2 = /^([a-zA-Z]{3}[a-zA-Z0-9_-]*){2,32}$/;
-  // let reg3 = /^[\u4e00-\u9fa5]{0,}$/;
+const checkPwd = () => {
+  //8-20个字符，需同时包含数字、字母及符号。
+  let reg = /^(?=.*[a-zA-Z])(?=.*\d)[\s\S]{8,20}$/;
   
-  if (formData.name != '' && formData.name != null && !reg2.test(formData.name)) {
+  if (formPwdData.pwd != '' && formPwdData.pwd != null && !reg.test(formPwdData.pwd)) {
+    return Promise.reject("请输入正确的密码");
+  } else {
+    return Promise.resolve()
+  }
+}
+const checkMobile = () => {
+  let reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+  
+  if (formMobileData.mobile != '' && formMobileData.mobile != null && !reg.test(formMobileData.mobile)) {
+    return Promise.reject("请输入正确的手机号");
+  } else {
+    return Promise.resolve()
+  }
+}
+const checkName = () => {
+  //用户名只能包含英文、中文、数字、下划线、中划线、大于两个中文或者三个英文字母并小于32个字符
+  let reg4 = /^((?=.*[\u4e00-\u9fa5]{2,})|(?=.*[a-zA-Z]{3,}))[\u4E00-\u9FA5A-Za-z0-9_-]{3,32}$/;
+
+  
+  if (formData.name != '' && formData.name != null && !reg4.test(formData.name)) {
     return Promise.reject("请输入合理的用户名");
   } else {
     return Promise.resolve()
