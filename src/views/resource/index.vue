@@ -82,7 +82,7 @@ onMounted(() => {
 
 <style scoped lang="less">
 .scroll-max-h{
-  // max-height: calc(100vh - 515px);
+  max-height: calc(100vh - 515px);
 }
 .card-div{
   box-shadow: 0px 0px 20px 0px #EBEBF5;
