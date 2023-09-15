@@ -1,5 +1,5 @@
 <template>
-  <div class="m-[20px]" v-if="false">
+  <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
       <div v-if="noData">
         <UploadFile></UploadFile>
