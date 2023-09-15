@@ -44,9 +44,15 @@
           </div>
           <div class="border-t text-[14px]">
             <div class="pt-[20px] pb-[5px]">CPU使用率</div>
-            <div class="bg-[#F8F9FC] rounded-[5px] text-[#BFBFBF] py-[14px] text-center">NO Data</div>
+            <div class="bg-[#F8F9FC] rounded-[5px] h-[49px] echarts-width">
+              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts1`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="CPU" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
+              <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
+            </div>
             <div class="pt-[10px] pb-[5px]">内存使用率</div>
-            <div class="bg-[#F8F9FC] rounded-[5px] text-[#BFBFBF] py-[14px] text-center">NO Data</div>
+            <div class="bg-[#F8F9FC] rounded-[5px] h-[49px]">
+              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts2`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="内存" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
+              <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
+            </div>
           </div>
         </div>
       </div>
@@ -56,17 +62,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { resourceStatus } from '@/enums/index'
 import Footer from "./footer.vue"
+import Echarts from "@/components/Echarts.vue";
 
 const noData = ref(false);
 const status = ref(2);
+
+const echartsWidth = ref('');
+const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+const echartsData = ref([20, 502, 181, 234, 110, 290, 50, 20, 502, 181, 234, 810, 290, 50, 20, 502, 181, 234, 810, 290, 50]);
+
+onMounted(() => {
+  echartsWidth.value = (document.getElementsByClassName('echarts-width')[0].clientWidth - 2) + 'px';
+  console.log("width:::",echartsWidth.value);
+})
 </script>
 
 <style scoped lang="less">
 .scroll-max-h{
-  max-height: calc(100vh - 515px);
+  // max-height: calc(100vh - 515px);
 }
 .card-div{
   box-shadow: 0px 0px 20px 0px #EBEBF5;
