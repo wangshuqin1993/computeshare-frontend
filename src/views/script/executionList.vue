@@ -15,7 +15,7 @@
                   <div class="text-[14px]">
                     <div v-if="status === 1" class="tips-css">取消执行</div>
                     <div v-if="status === 3" class="tips-css">下载结果</div>
-                    <div class="tips-css">查看脚本</div>
+                    <div class="tips-css" @click="viewScript">查看脚本</div>
                   </div>
                 </template>
                 <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer ml-[12px]" />
@@ -31,15 +31,31 @@
       <div class="text-center mt-[20px] cursor-pointer text-[#484FFF]">加载更多…</div>
     </div>
   </div>
+  
+  <a-modal :title="scriptTitle"  v-model:visible="scriptVisible" :footer="null" width="840px">
+    <div style="height: 360px">
+      <CodeEditor :readOnly="true" :value="scriptValue"></CodeEditor>
+    </div>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import CodeEditor from '@/components/CodeEditor.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
 
 const activeKey = ref(['1']);
 const status = ref(4);
+const scriptTitle = ref('');
+const scriptVisible = ref(false);
+const scriptValue = ref('');
 
+const viewScript = () => {
+  scriptVisible.value = true;
+  scriptTitle.value = '123';
+  scriptValue.value = '444';
+
+}
 </script>
 
 <style scoped lang="less">
