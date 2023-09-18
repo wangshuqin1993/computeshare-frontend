@@ -9,6 +9,7 @@ lerna-debug.log*
 yarn.*
 yarn-error.*
 package-lock.*
+yarn.lock
 
 node_modules
 dist
