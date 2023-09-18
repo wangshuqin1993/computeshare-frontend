@@ -7,7 +7,7 @@
           <template #extra>
             <div class="flex">
               <div class="w-[190px] rounded-[100px] h-[26px] leading-[26px] text-[14px] font-medium text-[#FFFFFF] pl-[16px]"
-                :class="[status === 1 ? 'bg-[#6A9DCB]' : status === 2 ? 'bg-[#008FFF]' : status === 3 ? 'bg-[#00C900]' : 'bg-[#AEAEAE]']">
+                :class="executeStatusColor[status]">
               {{ executeStatus[status] }}
               </div>
               <a-tooltip placement="left" color="#FFFFFF">
@@ -35,10 +35,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { executeStatus } from '@/enums/index';
+import { executeStatus, executeStatusColor } from '@/enums/index';
 
 const activeKey = ref(['1']);
-const status = ref(1);
+const status = ref(4);
 
 </script>
 

@@ -36,7 +36,7 @@
           <div class="mb-[10px]">
             <label class="card-sub-title">状态：</label>
             <label class="rounded-[11px] text-[14px] font-medium text-[#FFFFFF] px-[23px] py-[3px]" 
-              :class="[status === 1 ? 'bg-[#6A9DCB]' : status === 2 ? 'bg-[#008FFF]' : status === 3 ? 'bg-[#02C900]' : status === 4 ? 'bg-[#FF0019]' : 'bg-[#AEAEAE]' ]">{{ resourceStatus[status] }}</label>
+              :class="resourceStatusColor[status]">{{ resourceStatus[status] }}</label>
           </div>
           <div class="mb-[20px]">
             <label class="card-sub-title">到期时间：</label>
@@ -63,12 +63,12 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { resourceStatus } from '@/enums/index'
+import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
 
 const noData = ref(false);
-const status = ref(2);
+const status = ref(4);
 
 const echartsWidth = ref('');
 const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
