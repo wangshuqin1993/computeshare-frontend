@@ -35,6 +35,7 @@
                   <div class="flex">
                     <!-- <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" /> -->
                     <!-- <CaptchaInput ref="captchaRef"></CaptchaInput> -->
+                    <slider-vfc  @statu="slide" styleCss=" "  />
                     <!-- <slider-vfc ref="slider"  @statu="slide" class="w-[100%]"/> -->
                     <!-- <drag-verify
                       ref="dragVerify7"
