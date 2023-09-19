@@ -8,7 +8,7 @@
           <div class="text-[36px] text-[#2E2E2E] font-medium mb-[36px] text-center">登录天天数链共享算力</div>
           <a-tabs v-model:activeKey="activeKey">
             <a-tab-pane key="1" :tab="[isLogin?'短信登录':'短信注册']">
-              <a-form :model="formNoteData" layout="vertical" ref="formRef" :rules="formRules">
+              <a-form :model="formNoteData" layout="vertical" ref="formNoteRef" :rules="formNoteRules">
                 <a-form-item name="mobile" >
                   <a-input prefix="+86" v-model:value="formNoteData.mobile" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
@@ -21,45 +21,30 @@
               </a-form>
             </a-tab-pane>
             <a-tab-pane key="2" :tab="[isLogin?'密码登录':'账号注册']">
-              <a-form :model="formPwdData" layout="vertical" ref="formRef" :rules="formRules">
+              <a-form :model="formPwdData" layout="vertical" ref="formPwdRef" :rules="formPwdRules">
                 <a-form-item name="mobile" >
-                  <a-input prefix="+86" v-model:value="formPwdData.mobile" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                  <a-input prefix="+86" @change="resetSlider" v-model:value="formPwdData.mobile" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="pwd" >
-                  <a-input-password v-model:value="formPwdData.pwd" placeholder="请输入密码" allow-clear autocomplete="off" />
+                  <a-input-password @change="resetSlider" v-model:value="formPwdData.pwd" placeholder="请输入密码" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="rePwd" v-if="!isLogin">
-                  <a-input-password v-model:value="formPwdData.rePwd" placeholder="请再次输入密码" allow-clear autocomplete="off" />
+                  <a-input-password v-model:value="formPwdData.pwd" placeholder="请再次输入密码" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="code" >
                   <div class="flex">
-                    <!-- <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" /> -->
-                    <!-- <CaptchaInput ref="captchaRef"></CaptchaInput> -->
-                    <!-- <slider-vfc ref="slider"  @statu="slide" class="w-[100%]"/> -->
-                    <!-- <drag-verify
-                      ref="dragVerify7"
-                      :width="300"
-                      :isPassing.sync="isPassing"
-                      text="请按住滑块拖动"
-                      successText="验证通过"
-                      handlerIcon="start.svg"
-                      successIcon="success.svg"
-                      @passcallback="passcallback3"
-                    >
-                    </drag-verify> -->
-                  <drag-verify ref="drag" v-if="showDrag"></drag-verify>
+                  <drag-verify ref="drag"></drag-verify>
                   </div>
                 </a-form-item>
               </a-form>
             </a-tab-pane>
           </a-tabs>
-          <a-button @click="resetSlider">重置滑块</a-button>
           <div class="absolute bottom-[54px] w-[482px]">
             <div class="flex items-start">
               <a-radio v-model:checked="isChecked"></a-radio>
               <div>未注册手机号验证后将自动创建账号，登录即代表您已同意<div class="text-[#017AFF]">服务条款、隐私政策</div></div>
             </div>
-            <a-button type="primary" class="ant-btn-l w-full my-[20px]">{{ isLogin?'登录':'注册' }}</a-button>
+            <a-button type="primary" class="ant-btn-l w-full my-[20px]" @click="handleDone">{{ isLogin?'登录':'注册' }}</a-button>
             <!-- <div class="text-[#484FFF] cursor-pointer" @click="goRegister">{{ isLogin?'注册账户':'已有账号登录' }}</div> -->
           </div>
         </div>
@@ -70,25 +55,22 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
-// import CaptchaInput from '@/components/CaptchaInput.vue'; 输入验证码验证
-// import SliderVfc from "@/components/SliderVfc.vue";
 import dragVerify from '@/components/demo.vue'
 
 const activeKey = ref("2");
 const isChecked = ref(false);
 const isLogin = ref(true);
+const formNoteRef = ref();
 const formNoteData = reactive({
   mobile: '',
   code: '',
 });
+const formPwdRef = ref();
 const formPwdData = reactive({
   mobile: '',
   pwd: '',
-  rePwd: '',
-  code: '',
 });
 const drag = ref()
-const showDrag = ref(true)
 
 // Form rules
 const checkMobile = () => {
@@ -100,7 +82,7 @@ const checkMobile = () => {
     return Promise.resolve()
   }
 }
-const formRules = computed(() => {
+const formNoteRules = computed(() => {
 
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
@@ -109,14 +91,29 @@ const formRules = computed(() => {
     code: [requiredRule('请输入验证码')],
   };
 });
+const formPwdRules = computed(() => {
 
+  const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
+  
+  return {
+    mobile: [requiredRule('请输入手机号'), { validator: checkMobile, trigger: "change" }],
+    pwd: [requiredRule('请输入密码')],
+  };
+});
+
+const handleDone = () => {
+  if (activeKey.value === '1') {
+    formNoteRef.value.validate()
+  } else {
+    formPwdRef.value.validate()
+    console.log("drag.value.confirmSuccess::::",drag.value.confirmSuccess);
+  }
+  
+  console.log("handleDone.....");
+}
 // 重置滑块
 const resetSlider = ()=>{
   drag.value.reset()
-  // showDrag.value = false
-  // setTimeout(() => {
-  //   showDrag.value = true
-  // }, 50);
 }
 
 </script>
