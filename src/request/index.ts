@@ -9,7 +9,7 @@ declare module 'axios' {
 
 // 创建一个 axios 实例
 const service = axios.create({
-  // baseURL: "/api", // 所有的请求地址前缀部分
+  baseURL: "/api", // 所有的请求地址前缀部分
   baseURL: "/",
   timeout: 180000, // 请求超时时间毫秒
   headers: {

@@ -18,7 +18,7 @@ export default defineConfig({
     open: false, //启动后是否自动打开浏览器
     proxy: {
       "/api": {
-        // target: "https://d.cess.cloud/",
+        target: "https://computeshare.hamster.newtouch.com/",
         changeOrigin: true, //是否跨域
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
