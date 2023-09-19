@@ -36,6 +36,18 @@
                     <!-- <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" /> -->
                     <!-- <CaptchaInput ref="captchaRef"></CaptchaInput> -->
                     <slider-vfc  @statu="slide" styleCss=" "  />
+                    <!-- <slider-vfc ref="slider"  @statu="slide" class="w-[100%]"/> -->
+                    <drag-verify
+                      ref="dragVerify7"
+                      :width="300"
+                      :isPassing.sync="isPassing7"
+                      text="请按住滑块拖动"
+                      successText="验证通过"
+                      handlerIcon="../assests/icon/start.svg"
+                      successIcon="../assests/icon/success.svg"
+                      @passcallback="passcallback3"
+                    >
+                    </drag-verify>
                   </div>
                 </a-form-item>
               </a-form>
@@ -58,7 +70,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 // import CaptchaInput from '@/components/CaptchaInput.vue'; 输入验证码验证
-import SliderVfc from "@/components/SliderVfc.vue";
+// import SliderVfc from "@/components/SliderVfc.vue";
+import dragVerify from '@/components/dragVerify.vue'
 
 const activeKey = ref("2");
 const isChecked = ref(false);
@@ -74,6 +87,10 @@ const formPwdData = reactive({
   rePwd: '',
   code: '',
 });
+
+const isPassing7 = ref(false)
+
+const passcallback3 = ()=>{}
 
 // Form rules
 const checkMobile = () => {
