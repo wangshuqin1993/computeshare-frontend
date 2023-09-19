@@ -36,17 +36,18 @@
                     <!-- <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" /> -->
                     <!-- <CaptchaInput ref="captchaRef"></CaptchaInput> -->
                     <!-- <slider-vfc ref="slider"  @statu="slide" class="w-[100%]"/> -->
-                    <drag-verify
+                    <!-- <drag-verify
                       ref="dragVerify7"
                       :width="300"
-                      :isPassing.sync="isPassing7"
+                      :isPassing.sync="isPassing"
                       text="请按住滑块拖动"
                       successText="验证通过"
-                      handlerIcon="../assests/icon/start.svg"
-                      successIcon="../assests/icon/success.svg"
+                      handlerIcon="start.svg"
+                      successIcon="success.svg"
                       @passcallback="passcallback3"
                     >
-                    </drag-verify>
+                    </drag-verify> -->
+                  <drag-verify></drag-verify>
                   </div>
                 </a-form-item>
               </a-form>
@@ -70,7 +71,7 @@
 import { computed, reactive, ref } from 'vue';
 // import CaptchaInput from '@/components/CaptchaInput.vue'; 输入验证码验证
 // import SliderVfc from "@/components/SliderVfc.vue";
-import dragVerify from '@/components/dragVerify.vue'
+import dragVerify from '@/components/demo.vue'
 
 const activeKey = ref("2");
 const isChecked = ref(false);
@@ -87,7 +88,7 @@ const formPwdData = reactive({
   code: '',
 });
 
-const isPassing7 = ref(false)
+const isPassing = ref(false)
 
 const passcallback3 = ()=>{}
 
