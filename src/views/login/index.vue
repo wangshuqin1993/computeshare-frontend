@@ -47,12 +47,13 @@
                       @passcallback="passcallback3"
                     >
                     </drag-verify> -->
-                  <drag-verify></drag-verify>
+                  <drag-verify ref="drag" v-if="showDrag"></drag-verify>
                   </div>
                 </a-form-item>
               </a-form>
             </a-tab-pane>
           </a-tabs>
+          <a-button @click="resetSlider">重置滑块</a-button>
           <div class="absolute bottom-[54px] w-[482px]">
             <div class="flex items-start">
               <a-radio v-model:checked="isChecked"></a-radio>
@@ -76,7 +77,6 @@ import dragVerify from '@/components/demo.vue'
 const activeKey = ref("2");
 const isChecked = ref(false);
 const isLogin = ref(true);
-const captchaRef = ref()
 const formNoteData = reactive({
   mobile: '',
   code: '',
@@ -87,10 +87,8 @@ const formPwdData = reactive({
   rePwd: '',
   code: '',
 });
-
-const isPassing = ref(false)
-
-const passcallback3 = ()=>{}
+const drag = ref()
+const showDrag = ref(true)
 
 // Form rules
 const checkMobile = () => {
@@ -112,33 +110,15 @@ const formRules = computed(() => {
   };
 });
 
-const checkCode = () => {
-  console.log("formPwdData.code:",formPwdData.code)
-  console.log("identifyCode:",captchaRef.value?.identifyCode)
-}
-const goRegister = () => {
-  isLogin.value = !isLogin.value;
+// 重置滑块
+const resetSlider = ()=>{
+  // drag.value.reset()
+  showDrag.value = false
+  setTimeout(() => {
+    showDrag.value = true
+  }, 50);
 }
 
-// 滑块验证 
-const slide = (vfcStatu, slideInfo:any) => {
-/**
-这里可以做一些自定义验证  
-- vfcStatu.statu有2状态，必须赋值状态
-- success 验证成功状态
-- tail 验证失败状态
-- 可配合后端验证
-*/
-
-  const statu = vfcStatu.statu  
-  if (statu) {
-      if (statu === 'success') {
-          console.log('验证成功')
-      } else if (statu === 'tail') {
-          console.log('验证失败')
-      }
-    } 
-}
 </script>
 
 <style scoped lang="less">

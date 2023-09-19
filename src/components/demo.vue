@@ -6,7 +6,8 @@
         <div ref="moveDiv"
              @mousedown="mousedownFn($event)"
              :class="{'handler_ok_bg': confirmSuccess}"
-             class="handler handler_bg"></div>
+             class="handler handler_bg"
+             @reset="reset"></div>
     </div>
 </template>
 
@@ -65,8 +66,17 @@ export default {
                 document.getElementsByClassName('handler')[0].style.left = 0 + 'px'
                 document.getElementsByClassName('drag_bg')[0].style.width = 0 + 'px'
             }
+        },
+        reset(){
+            this.beginClientX = 0
+            this.maxwidth = this.$refs.dragDiv.clientWidth - this.$refs.moveDiv.clientWidth
+            this.mouseMoveStata = false
+            this.confirmSuccess= false
+            this.confirmWords = '拖动滑块验证'
+            console.log('reset重置滑动条')
         }
-    }
+    },
+    expose: ['reset'],
 }
 </script>
 
