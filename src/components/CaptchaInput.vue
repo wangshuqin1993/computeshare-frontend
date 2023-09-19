@@ -149,6 +149,7 @@ onMounted(() => {
 });
 
 defineExpose({
-  identifyCode
+  identifyCode,
+  refreshCode
 })
 </script>

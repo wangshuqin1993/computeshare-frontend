@@ -33,9 +33,9 @@
                 </a-form-item>
                 <a-form-item name="code" >
                   <div class="flex">
-                    <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" />
+                    <!-- <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" /> -->
                     <!-- <CaptchaInput ref="captchaRef"></CaptchaInput> -->
-                    <slider-vfc  @statu="slide" />
+                    <slider-vfc  @statu="slide" class="!w-[100%]"/>
                   </div>
                 </a-form-item>
               </a-form>

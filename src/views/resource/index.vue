@@ -14,7 +14,7 @@
               <template #title>
                 <div class="text-[14px]">
                   <div v-if="status === 3">
-                    <div class="tips-css">访问实例</div>
+                    <div class="tips-css" @click="operate">访问实例</div>
                     <div class="tips-css">关闭实例</div>
                   </div>
                   <div v-else-if="status === 4" class="tips-css">启动实例</div>
@@ -73,6 +73,11 @@ const status = ref(4);
 const echartsWidth = ref('');
 const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 const echartsData = ref([20, 502, 181, 234, 110, 290, 50, 20, 502, 181, 234, 810, 290, 50, 20, 502, 181, 234, 810, 290, 50]);
+
+const operate = ()=>{
+  // 访问实例是跳走
+  // window.open()
+}
 
 onMounted(() => {
   echartsWidth.value = (document.getElementsByClassName('echarts-width')[0].clientWidth - 2) + 'px';
