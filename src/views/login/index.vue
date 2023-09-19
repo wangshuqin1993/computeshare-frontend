@@ -34,7 +34,8 @@
                 <a-form-item name="code" >
                   <div class="flex">
                     <a-input @blur="checkCode" class="w-[302px] mr-[10px]" v-model:value="formPwdData.code" placeholder="请输入校验码" allow-clear autocomplete="off" />
-                    <CaptchaInput ref="captchaRef"></CaptchaInput>
+                    <!-- <CaptchaInput ref="captchaRef"></CaptchaInput> -->
+                    <slider-vfc  @statu="slide" />
                   </div>
                 </a-form-item>
               </a-form>
@@ -56,9 +57,10 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
-import CaptchaInput from '@/components/CaptchaInput.vue';
+// import CaptchaInput from '@/components/CaptchaInput.vue'; 输入验证码验证
+import SliderVfc from "@/components/SliderVfc.vue";
 
-const activeKey = ref("1");
+const activeKey = ref("2");
 const isChecked = ref(false);
 const isLogin = ref(true);
 const captchaRef = ref()
@@ -99,6 +101,26 @@ const checkCode = () => {
 }
 const goRegister = () => {
   isLogin.value = !isLogin.value;
+}
+
+// 滑块验证 
+const slide = (vfcStatu, slideInfo:any) => {
+/**
+这里可以做一些自定义验证  
+- vfcStatu.statu有2状态，必须赋值状态
+- success 验证成功状态
+- tail 验证失败状态
+- 可配合后端验证
+*/
+
+  const statu = vfcStatu.statu  
+  if (statu) {
+      if (statu === 'success') {
+          console.log('验证成功')
+      } else if (statu === 'tail') {
+          console.log('验证失败')
+      }
+    } 
 }
 </script>
 
