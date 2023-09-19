@@ -83,8 +83,8 @@ export default {
     },
     expose: ['reset', 'confirmSuccess'],
     beforeDestory(){
-        document.getElementsByTagName('html')[0].removeEventListener('mousemove')
-        document.getElementsByTagName('html')[0].removeEventListener('mouseup')
+        document.getElementsByTagName('html')[0].removeEventListener('mousemove',this.mouseMoveFn)
+        document.getElementsByTagName('html')[0].removeEventListener('mouseup',this.moseUpFn)
     }
 }
 </script>
