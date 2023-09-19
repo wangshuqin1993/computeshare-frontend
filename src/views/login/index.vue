@@ -112,11 +112,11 @@ const formRules = computed(() => {
 
 // 重置滑块
 const resetSlider = ()=>{
-  // drag.value.reset()
-  showDrag.value = false
-  setTimeout(() => {
-    showDrag.value = true
-  }, 50);
+  drag.value.reset()
+  // showDrag.value = false
+  // setTimeout(() => {
+  //   showDrag.value = true
+  // }, 50);
 }
 
 </script>

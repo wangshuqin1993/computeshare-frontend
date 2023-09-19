@@ -72,11 +72,20 @@ export default {
             this.maxwidth = this.$refs.dragDiv.clientWidth - this.$refs.moveDiv.clientWidth
             this.mouseMoveStata = false
             this.confirmSuccess= false
+            document.getElementsByClassName('drag_text')[0].style.color = 'rgba(0, 0, 0, 0.88)';
+            document.getElementsByClassName('handler')[0].style.left = 0 + 'px'
+            document.getElementsByClassName('drag_bg')[0].style.width = 0 + 'px'
             this.confirmWords = '拖动滑块验证'
             console.log('reset重置滑动条')
+            document.getElementsByTagName('html')[0].addEventListener('mousemove',this.mouseMoveFn)
+            document.getElementsByTagName('html')[0].addEventListener('mouseup',this.moseUpFn)
         }
     },
     expose: ['reset'],
+    beforeDestory(){
+        document.getElementsByTagName('html')[0].removeEventListener('mousemove')
+        document.getElementsByTagName('html')[0].removeEventListener('mouseup')
+    }
 }
 </script>
 
