@@ -179,7 +179,7 @@ const getUserInfo = async () => {
 }
 //修改用户名
 const handleDone = async () => {
-  formRef.value.validate()
+  await formRef.value.validate()
 
   const res = await apiUpdateUser(formData);
   if (res.code == 200) {
@@ -207,7 +207,7 @@ const getSmsCode = async()=>{
 }
 //修改手机号
 const handleMobileDone = async () => {
-  formMobileRef.value.validate()
+  await formMobileRef.value.validate()
 
   const res = await apiUpdatePhone(formMobileData);
   if (res.code == 200) {
@@ -223,7 +223,7 @@ const handleMobileDone = async () => {
 }
 //修改密码
 const handlePwdDone = async () => {
-  formPwdRef.value.validate()
+  await formPwdRef.value.validate()
 
   const res = await apiUpdatePassword(formPwdData);
   if (res.code == 200) {
