@@ -76,8 +76,6 @@ const formPwdData = reactive({
   password: '',
 });
 const drag = ref()
-// 后端返回的验证码,目前都是假数据 000000
-const validateCode = ref()
 
 // Form rules
 const checkMobile = () => {
@@ -173,8 +171,8 @@ const resetSlider = () => {
 // 获取验证码
 const getSmsCode = async()=>{
   const params = {
-    countryCallCoding: countryCallCoding.value,
-    telephoneNumber: formNoteData.mobile
+    countryCallCoding: formNoteData.countryCallCoding,
+    telephoneNumber: formNoteData.telephoneNumber
   }
   const res = await apiSMS(params)
   // if(res.code==200){
