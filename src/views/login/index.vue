@@ -111,7 +111,6 @@ const formPwdRules = computed(() => {
 
 // 通过短信验证码登录
 const passBySmsCode = async () => {
-  
   const res = await apiSMSLogin(formNoteData)
   console.log('通过短信验证码登录',res)
   if(res.code==200){
@@ -122,6 +121,8 @@ const passBySmsCode = async () => {
     message.error(res.message)
   }
 }
+
+// 通过 用户手机和密码 登录
 const loginByPwd = async () => {
   try {
     const res = await apiPwdLogin(formPwdData);
@@ -142,7 +143,11 @@ const loginByPwd = async () => {
 
 const handleDone = async () => {
   if (activeKey.value === '1') {
-    formNoteRef.value.validate()
+    await formNoteRef.value.validate()
+    if (!isChecked.value) {
+      message.error("请阅读 服务条款、隐私政策 ，并勾选");
+      return false;
+    }
     passBySmsCode()
   } else {
     await formPwdRef.value.validate();
