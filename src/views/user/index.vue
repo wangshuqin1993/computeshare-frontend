@@ -159,10 +159,9 @@ const checkMobile = () => {
 }
 const checkName = () => {
   //用户名只能包含英文、中文、数字、下划线、中划线、大于两个中文或者三个英文字母并小于32个字符
-  let reg4 = /^((?=.*[\u4e00-\u9fa5]{2,})|(?=.*[a-zA-Z]{3,}))[\u4E00-\u9FA5A-Za-z0-9_-]{3,32}$/;
+  let reg = /^((?=.*[\u4e00-\u9fa5]{2,})|(?=.*[a-zA-Z]{3,}))[\u4E00-\u9FA5A-Za-z0-9_-]{3,32}$/;
 
-  
-  if (formData.name != '' && formData.name != null && !reg4.test(formData.name)) {
+  if (formData.name != '' && formData.name != null && !reg.test(formData.name)) {
     return Promise.reject("请输入合理的用户名");
   } else {
     return Promise.resolve()
@@ -186,6 +185,8 @@ const handleDone = async () => {
   if (res.code == 200) {
     visibleName.value = false;
     userInfo.value.name = formData.name;
+    //清空输入框
+    formData.name = ''; 
     message.success(res.message);
   }else{
     message.error(res.message)
@@ -212,6 +213,9 @@ const handleMobileDone = async () => {
   if (res.code == 200) {
     visibleMobile.value = false;
     userInfo.value.telephoneNumber = formMobileData.telephoneNumber;
+    //清空输入框
+    formMobileData.telephoneNumber = ''; 
+    formMobileData.validateCode = '';
     message.success(res.message);
   }else{
     message.error(res.message)
@@ -224,6 +228,10 @@ const handlePwdDone = async () => {
   const res = await apiUpdatePassword(formPwdData);
   if (res.code == 200) {
     visiblePwd.value = false;
+    //清空输入框
+    formPwdData.newPassword = ''; 
+    formPwdData.oldPassword = '';
+    formPwdData.rePwd = '';
     message.success(res.message);
   }else{
     message.error(res.message)
