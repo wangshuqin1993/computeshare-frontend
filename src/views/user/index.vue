@@ -227,6 +227,7 @@ const handlePwdDone = async () => {
 
   const res = await apiUpdatePassword(formPwdData);
   if (res.code == 200) {
+    isPwd.value = true;
     visiblePwd.value = false;
     //清空输入框
     formPwdData.newPassword = ''; 
