@@ -81,7 +81,9 @@
   </a-modal>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { message } from 'ant-design-vue';
+import { apiGetUser } from '@/apis/user';
 
 const labelCol = { style: { width: '120px' } };
 const isPwd = ref(false);
@@ -152,6 +154,14 @@ const checkName = () => {
     return Promise.resolve()
   }
 }
+const getUserInfo = async () => {
+  try {
+    const { data } = await apiGetUser();
+    console.log("data;;;;",data);
+  } catch (err: any) {
+    message.error(err);
+  }
+}
 const handleDone = () => {
   formRef.value.validate()
   console.log("handleDone.....");
@@ -164,6 +174,9 @@ const handlePwdDone = () => {
   formPwdRef.value.validate()
   console.log("handlePwdDone.....");
 }
+onMounted(() => {
+  getUserInfo();
+})
 </script>
 <style scoped lang="less">
 .user-card{

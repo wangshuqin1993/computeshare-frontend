@@ -22,16 +22,13 @@
             </a-tab-pane>
             <a-tab-pane key="2" :tab="[isLogin?'密码登录':'账号注册']">
               <a-form :model="formPwdData" layout="vertical" ref="formPwdRef" :rules="formPwdRules">
-                <a-form-item name="mobile" >
-                  <a-input prefix="+86" @change="resetSlider" v-model:value="formPwdData.mobile" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                <a-form-item name="telephoneNumber" >
+                  <a-input prefix="+86" @change="resetSlider" v-model:value="formPwdData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
-                <a-form-item name="pwd" >
-                  <a-input-password @change="resetSlider" v-model:value="formPwdData.pwd" placeholder="请输入密码" allow-clear autocomplete="off" />
+                <a-form-item name="password" >
+                  <a-input-password @change="resetSlider" v-model:value="formPwdData.password" placeholder="请输入密码" allow-clear autocomplete="off" />
                 </a-form-item>
-                <a-form-item name="rePwd" v-if="!isLogin">
-                  <a-input-password v-model:value="formPwdData.pwd" placeholder="请再次输入密码" allow-clear autocomplete="off" />
-                </a-form-item>
-                <a-form-item name="code" >
+                <a-form-item>
                   <div class="flex">
                   <drag-verify ref="drag"></drag-verify>
                   </div>
@@ -56,27 +53,37 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import dragVerify from '@/components/demo.vue'
+import { message } from 'ant-design-vue';
+import { useRouter } from "vue-router";
+import { apiLogin } from '@/apis/user';
+
+const router = useRouter();
 
 const activeKey = ref("2");
 const isChecked = ref(false);
 const isLogin = ref(true);
 const formNoteRef = ref();
 const formNoteData = reactive({
-  mobile: '',
-  code: '',
+  countryCallCoding: '86',
+  telephoneNumber: '',
+  validateCode: '',
 });
 const formPwdRef = ref();
 const formPwdData = reactive({
-  mobile: '',
-  pwd: '',
+  countryCallCoding: '86',
+  telephoneNumber: '',
+  password: '',
 });
 const drag = ref()
 
 // Form rules
 const checkMobile = () => {
   let reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
-  
-  if (formNoteData.mobile != '' && formNoteData.mobile != null && !reg.test(formNoteData.mobile)) {
+  let mobile = formNoteData.telephoneNumber;
+  if (activeKey.value === '2') {
+    mobile = formPwdData.telephoneNumber;
+  }
+  if (mobile != '' && mobile != null && !reg.test(mobile)) {
     return Promise.reject("请输入正确的手机号");
   } else {
     return Promise.resolve()
@@ -87,8 +94,8 @@ const formNoteRules = computed(() => {
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
   return {
-    mobile: [requiredRule('请输入手机号'), { validator: checkMobile, trigger: "change" }],
-    code: [requiredRule('请输入验证码')],
+    telephoneNumber: [requiredRule('请输入手机号'), { validator: checkMobile, trigger: "change" }],
+    validateCode: [requiredRule('请输入验证码')],
   };
 });
 const formPwdRules = computed(() => {
@@ -96,24 +103,47 @@ const formPwdRules = computed(() => {
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
   return {
-    mobile: [requiredRule('请输入手机号'), { validator: checkMobile, trigger: "change" }],
-    pwd: [requiredRule('请输入密码')],
+    telephoneNumber: [requiredRule('请输入手机号'), { validator: checkMobile, trigger: "change" }],
+    password: [requiredRule('请输入密码')],
   };
 });
 
-const handleDone = () => {
+const handleDone = async () => {
   if (activeKey.value === '1') {
-    formNoteRef.value.validate()
+    await formNoteRef.value.validate()
   } else {
-    formPwdRef.value.validate()
-    console.log("drag.value.confirmSuccess::::",drag.value.confirmSuccess);
+    await formPwdRef.value.validate();
+    if (!drag.value.confirmSuccess) {
+      message.error("请拖动滑块验证");
+      return false;
+    } else if (!isChecked.value) {
+      message.error("请阅读 服务条款、隐私政策 ，并勾选");
+      return false;
+    }
+    try {
+      const { data } = await apiGetUser();
+      console.log("data;;;;",data);
+      // localStorage.setItem('token', data.firstState.toString());
+
+      // if (data.token) {
+      //   localStorage.setItem('token', data.token);
+      //   window.close();
+      //   window.opener.location.reload();
+      // }
+    } catch (err: any) {
+      // localStorage.removeItem('userInfo');
+      router.push('/');
+      message.error(err.message);
+    }
   }
   
   console.log("handleDone.....");
 }
 // 重置滑块
-const resetSlider = ()=>{
-  drag.value.reset()
+const resetSlider = () => {
+  if (drag.value.confirmSuccess) {
+    drag.value.reset()
+  }
 }
 
 </script>
