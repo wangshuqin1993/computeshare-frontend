@@ -24,7 +24,7 @@ service.interceptors.request.use(
     // 在发送请求之前做些什么
     let token = localStorage.getItem("token") || '';
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
-      (config as Recordable).headers['Access-Token'] = token;
+      (config as Recordable).headers['Authorization'] = `Bearer ${token}`;
     }
 
     return config;
