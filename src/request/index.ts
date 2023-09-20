@@ -10,7 +10,6 @@ declare module 'axios' {
 // 创建一个 axios 实例
 const service = axios.create({
   baseURL: "/api", // 所有的请求地址前缀部分
-  baseURL: "/",
   timeout: 180000, // 请求超时时间毫秒
   headers: {
     // 设置后端需要的传参类型
@@ -42,7 +41,10 @@ service.interceptors.response.use(
   function (response: any) {
     // console.log(response);
     // 2xx 范围内的状态码都会触发该函数。
-    const dataAxios = response;
+    // dataAxios 是 axios 返回数据中的 data
+    const dataAxios = response.data;
+    // 这个状态码是和后端约定的
+    const code = dataAxios.reset;
     return dataAxios;
   },
   function (error: any) {
