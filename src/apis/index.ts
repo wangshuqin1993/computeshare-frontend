@@ -32,3 +32,15 @@ export function apiSMSLogin(params: smsLoginParams) {
     data: params,
   });
 }
+
+// login 密码登录
+interface AddLoginParams extends smsParams {
+  password: string,
+}
+export function apiPwdLogin(params: AddLoginParams) {
+  return httpRequest({
+    url: "/v1/user/login",
+    method: "post",
+    data: params,
+  });
+}

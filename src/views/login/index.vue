@@ -9,12 +9,12 @@
           <a-tabs v-model:activeKey="activeKey">
             <a-tab-pane key="1" :tab="[isLogin?'短信登录':'短信注册']">
               <a-form :model="formNoteData" layout="vertical" ref="formNoteRef" :rules="formNoteRules">
-                <a-form-item name="mobile" >
-                  <a-input prefix="+86" v-model:value="formNoteData.mobile" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                <a-form-item name="telephoneNumber" >
+                  <a-input prefix="+86" v-model:value="formNoteData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
-                <a-form-item name="code" >
+                <a-form-item name="validateCode" >
                   <div class="flex">
-                    <a-input class="w-[302px] mr-[10px]" v-model:value="formNoteData.code" placeholder="请输入验证码" allow-clear autocomplete="off" />
+                    <a-input class="w-[302px] mr-[10px]" v-model:value="formNoteData.validateCode" placeholder="请输入验证码" allow-clear autocomplete="off" />
                     <a-button type="primary" class="ant-btn-s" @click="getSmsCode">获取验证码</a-button>
                   </div>
                 </a-form-item>
@@ -55,8 +55,7 @@ import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import dragVerify from '@/components/demo.vue'
 import { message } from 'ant-design-vue';
-import { apiGetUser, apiLogin } from '@/apis/user';
-import { apiSMS, apiSMSLogin } from '@/apis/index'
+import { apiSMS, apiSMSLogin, apiPwdLogin } from '@/apis/index'
 
 const router = useRouter();
 
@@ -66,19 +65,17 @@ const isChecked = ref(false);
 const isLogin = ref(true);
 const formNoteRef = ref();
 const formNoteData = reactive({
-  countryCallCoding: '86',
+  countryCallCoding: '+86',
   telephoneNumber: '',
-  validateCode: '',
+  validateCode: '000000',
 });
 const formPwdRef = ref();
 const formPwdData = reactive({
-  countryCallCoding: '86',
+  countryCallCoding: '+86',
   telephoneNumber: '',
   password: '',
 });
 const drag = ref()
-// 这个版本只有+86
-const countryCallCoding = ref('+86')
 // 后端返回的验证码,目前都是假数据 000000
 const validateCode = ref()
 
@@ -115,13 +112,9 @@ const formPwdRules = computed(() => {
 });
 
 // 通过短信验证码登录
-const passBySmsCode = async()=>{
-  const params = {
-    countryCallCoding: countryCallCoding.value,
-    telephoneNumber: formNoteData.telephoneNumber,
-    validateCode: '000000'
-  }
-  const res = await apiSMSLogin(params)
+const passBySmsCode = async () => {
+  
+  const res = await apiSMSLogin(formNoteData)
   console.log('通过短信验证码登录',res)
   // 后端目前加不上code码,先按照正常流程调
   localStorage.setItem('token',res.token)
@@ -133,6 +126,23 @@ const passBySmsCode = async()=>{
   // }else{
   //   message.error(res.message)
   // }
+}
+const loginByPwd = async () => {
+  try {
+    const res = await apiPwdLogin(formPwdData);
+    console.log("data;;;;",res);
+    // localStorage.setItem('token', data.firstState.toString());
+
+    // if (data.token) {
+    //   localStorage.setItem('token', data.token);
+    //   window.close();
+    //   window.opener.location.reload();
+    // }
+  } catch (err: any) {
+    // localStorage.removeItem('userInfo');
+    router.push('/');
+    message.error(err.message);
+  }
 }
 
 const handleDone = async () => {
@@ -148,21 +158,7 @@ const handleDone = async () => {
       message.error("请阅读 服务条款、隐私政策 ，并勾选");
       return false;
     }
-    try {
-      const { data } = await apiGetUser();
-      console.log("data;;;;",data);
-      // localStorage.setItem('token', data.firstState.toString());
-
-      // if (data.token) {
-      //   localStorage.setItem('token', data.token);
-      //   window.close();
-      //   window.opener.location.reload();
-      // }
-    } catch (err: any) {
-      // localStorage.removeItem('userInfo');
-      router.push('/');
-      message.error(err.message);
-    }
+    loginByPwd();
   }
   
   console.log("handleDone.....");
