@@ -15,7 +15,7 @@
                 <a-form-item name="code" >
                   <div class="flex">
                     <a-input class="w-[302px] mr-[10px]" v-model:value="formNoteData.code" placeholder="请输入验证码" allow-clear autocomplete="off" />
-                    <a-button type="primary" class="ant-btn-s">获取验证码</a-button>
+                    <a-button type="primary" class="ant-btn-s" @click="getSmsCode">获取验证码</a-button>
                   </div>
                 </a-form-item>
               </a-form>
@@ -52,12 +52,14 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import dragVerify from '@/components/demo.vue'
 import { message } from 'ant-design-vue';
-import { useRouter } from "vue-router";
-import { apiLogin } from '@/apis/user';
+import { apiGetUser, apiLogin } from '@/apis/user';
+import { apiSMS, apiSMSLogin } from '@/apis/index'
 
 const router = useRouter();
+
 
 const activeKey = ref("2");
 const isChecked = ref(false);
@@ -75,6 +77,10 @@ const formPwdData = reactive({
   password: '',
 });
 const drag = ref()
+// 这个版本只有+86
+const countryCallCoding = ref('+86')
+// 后端返回的验证码,目前都是假数据 000000
+const validateCode = ref()
 
 // Form rules
 const checkMobile = () => {
@@ -108,9 +114,31 @@ const formPwdRules = computed(() => {
   };
 });
 
+// 通过短信验证码登录
+const passBySmsCode = async()=>{
+  const params = {
+    countryCallCoding: countryCallCoding.value,
+    telephoneNumber: formNoteData.telephoneNumber,
+    validateCode: '000000'
+  }
+  const res = await apiSMSLogin(params)
+  console.log('通过短信验证码登录',res)
+  // 后端目前加不上code码,先按照正常流程调
+  localStorage.setItem('token',res.token)
+  router.push('/')
+  // if(res.code==200){
+  //   // 拿到token缓存起来
+  //   localStorage.setItem('token',res.data.token)
+  //   router.push('/')
+  // }else{
+  //   message.error(res.message)
+  // }
+}
+
 const handleDone = async () => {
   if (activeKey.value === '1') {
-    await formNoteRef.value.validate()
+    formNoteRef.value.validate()
+    passBySmsCode()
   } else {
     await formPwdRef.value.validate();
     if (!drag.value.confirmSuccess) {
@@ -144,6 +172,20 @@ const resetSlider = () => {
   if (drag.value.confirmSuccess) {
     drag.value.reset()
   }
+}
+
+// 获取验证码
+const getSmsCode = async()=>{
+  const params = {
+    countryCallCoding: countryCallCoding.value,
+    telephoneNumber: formNoteData.mobile
+  }
+  const res = await apiSMS(params)
+  // if(res.code==200){
+  //   validateCode.value = '000000'
+  // }else{
+  //   message.error(res.message)
+  // }
 }
 
 </script>
