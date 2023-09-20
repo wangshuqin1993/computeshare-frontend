@@ -67,7 +67,7 @@ const formNoteRef = ref();
 const formNoteData = reactive({
   countryCallCoding: '+86',
   telephoneNumber: '',
-  validateCode: '000000',
+  validateCode: '',
 });
 const formPwdRef = ref();
 const formPwdData = reactive({
@@ -114,16 +114,13 @@ const passBySmsCode = async () => {
   
   const res = await apiSMSLogin(formNoteData)
   console.log('通过短信验证码登录',res)
-  // 后端目前加不上code码,先按照正常流程调
-  localStorage.setItem('token',res.token)
-  router.push('/')
-  // if(res.code==200){
-  //   // 拿到token缓存起来
-  //   localStorage.setItem('token',res.data.token)
-  //   router.push('/')
-  // }else{
-  //   message.error(res.message)
-  // }
+  if(res.code==200){
+    // 拿到token缓存起来
+    localStorage.setItem('token',res.data.token)
+    router.push('/')
+  }else{
+    message.error(res.message)
+  }
 }
 const loginByPwd = async () => {
   try {
@@ -175,11 +172,11 @@ const getSmsCode = async()=>{
     telephoneNumber: formNoteData.telephoneNumber
   }
   const res = await apiSMS(params)
-  // if(res.code==200){
-  //   validateCode.value = '000000'
-  // }else{
-  //   message.error(res.message)
-  // }
+  if(res.code==200){
+    formNoteData.validateCode = '000000'
+  }else{
+    message.error(res.message)
+  }
 }
 
 </script>
