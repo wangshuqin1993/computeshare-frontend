@@ -124,20 +124,15 @@ const passBySmsCode = async () => {
 
 // 通过 用户手机和密码 登录
 const loginByPwd = async () => {
-  try {
-    const res = await apiPwdLogin(formPwdData);
-    console.log("data;;;;",res);
-    // localStorage.setItem('token', data.firstState.toString());
+  const res = await apiPwdLogin(formPwdData);
+  console.log("data;;;;",res);
 
-    // if (data.token) {
-    //   localStorage.setItem('token', data.token);
-    //   window.close();
-    //   window.opener.location.reload();
-    // }
-  } catch (err: any) {
-    // localStorage.removeItem('userInfo');
-    router.push('/');
-    message.error(err.message);
+  if(res.code==200){
+    // 拿到token缓存起来
+    localStorage.setItem('token',res.data.token)
+    router.push('/')
+  }else{
+    message.error(res.message)
   }
 }
 
