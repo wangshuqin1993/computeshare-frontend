@@ -5,6 +5,7 @@
 <script>
 import "xterm/dist/xterm.css";
 import "xterm/dist/addons/fullscreen/fullscreen.css";
+import { useRoute } from 'vue-router'
 
 import { Terminal } from "xterm";
 import * as fit from "xterm/lib/addons/fit/fit";
@@ -15,6 +16,9 @@ import * as attach from "xterm/lib/addons/attach/attach";
   export default {
     name: "system",
     created() {
+      const routes = useRoute()
+      const instanceId = routes.query.instanceId
+      console.log('instanceId::', instanceId)
       Terminal.applyAddon(attach);
       Terminal.applyAddon(fit);
       Terminal.applyAddon(fullscreen);

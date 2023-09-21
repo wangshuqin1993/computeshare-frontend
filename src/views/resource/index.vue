@@ -2,7 +2,7 @@
 <template>
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] scroll-max-h rounded-[2px] p-[20px] overflow-y-auto">
-      <div v-if="noData" class="bg-[#FAFBFF] border border-dashed border-[#A6A6A6] rounded-[8px] py-[100px] px-[120px]">
+      <div v-if="!instanceList.length" class="bg-[#FAFBFF] border border-dashed border-[#A6A6A6] rounded-[8px] py-[100px] px-[120px]">
         <div class="text-[32px] font-medium text-[#000000] mb-[30px]">您还没有云服务器实例</div>
         <div class="text-[#242425] text-[24px]">点击<label class="text-[#484FFF] cursor-pointer font-medium">创建实例</label>，即可拥有一台云服务器，开始搭建您的云上业务！</div>
       </div>
@@ -14,7 +14,7 @@
               <template #title>
                 <div class="text-[14px]">
                   <div v-if="item.status === 1">
-                    <div class="tips-css" @click="operate">访问实例</div>
+                    <div class="tips-css" @click="operate(item.id)">访问实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                   </div>
                   <div v-else-if="item.status === 2" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
@@ -70,16 +70,15 @@ import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
 import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete } from '@/apis/compute';
 
-const noData = ref(false);
 const instanceList = ref([]);
 
 const echartsWidth = ref('');
 const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 const echartsData = ref([20, 502, 181, 234, 110, 290, 50, 20, 502, 181, 234, 810, 290, 50, 20, 502, 181, 234, 810, 290, 50]);
 
-const operate = ()=>{
+const operate = (id: string)=>{
   // 访问实例是跳走，需要带走实例id
-  window.open('/system')
+  window.open(`/system?instanceId=${id}`)
 }
 
 //启动实例
