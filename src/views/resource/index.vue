@@ -7,18 +7,18 @@
         <div class="text-[#242425] text-[24px]">点击<label class="text-[#484FFF] cursor-pointer font-medium">创建实例</label>，即可拥有一台云服务器，开始搭建您的云上业务！</div>
       </div>
       <div v-else class="gap-[30px] grid grid-cols-4">
-        <div class="card-div">
+        <div class="card-div" v-for="(item,key) in instanceList" :key="key">
           <div class="flex justify-between items-center mb-[20px]">
-            <div class="text-[21px] font-semibold">实例名称</div>
+            <div class="text-[21px] font-semibold text-ellipsis pr-[15px]">{{ item.name }}</div>
             <a-tooltip placement="bottom" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
                   <div v-if="status === 3">
                     <div class="tips-css" @click="operate">访问实例</div>
-                    <div class="tips-css">关闭实例</div>
+                    <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                   </div>
-                  <div v-else-if="status === 4" class="tips-css">启动实例</div>
-                  <div v-else-if="status === 5" class="tips-css">删除实例</div>
+                  <div v-else-if="status === 4" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
+                  <div v-else-if="status === 5" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
                   <div v-else class="tips-css-none">暂无操作</div>
                 </div>
               </template>
@@ -36,21 +36,21 @@
           <div class="mb-[10px]">
             <label class="card-sub-title">状态：</label>
             <label class="rounded-[11px] text-[14px] font-medium text-[#FFFFFF] px-[23px] py-[3px]" 
-              :class="resourceStatusColor[status]">{{ resourceStatus[status] }}</label>
+              :class="resourceStatusColor[item.status]">{{ resourceStatus[item.status] }}</label>
           </div>
           <div class="mb-[20px]">
             <label class="card-sub-title">到期时间：</label>
-            <label>2023.10.07 23:59:59</label>
+            <label>{{ dayjs(item.expirationTime).format('YYYY-MM-DD HH:mm:ss') }}</label>
           </div>
           <div class="border-t text-[14px]">
             <div class="pt-[20px] pb-[5px]">CPU使用率</div>
             <div class="bg-[#F8F9FC] rounded-[5px] h-[49px] echarts-width">
-              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts1`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="CPU" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
+              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="CPU" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
               <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
             </div>
             <div class="pt-[10px] pb-[5px]">内存使用率</div>
             <div class="bg-[#F8F9FC] rounded-[5px] h-[49px]">
-              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts2`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="内存" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
+              <Echarts v-if="echartsWidth != ''" :echartsId="`memorycharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="内存" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
               <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
             </div>
           </div>
@@ -63,12 +63,16 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { message } from "ant-design-vue";
+import dayjs from "dayjs";
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
+import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete } from '@/apis/compute';
 
 const noData = ref(false);
 const status = ref(4);
+const instanceList = ref([]);
 
 const echartsWidth = ref('');
 const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
@@ -79,9 +83,55 @@ const operate = ()=>{
   // window.open()
 }
 
+//启动实例
+const instanceStart = async (id: string) => {
+  
+  const res = await apiInstanceStart(id);
+  if (res.code == 200) {
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+
+//关闭实例
+const instanceStop = async (id: string) => {
+  
+  const res = await apiInstanceStop(id);
+  if (res.code == 200) {
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+
+//删除实例
+const instanceDelete = async (id: string) => {
+  
+  const res = await apiInstanceDelete(id);
+  if (res.code == 200) {
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+
+// 实例列表
+const getInstanceList = async () => {
+
+  const res = await apiGetInstanceList();
+  if (res.code == 200) {
+    instanceList.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
 onMounted(() => {
-  echartsWidth.value = (document.getElementsByClassName('echarts-width')[0].clientWidth - 2) + 'px';
-  console.log("width:::",echartsWidth.value);
+  getInstanceList();
+  setTimeout(() => {
+    echartsWidth.value = (document.getElementsByClassName('echarts-width')[0].clientWidth - 2) + 'px';
+  }, 300);
+  
 })
 </script>
 
@@ -101,5 +151,10 @@ onMounted(() => {
 }
 .border-t{
   border-top: 1px solid #E9E9E9;
+}
+.text-ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

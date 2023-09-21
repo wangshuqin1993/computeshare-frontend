@@ -2,25 +2,23 @@
   <a-modal :footer="null" title="创建实例" width="930px" centered="true" v-model:open="createVisible" @cancel="handleCancel">
     <div class="mt-[30px] ">
       <a-form :model="formData" ref="formRef" :rules="formRules" :label-col="labelCol">
-        <a-form-item label="规格：" name="param1">
-          <a-radio-group v-model:value="formData.param1">
-            <a-radio-button value="1">2核 4GB</a-radio-button>
+        <a-form-item label="规格：" name="specId">
+          <a-radio-group v-model:value="formData.specId">
+            <a-radio-button v-for="(item,key) in specList" :key="key" :value="item.id">{{ item.core }}核 {{ item.memory }}GB</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item class="more-raido" label="操作系统：" name="param2">
-          <a-radio-group v-model:value="formData.param2">
-            <a-radio-button value="1">Linux 3.2104 LTS 64位</a-radio-button>
-            <a-radio-button value="2">Ubuntu 22.04 64位 UEFI版</a-radio-button>
-            <a-radio-button value="3">CentOS 8.4 64位 SCC版</a-radio-button>
+        <a-form-item class="more-raido" label="操作系统：" name="imageId">
+          <a-radio-group v-model:value="formData.imageId">
+            <a-radio-button v-for="(item,key) in imageList" :key="key" :value="item.id">{{ item.name }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="使用时长：" name="param3">
-          <a-radio-group v-model:value="formData.param3">
-            <a-radio-button value="1">1个月</a-radio-button>
+        <a-form-item label="使用时长：" name="duration">
+          <a-radio-group v-model:value="formData.duration">
+            <a-radio-button  v-for="(item,key) in durationList" :key="key" :value="item.duration">{{ item.name }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="实例名称：" name="param4">
-          <a-input class="modal-input w-[70%]" autocomplete="off" v-model:value="formData.param4" placeholder="请输入实例名称"/>
+        <a-form-item label="实例名称：" name="name">
+          <a-input class="modal-input w-[70%]" autocomplete="off" v-model:value="formData.name" placeholder="请输入实例名称"/>
         </a-form-item>
         <div class="text-center mt-[50px]">
           <a-button class="ant-btn-m" type="primary" :loading="loading" @click="handleCreate">创建</a-button>
@@ -30,7 +28,9 @@
   </a-modal>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, toRefs } from 'vue';
+import { computed, onMounted, reactive, ref, toRefs } from 'vue';
+import { message } from 'ant-design-vue';
+import { apiGetSpec, apiGetImage, apiGetDuration, apiPostInstance } from '@/apis/compute';
 
 const props = defineProps({
   createVisible: {
@@ -42,29 +42,73 @@ const { createVisible } = toRefs(props);
 const emit = defineEmits(["handleCancelCreate"])
 const labelCol = { style: { width: '120px' } };
 const loading = ref(false);
+const specList = ref([]);
+const imageList = ref([]);
+const durationList = ref([]);
 const formRef = ref();
 const formData = reactive({
-  param1: '1',
-  param2: '2',
-  param3: '1',
-  param4: '',
+  specId: 1,
+  imageId: 1,
+  duration: 1,
+  name: '',
 });
 const formRules = computed(() => {
 
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
   return {
-    param4: [requiredRule('请输入实例名称')],
+    name: [requiredRule('请输入实例名称')],
   };
 });
 
 const handleCancel = () => {
   emit('handleCancelCreate');
 }
-const handleCreate = () => {
-  formRef.value.validate()
-  console.log("create.....");
+const handleCreate = async () => {
+  await formRef.value.validate();
+  const res = await apiPostInstance(formData);
+  if (res.code == 200) {
+    handleCancel();
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
 }
+// 获取规格
+const getSpec = async () => {
+
+  const res = await apiGetSpec();
+  if (res.code == 200) {
+    specList.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
+// 操作系统
+const getImage = async () => {
+
+  const res = await apiGetImage();
+  if (res.code == 200) {
+    imageList.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
+// 使用时长
+const getDuration = async () => {
+
+  const res = await apiGetDuration();
+  if (res.code == 200) {
+    durationList.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
+onMounted(() => {
+  getSpec();
+  getImage();
+  getDuration();
+})
 </script>
 <style scoped lang="less">
 

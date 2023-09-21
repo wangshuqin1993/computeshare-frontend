@@ -5,18 +5,17 @@ export enum sidebarName {
   'User' = '账户设置',
 }
 export enum resourceStatus {
-  '创建中' = 1,
-  '启动中' = 2,
-  '运行中' = 3,
-  '已停止' = 4,
-  '已过期' = 5,
+  '启动中' = 0,
+  '运行中' = 1,
+  '连接中断' = 2,
+  '过期' = 3,
 }
 export enum resourceStatusColor {
-  'bg-[#6A9DCB]' = 1,
-  'bg-[#008FFF]' = 2,
-  'bg-[#02C900]' = 3,
-  'bg-[#FF0019]' = 4,
-  'bg-[#AEAEAE]' = 5,
+  // 'bg-[#6A9DCB]' = 1,
+  'bg-[#008FFF]' = 0,
+  'bg-[#02C900]' = 1,
+  'bg-[#FF0019]' = 2,
+  'bg-[#AEAEAE]' = 3,
 }
 export enum executeStatus {
   '待执行' = 1,
