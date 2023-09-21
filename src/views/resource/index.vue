@@ -13,12 +13,12 @@
             <a-tooltip placement="bottom" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div v-if="status === 3">
+                  <div v-if="item.status === 1">
                     <div class="tips-css" @click="operate">访问实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                   </div>
-                  <div v-else-if="status === 4" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
-                  <div v-else-if="status === 5" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
+                  <div v-else-if="item.status === 2" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
+                  <div v-else-if="item.status === 3" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
                   <div v-else class="tips-css-none">暂无操作</div>
                 </div>
               </template>
@@ -71,7 +71,6 @@ import Echarts from "@/components/Echarts.vue";
 import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete } from '@/apis/compute';
 
 const noData = ref(false);
-const status = ref(4);
 const instanceList = ref([]);
 
 const echartsWidth = ref('');
