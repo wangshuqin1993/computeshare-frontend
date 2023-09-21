@@ -75,6 +75,7 @@ const handleCreate = async () => {
   if (res.code == 200) {
     handleCreateDone();
     message.success(res.message)
+    formData.name = ''
   }else{
     message.error(res.message)
   }
