@@ -50,6 +50,11 @@ let router = createRouter({
       path: "/login",
       name: "login",
       component: () => import('@/views/login/index.vue'),
+    },
+    {
+      path: "/system",
+      name: "system",
+      component: () => import('@/views/resource/system.vue')
     }
   ],
   // 每次切换路由页面滚动到顶部
