@@ -1,5 +1,6 @@
 <!-- 我的资源 -->
 <template>
+  <Header @handleDone="getInstanceList" />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] scroll-max-h rounded-[2px] p-[20px] overflow-y-auto">
       <div v-if="!instanceList.length" class="bg-[#FAFBFF] border border-dashed border-[#A6A6A6] rounded-[8px] py-[100px] px-[120px]">
@@ -69,6 +70,7 @@ import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
 import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete } from '@/apis/compute';
+import Header from "@/components/Header.vue";
 
 const instanceList = ref([]);
 

@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <div class="m-[20px] scroll-max-h overflow-y-auto">
     <div class="bg-[#FFFFFF] rounded-[2px] px-[40px] py-[20px]">
       <div class="text-[18px] font-medium">账户信息</div>
@@ -81,6 +82,7 @@
   </a-modal>
 </template>
 <script setup lang="ts">
+import Header from "@/components/Header.vue";
 import { computed, onMounted, reactive, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { apiSMS } from '@/apis/index'

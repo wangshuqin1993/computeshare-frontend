@@ -1,5 +1,6 @@
 <!-- 文件存储 -->
 <template>
+  <Header />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
       <UploadFile :suffixNames="suffixNames"></UploadFile>
@@ -27,6 +28,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
+import Header from "@/components/Header.vue";
 
 const suffixNames = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])

@@ -39,7 +39,7 @@ const props = defineProps({
   }
 });
 const { createVisible } = toRefs(props);
-const emit = defineEmits(["handleCancelCreate"])
+const emit = defineEmits(["handleCancelCreate","handleDone"])
 const labelCol = { style: { width: '120px' } };
 const loading = ref(false);
 const specList = ref([]);
@@ -64,11 +64,16 @@ const formRules = computed(() => {
 const handleCancel = () => {
   emit('handleCancelCreate');
 }
+
+const handleCreateDone = () => {
+  emit('handleDone');
+}
+
 const handleCreate = async () => {
   await formRef.value.validate();
   const res = await apiPostInstance(formData);
   if (res.code == 200) {
-    handleCancel();
+    handleCreateDone();
     message.success(res.message)
   }else{
     message.error(res.message)
