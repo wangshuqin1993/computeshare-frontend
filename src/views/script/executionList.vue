@@ -32,7 +32,7 @@
     </div>
   </div>
   
-  <a-modal :title="scriptTitle"  v-model:visible="scriptVisible" :footer="null" width="840px">
+  <a-modal :title="scriptTitle"  v-model:open="scriptVisible" :footer="null" width="840px">
     <div style="height: 360px">
       <CodeEditor :readOnly="true" :value="scriptValue"></CodeEditor>
     </div>
