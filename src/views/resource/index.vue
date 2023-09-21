@@ -88,6 +88,7 @@ const instanceStart = async (id: string) => {
   
   const res = await apiInstanceStart(id);
   if (res.code == 200) {
+    getInstanceList()
     message.success(res.message)
   }else{
     message.error(res.message)
@@ -99,6 +100,7 @@ const instanceStop = async (id: string) => {
   
   const res = await apiInstanceStop(id);
   if (res.code == 200) {
+    getInstanceList()
     message.success(res.message)
   }else{
     message.error(res.message)
@@ -110,6 +112,7 @@ const instanceDelete = async (id: string) => {
   
   const res = await apiInstanceDelete(id);
   if (res.code == 200) {
+    getInstanceList()
     message.success(res.message)
   }else{
     message.error(res.message)
