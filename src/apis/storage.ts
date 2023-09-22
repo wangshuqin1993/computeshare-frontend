@@ -1,10 +1,15 @@
 import httpRequest from "@/request";
 
 // 列表查询
-export function apiStorageList(parentId: string) {
+interface storageList {
+    page: number,
+    size: number,
+}
+export function apiStorageList(parentId: string, params: storageList) {
     return httpRequest({
         url: `/v1/storage?parentId=${parentId}`,
         method: "get",
+        data: params
     });
 }
 
