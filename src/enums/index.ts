@@ -18,10 +18,11 @@ export enum resourceStatusColor {
   'bg-[#AEAEAE]' = 3,
 }
 export enum executeStatus {
-  '待执行' = 1,
+  '未执行' = 1,
   '执行中' = 2,
-  '已完成' = 3,
-  '已取消' = 4,
+  '执行完成' = 3,
+  '执行失败' = 4,
+  '取消执行' = 4,
 }
 export enum executeStatusColor {
   'bg-[#6A9DCB]' = 1,
