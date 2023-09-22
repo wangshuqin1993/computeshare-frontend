@@ -27,7 +27,7 @@ import * as attach from "xterm/lib/addons/attach/attach";
       const terminal = new Terminal();
       // instanceId 实例id，路由中取
       // wss://computeshare.hamster.newtouch.com/v1/vm/terminal?instanceId=${instanceId}
-      const ws = new WebSocket("ws://172.16.9.9:18000/v1/vm/1/terminal?container=3691a0f7e864&workdir=/root");
+      const ws = new WebSocket( `wss://computeshare.hamster.newtouch.com/v1/vm/terminal?instanceId=${instanceId}`);
       ws.onclose = function() {
         console.log("服务器关闭了连接");
       };
