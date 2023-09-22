@@ -13,8 +13,8 @@
               <a-tooltip placement="left" color="#FFFFFF">
                 <template #title>
                   <div class="text-[14px]">
-                    <div v-if="status === 1" class="tips-css">取消执行</div>
-                    <div v-if="status === 3" class="tips-css">下载结果</div>
+                    <div v-if="status === 1" class="tips-css" @click="cancelExecuteScript">取消执行</div>
+                    <div v-if="status === 3" class="tips-css" @click="downloadScript">下载结果</div>
                     <div class="tips-css" @click="viewScript">查看脚本</div>
                   </div>
                 </template>
@@ -44,7 +44,7 @@ import { onMounted, ref } from "vue";
 import { message } from "ant-design-vue";
 import CodeEditor from '@/components/CodeEditor.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
-import { apiScriptList } from '@/apis/script'
+import { apiScriptList, apiGetScriptById, apiCancelExecuteScript, apiExecuteScript, apiDownloadScript } from '@/apis/script';
 
 const activeKey = ref(['1']);
 const status = ref(4);
@@ -57,12 +57,59 @@ const listParams = ref({
 });
 const total = ref(0);
 const scriptList = ref([]);
+const scriptInfo = ref({});
 
-const viewScript = () => {
+//查看脚本
+const viewScript = async () => {
   scriptVisible.value = true;
   scriptTitle.value = '123';
   scriptValue.value = '444';
+  
+  let id = 1;
 
+  const res = await apiExecuteScript(id);
+  if (res.code == 200) {
+    scriptValue.value = res.reason;
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+
+}
+// 取消执行
+const cancelExecuteScript = async () => {
+  let id = 1;
+  const res = await apiCancelExecuteScript(id);
+  if (res.code == 200) {
+    getScriptList(listParams)
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+// 下载脚本
+const downloadScript = async () => {
+  let id = 1;
+  const res = await apiDownloadScript(id);
+  if (res.code == 200) {
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+
+// 单个执行结果详情
+const getScriptById = async () => {
+  let id = '1';
+
+  const res = await apiGetScriptById(id);
+  
+  if (res.code == 200) {
+    scriptInfo.value = res.data;
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
 }
 
 // 执行结果
