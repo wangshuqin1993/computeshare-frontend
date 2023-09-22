@@ -32,6 +32,7 @@ const { suffixNames } = toRefs(props);
 
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
+  console.log(222222,fileList.value)
   console.log(11111111,fileData.file)
   console.log("fileData:::", fileData);
   // debugger

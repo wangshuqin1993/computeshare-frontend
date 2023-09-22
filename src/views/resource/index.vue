@@ -28,11 +28,11 @@
           </div>
           <div class="mb-[10px]">
             <label class="card-sub-title">规格：</label>
-            <label>2核 4GB</label>
+            <label>{{ item.core }}核 {{ item.memory }}GB</label>
           </div>
           <div class="mb-[10px]">
             <label class="card-sub-title">操作系统：</label>
-            <label>Linux 3.2104 LTS 64位</label>
+            <label>{{ item.imageName }}</label>
           </div>
           <div class="mb-[10px]">
             <label class="card-sub-title">状态：</label>
@@ -41,7 +41,7 @@
           </div>
           <div class="mb-[20px]">
             <label class="card-sub-title">到期时间：</label>
-            <label>{{ dayjs(item.expirationTime).format('YYYY-MM-DD HH:mm:ss') }}</label>
+            <label>{{ dayjs(item.expirationTime*1000).format('YYYY-MM-DD HH:mm:ss') }}</label>
           </div>
           <div class="border-t text-[14px]">
             <div class="pt-[20px] pb-[5px]">CPU使用率</div>
