@@ -33,6 +33,10 @@ const handleDone = ()=>{
   createVisible.value = false
   emit('handleDone')
 }
+// 创建实例
+const showCreateModal = () => {
+  createVisible.value = true;
+}
 
 const goUser = () => {
   window.open("/dashboard/user");
@@ -48,6 +52,10 @@ watch(() => router.currentRoute.value,
     curBarName.value = value.name;
   }, { deep: true, immediate: true }
 )
+
+defineExpose({
+  showCreateModal
+})
 </script>
 <style lang="less" scoped>
 .top-css{

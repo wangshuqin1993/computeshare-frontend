@@ -60,7 +60,7 @@ import { apiSMS, apiSMSLogin, apiPwdLogin } from '@/apis/index'
 const router = useRouter();
 
 
-const activeKey = ref("2");
+const activeKey = ref("1");
 const isChecked = ref(false);
 const isLogin = ref(true);
 const formNoteRef = ref();
