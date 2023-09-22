@@ -22,14 +22,11 @@ export function apiGetScriptById(id: string) {
 }
 
 // 上传脚本：​ /v1/compute-power/upload
-interface uploadScriptParams {
-  file: string
-}
-export function apiUploadScript(params: uploadScriptParams) {
+export function apiUploadScript(file: string) {
   return httpRequest({
     url: `/v1/compute-power/upload`,
     method: "post",
-    data: params
+    data: file
   });
 }
 

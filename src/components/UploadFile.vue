@@ -7,6 +7,7 @@
     :before-upload="beforeUpload"
     :customRequest="handleUploadAttachement"
     @drop="handleDrop"
+    accept=".py"
   >
     <p class="ant-upload-drag-icon flex justify-center">
       <img src="@/assets/images/upload.png" class="h-[36px]">
@@ -31,10 +32,11 @@ const { suffixNames } = toRefs(props);
 
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
+  console.log(11111111,fileData.file)
   console.log("fileData:::", fileData);
-  
+  // debugger
 
-  const res = await apiUploadScript(fileData.file);
+  const res = await apiUploadScript(JSON.stringify(fileData.file));
   console.log("res::::",res);
   if (res.code == 200) {
      
