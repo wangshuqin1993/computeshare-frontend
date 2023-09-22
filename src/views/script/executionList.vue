@@ -44,7 +44,7 @@ import { onMounted, ref } from "vue";
 import { message } from "ant-design-vue";
 import CodeEditor from '@/components/CodeEditor.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
-import { apiScriptList, apiGetScriptById, apiCancelExecuteScript, apiExecuteScript, apiDownloadScript } from '@/apis/script';
+import { apiScriptList, apiGetScriptById, apiCancelExecuteScript, apiDownloadScript } from '@/apis/script';
 
 const activeKey = ref(['1']);
 const status = ref(4);
@@ -65,15 +65,15 @@ const viewScript = async () => {
   scriptTitle.value = '123';
   scriptValue.value = '444';
   
-  let id = 1;
+  // let id = 1;
 
-  const res = await apiExecuteScript(id);
-  if (res.code == 200) {
-    scriptValue.value = res.reason;
-    message.success(res.message)
-  }else{
-    message.error(res.message)
-  }
+  // const res = await apiExecuteScript(id);
+  // if (res.code == 200) {
+  //   scriptValue.value = res.reason;
+  //   message.success(res.message)
+  // }else{
+  //   message.error(res.message)
+  // }
 
 }
 // 取消执行

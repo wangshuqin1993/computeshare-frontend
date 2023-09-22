@@ -63,6 +63,10 @@ const beforeUpload = (file) => {
   return isTrue;
 };
 
+
+defineExpose({
+  handleUploadAttachement,beforeUpload
+})
 </script>
 
 <style scoped lang="less">
