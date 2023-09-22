@@ -13,7 +13,7 @@
           <template #icon><img src="@/assets/images/upload-icon.png" class="h-[14px]"></template>
           上传脚本
         </a-button>
-        <a-button type="primary" class="ant-btn-ss ml-[20px]">执行脚本</a-button>
+        <a-button type="primary" class="ant-btn-ss ml-[20px]" @click="executeScript">执行脚本</a-button>
       </div>
     </div>
     <ExecutionList></ExecutionList>
@@ -25,10 +25,17 @@ import { ref } from "vue";
 import UploadFile from '@/components/UploadFile.vue';
 import ExecutionList from "./executionList.vue"
 import Header from "@/components/Header.vue";
+import { apiExecuteScript } from '@/apis/script'
 
 const noData = ref(true);
 const uploadContent = ref("asdfasdf\nasdfa\n")
 
+// 执行脚本
+const executeScript = async () => {
+  let id = 1;
+  const res = await apiExecuteScript(id);
+  console.log("res:::",1);
+}
 </script>
 
 <style scoped lang="less">

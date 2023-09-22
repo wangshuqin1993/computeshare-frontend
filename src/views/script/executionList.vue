@@ -40,15 +40,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from "vue";
+import { message } from "ant-design-vue";
 import CodeEditor from '@/components/CodeEditor.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
+import { apiScriptList } from '@/apis/script'
 
 const activeKey = ref(['1']);
 const status = ref(4);
 const scriptTitle = ref('');
 const scriptVisible = ref(false);
 const scriptValue = ref('');
+const listParams = ref({
+  page: 1,
+  size: 10,
+});
+const total = ref(0);
+const scriptList = ref([]);
 
 const viewScript = () => {
   scriptVisible.value = true;
@@ -56,6 +64,20 @@ const viewScript = () => {
   scriptValue.value = '444';
 
 }
+
+// 执行结果
+const getScriptList = async (listParams) => {
+
+  const res = await apiScriptList(listParams);
+  scriptList.value = res.list;
+  listParams.page = res.page;
+  listParams.size = res.size;
+  total.value = res.total;
+}
+
+onMounted(() => {
+  getScriptList(listParams);
+})
 </script>
 
 <style scoped lang="less">
