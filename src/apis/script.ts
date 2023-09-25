@@ -26,7 +26,10 @@ export function apiUploadScript(file: string) {
   return httpRequest({
     url: `/v1/compute-power/upload`,
     method: "post",
-    data: file
+    data: file,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   });
 }
 

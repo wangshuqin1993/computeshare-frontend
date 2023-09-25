@@ -46,12 +46,12 @@
           <div class="border-t text-[14px]">
             <div class="pt-[20px] pb-[5px]">CPU使用率</div>
             <div class="bg-[#F8F9FC] rounded-[5px] h-[49px] echarts-width">
-              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="CPU" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
+              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="CPU使用率" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
               <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
             </div>
             <div class="pt-[10px] pb-[5px]">内存使用率</div>
             <div class="bg-[#F8F9FC] rounded-[5px] h-[49px]">
-              <Echarts v-if="echartsWidth != ''" :echartsId="`memorycharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="内存" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
+              <Echarts v-if="echartsWidth != ''" :echartsId="`memorycharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="内存使用率" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
               <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
             </div>
           </div>
@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onUnmounted } from "vue";
 import { message } from "ant-design-vue";
 import { formatDateToLocale } from '@/utils/dateUtil';
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
@@ -76,8 +76,9 @@ const instanceList = ref([]);
 const headRef = ref();
 
 const echartsWidth = ref('');
-const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
-const echartsData = ref([20, 502, 181, 234, 110, 290, 50, 20, 502, 181, 234, 810, 290, 50, 20, 502, 181, 234, 810, 290, 50]);
+const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+const echartsData = ref([20, 502, 181, 234, 110, 10, 10, 10, 10, 10]);
+let isLoop = ref()
 
 const operate = (id: string)=>{
   // 访问实例是跳走，需要带走实例id
@@ -143,8 +144,14 @@ onMounted(() => {
       echartsWidth.value = (document.getElementsByClassName('echarts-width')[0].clientWidth - 2) + 'px';
     }
   }, 1000);
-  
-  
+  // 开启循环去实时调cpu和内存使用率
+  isLoop.value = setInterval(() => {
+    // getInstanceList()
+  }, 3000);
+})
+
+onUnmounted(()=>{
+  clearInterval(isLoop.value)
 })
 </script>
 

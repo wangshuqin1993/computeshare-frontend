@@ -26,7 +26,10 @@ export function apiUploadStorage(params: any) {
   return httpRequest({
     url: `/v1/storage/upload`,
     method: "post",
-    data: params
+    data: params,
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
   });
 }
 
