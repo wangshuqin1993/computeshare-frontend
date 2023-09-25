@@ -114,6 +114,7 @@ const delStorage = async (id: string) => {
       const res = await apiDelStorage([id]);
       if (res.code == 200) {
         message.success(res.message)
+        getTableData();
       }else{
         message.error(res.message)
       }

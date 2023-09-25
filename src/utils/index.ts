@@ -8,3 +8,21 @@ export const downloadRequest = (str:string,name:string,format:string)=>{
     a.click();
     a.remove();
   }
+
+// 将文件转换成流
+export function convertToBlob(info: any): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const file= info;
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const blob = new Blob([reader.result as ArrayBuffer]);
+      resolve(blob);
+    };
+    reader.onerror = () => {
+      reject(new Error('Failed to convert File to Blob'));
+    };
+
+    reader.readAsArrayBuffer(file.originFileObj as File);
+  });
+}
