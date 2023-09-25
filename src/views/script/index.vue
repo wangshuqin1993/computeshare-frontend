@@ -32,8 +32,7 @@ import { ref } from "vue";
 import UploadFile from '@/components/UploadFile.vue';
 import ExecutionList from "./executionList.vue"
 import Header from "@/components/Header.vue";
-import { apiExecuteScript, apiUploadScript } from '@/apis/script'
-import { message } from "ant-design-vue";
+import { apiExecuteScript } from '@/apis/script'
 
 const noData = ref(true);
 const suffixNames = ref(".py");

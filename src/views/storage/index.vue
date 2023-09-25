@@ -3,17 +3,17 @@
   <Header />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
-      <UploadFile :suffixNames="suffixNames"></UploadFile>
+      <UploadFile :suffixNames="suffixNames" :suffixText="suffixText"></UploadFile>
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
-        <template #bodyCell="{ column, text }">
+        <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div class="tips-css">下载</div>
-                  <div class="tips-css">删除</div>
+                  <div class="tips-css" @click="downloadStorage(record.id)">下载</div>
+                  <div class="tips-css" @click="delStorage(record.id)">删除</div>
                 </div>
               </template>
               <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer" />
@@ -26,12 +26,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { createVNode, onMounted, reactive, ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
+import { formatDateToLocale } from '@/utils/dateUtil';
+import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
+import { Modal, message } from 'ant-design-vue';
 
-const suffixNames = ref(".rar .zip .doc .docx .pdf .jpg...");
-const tableData = ref([])
+const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg");
+const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
+const tableData = ref([{name:'123',id:'112'}])
 const tableColumns = reactive([
   {
     title: '名称',
@@ -40,9 +44,10 @@ const tableColumns = reactive([
   },
   {
     title: '修改时间',
-    dataIndex: 'updateTime',
-    key: 'updateTime',
-    width: '20%'
+    dataIndex: 'lastModify',
+    key: 'lastModify',
+    width: '20%',
+    customRender: ({ text: date }) => formatDateToLocale(date).format("YYYY/MM/DD HH:mm:ss"),
   },
   {
     title: '文件大小',
@@ -81,9 +86,49 @@ const pagination = reactive({
   },
 });
 
-const getTableData = (page:number = pagination.current, size:number = pagination.pageSize) => {
-  console.log("page::",page,size);
+const getTableData = async (page:number = pagination.current, size:number = pagination.pageSize) => {
+  console.log("page::", page, size);
+  const parentId = '';
+  const res = await apiStorageList(parentId, {page:page, size:size});
+  if (res.code == 200) {
+    tableData.value = res.data;
+  }else{
+    message.error(res.message)
+  }
 }
+const downloadStorage = async (id: string) => {
+  const res = await apiDownloadStorage(id);
+  if (res.code == 200) {
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+const delStorage = async (id: string) => {
+  Modal.confirm({
+    title: () => "删除",
+    content: () => createVNode('div', { style: 'color:rgba(0, 0, 0, 0.8);' }, "确认删除该数据吗?"),
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      const res = await apiDelStorage([id]);
+      if (res.code == 200) {
+        message.success(res.message)
+      }else{
+        message.error(res.message)
+      }
+    },
+    onCancel() {
+        
+    },
+  });
+  
+}
+onMounted(() => {
+  // getTableData();
+  
+  
+})
 </script>
 
 <style scoped lang="less">
