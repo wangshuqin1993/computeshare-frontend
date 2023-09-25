@@ -46,13 +46,13 @@
           <div class="border-t text-[14px]">
             <div class="pt-[20px] pb-[5px]">CPU使用率</div>
             <div class="bg-[#F8F9FC] rounded-[5px] h-[49px] echarts-width">
-              <Echarts v-if="echartsWidth != ''" :echartsId="`cpucharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="CPU使用率" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
-              <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
+              <Echarts v-if="echartsWidth != '' && item.cpuArr.length" :echartsId="`cpucharts${key}`" :echartsData="item.cpuArr" :echartsXData="item.cpuArr" :echartsWidth="echartsWidth" seriesName="CPU" areaColor="#5BD171" areaColor1="#94EAAA"></Echarts>
+              <div v-else class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
             </div>
             <div class="pt-[10px] pb-[5px]">内存使用率</div>
             <div class="bg-[#F8F9FC] rounded-[5px] h-[49px]">
-              <Echarts v-if="echartsWidth != ''" :echartsId="`memorycharts${key}`" :echartsData="echartsData" :echartsXData="echartsXData" :echartsWidth="echartsWidth" seriesName="内存使用率" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
-              <div v-if="false" class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
+              <Echarts v-if="echartsWidth != '' && item.memoryArr.length" :echartsId="`memorycharts${key}`" :echartsData="item.memoryArr" :echartsXData="item.memoryArr" :echartsWidth="echartsWidth" seriesName="内存" areaColor="#487DE9" areaColor1="#7EB4F6"></Echarts>
+              <div v-else class="text-[#BFBFBF] leading-[49px] text-center">NO Data</div>
             </div>
           </div>
         </div>
@@ -131,7 +131,20 @@ const getInstanceList = async () => {
 
   const res = await apiGetInstanceList();
   if (res.code == 200) {
-    instanceList.value = res.data;
+    instanceList.value = res.data
+    // 取 cpu 和 内存
+    instanceList.value = instanceList.value.map((item:any)=>{
+      let cpuArr = []
+      let memoryArr = []
+      cpuArr = item.stats.map((en:any)=>{
+        return en.cpuUsage
+      })
+      memoryArr = item.stats.map((en:any)=>{
+        return en.memoryUsage
+      })
+      return {cpuArr,memoryArr,...item}
+    })
+    console.log('实例列表:',instanceList.value)
   }else{
     message.error(res.message)
   }
