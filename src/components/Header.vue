@@ -8,7 +8,7 @@
             <div class="tips-css" @click="logout">退出</div>
           </div>
         </template>
-        <div class="bg-[#A6DBFF] h-[36px] w-[36px] rounded-full cursor-pointer"></div>
+        <img src="@/assets/images/user-logo.png" class="h-[36px] w-[36px] cursor-pointer " />
       </a-tooltip>
     </div>
     <div class="h-[130px] px-[40px] flex justify-between items-center">

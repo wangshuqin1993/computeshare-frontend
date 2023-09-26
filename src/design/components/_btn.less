@@ -12,11 +12,24 @@
 }
 .ant-btn-primary.ant-btn-background-ghost{
   color: #484FFF;
-  border-color: #8287FF;
+  border-color: #484FFF;
 }
 .ant-btn-primary{
   background-color: #484FFF;
 }
+.ant-btn-primary:not(:disabled):hover{
+  background-color: #6C73FF;
+}
+.ant-btn-primary:not(:disabled):active{
+  background-color: #333CE9;
+}
+.ant-btn-primary[disabled], 
+.ant-btn-primary[disabled]:active, 
+.ant-btn-primary[disabled]:focus, 
+.ant-btn-primary[disabled]:hover{ 
+  background: #D3D5FF;
+}
+
 .ant-btn-ss{
   font-size: 14px;
   font-weight: 400;

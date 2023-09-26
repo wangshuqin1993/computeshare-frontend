@@ -41,7 +41,7 @@
           </div>
           <div class="mb-[20px]">
             <label class="card-sub-title">到期时间：</label>
-            <label>{{ formatDateToLocale(item.expirationTime).format("YYYY/MM/DD HH:mm:ss") }}</label>
+            <label>{{ transTimestamp(item.expirationTime*1, '.')  }}</label>
           </div>
           <div class="border-t text-[14px]">
             <div class="pt-[20px] pb-[5px]">CPU使用率</div>
@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from "vue";
 import { message } from "ant-design-vue";
-import { formatDateToLocale } from '@/utils/dateUtil';
+import { transTimestamp } from '@/utils/dateUtil';
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";

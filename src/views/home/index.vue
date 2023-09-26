@@ -2,7 +2,7 @@
 <template>
     <div class="flex dashboard-index rounded-[12px]">
         <div class="dashboard-index-left">
-          <img src="@/assets/images/menu-logo.png" class="h-[38px] my-[32px] mx-[24px]" />
+          <img src="@/assets/images/menu-logo-cs.png" class="h-[38px] my-[32px] mx-[24px] cursor-pointer" @click="goHome" />
           <a-menu theme="dark" v-model:selectedKeys="selectedKeys" style="width: 312px">
               <a-menu-item v-for="item in menuRouterList" :key="item.name">
                   <router-link :to="item.name">
@@ -33,6 +33,14 @@ const router = useRouter();
 const curBarName = ref(router.currentRoute.value.name);
 const selectedKeys = ref<any>(['']);
 const menuRouterList = ref<any>([]);
+
+const goHome = () => {
+  if (curBarName.value === 'User') {
+    window.open('/')
+  } else {
+    router.push('/')
+  }
+}
 
 onBeforeMount(() => {
   const dashboard: any = router.options.routes.find((val) => { return val.path === '/' });
