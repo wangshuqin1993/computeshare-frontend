@@ -2,15 +2,16 @@
   <Header />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
-      <div v-if="!uploadContent">
+      <div v-show="!uploadContent">
         <UploadFile ref="uploadRef" :suffixNames="suffixNames" @refreshList="refreshExecutionList"></UploadFile>
       </div>
-      <div v-else class="h-[228px] overflow-y-auto border border-solid border-[#A6A6A6] rounded-[8px] p-[20px]">
+      <div v-show="uploadContent" class="h-[228px] overflow-y-auto border border-solid border-[#A6A6A6] rounded-[8px] p-[20px]">
         <pre>{{ uploadContent }}</pre>
       </div>
       <div class="mt-[20px] text-center flex justify-center items-center">
         <a-upload
           v-model:file-list="fileList"
+          name="file"
           :showUploadList="false"
           :before-upload="beforeUpload"
           :customRequest="handleUploadAttachement"
@@ -29,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import UploadFile from '@/components/UploadFile.vue';
 import ExecutionList from "./executionList.vue"
 import Header from "@/components/Header.vue";
@@ -43,11 +44,11 @@ const executionId = ref()
 
 const fileList = ref([]);
 const uploadRef = ref();
-const handleUploadAttachement = async (fileData:any) => {
+const handleUploadAttachement = async (fileData: any) => {
   uploadRef.value.handleUploadAttachement(fileData);
 };
 
-const beforeUpload = (file:any) => {
+const beforeUpload = (file: any) => {
   return uploadRef.value.beforeUpload(file);
 };
 

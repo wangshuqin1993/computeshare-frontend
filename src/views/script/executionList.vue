@@ -23,7 +23,7 @@
             </div>
           </template>
           <div>
-            <div v-if="item.executeResult">{{item.executeResult}}</div>
+            <div v-if="item.executeResult" class="whitespace-pre-line">{{item.executeResult}}</div>
             <div v-else class="text-[#8C8C8C] py-[30px] text-center">NO Data</div>
           </div>
         </a-collapse-panel>
@@ -107,9 +107,8 @@ const getScriptById = async (id:any) => {
 // 执行结果
 const getScriptList = async () => {
   const res = await apiScriptList(listParams);
-  scriptList.value = [...scriptList.value,...res.data.list]
+  scriptList.value = [...scriptList.value,...res.list]
   total.value = res.total;
-  console.log('执行结果::',scriptList.value)
 }
 
 // 加载更多

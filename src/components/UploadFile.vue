@@ -42,11 +42,10 @@ const emit = defineEmits(["refreshList"])
 const scriptInfo = ref()
 
 const curBarName = ref(router.currentRoute.value.name);
-console.log("curBarName:::",curBarName.value);
+
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
   let formData = new FormData();
-  console.log('00000000',fileData.file,fileList.value[0])
   formData.append('file', fileData.file);
   let res:any = {};
   //文件存储
@@ -55,13 +54,11 @@ const handleUploadAttachement = async (fileData) => {
   } else {
     res = await apiUploadScript(formData);
     scriptInfo.value = res.data
-    console.log('脚本服务：：',scriptInfo.value)
   }
-  console.log("res::::",res);
   if (res.code == 200) {
     emit('refreshList')
     message.success(res.message);
-  }else{
+  } else {
     message.error(res.message)
   }
 };
