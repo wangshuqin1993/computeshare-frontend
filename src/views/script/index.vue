@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from "vue";
+import { ref } from "vue";
 import UploadFile from '@/components/UploadFile.vue';
 import ExecutionList from "./executionList.vue"
 import Header from "@/components/Header.vue";
@@ -58,7 +58,9 @@ const executeScript = async () => {
   const res = await apiExecuteScript({id:executionId.value});
   console.log("res:::",res);
   if(res.code==200){
-    message.success('正在执行中')
+    message.info('正在处理中')
+    executionList.value.getScriptList()
+    uploadRef.value = ''
   }else{
     message.error(res.message)
   }

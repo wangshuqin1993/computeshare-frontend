@@ -107,8 +107,14 @@ const getScriptById = async (id:any) => {
 // 执行结果
 const getScriptList = async () => {
   const res = await apiScriptList(listParams);
-  scriptList.value = [...scriptList.value,...res.list]
-  total.value = res.total;
+  if(res.code==200){
+    if(listParams.page==1){
+      scriptList.value = res.data.list
+    }else{
+      scriptList.value = [...scriptList.value,...res.data.list]
+    }
+    total.value = res.total;
+  }
 }
 
 // 加载更多
