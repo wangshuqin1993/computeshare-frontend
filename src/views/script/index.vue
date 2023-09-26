@@ -60,7 +60,7 @@ const executeScript = async () => {
   if(res.code==200){
     message.info('正在处理中')
     executionList.value.getScriptList()
-    uploadRef.value = ''
+    uploadContent.value = ''
   }else{
     message.error(res.message)
   }
