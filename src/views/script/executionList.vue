@@ -56,7 +56,7 @@ const listParams = reactive({
 });
 const total = ref(0);
 const scriptList = ref([]);
-const scriptInfo = ref({});
+const checkScriptInfo = ref({});
 
 //查看脚本
 const viewScript = async (info:any) => {
@@ -90,8 +90,15 @@ const downloadScript = async (id:number,scriptName:string) => {
 const getScriptById = async (id:any) => {
   const res = await apiGetScriptById(id);
   if (res.code == 200) {
-    scriptInfo.value = res.data;
+    checkScriptInfo.value = res.data;
     // message.success(res.message)
+    scriptList.value = scriptList.value.map((item:any)=>{
+      if(item.id===id){
+        item=checkScriptInfo.value
+      }
+      return item
+    })
+    console.log('单个执行结果详情::',scriptList.value)
   }else{
     message.error(res.message)
   }
