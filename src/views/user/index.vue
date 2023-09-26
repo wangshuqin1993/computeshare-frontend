@@ -227,17 +227,22 @@ const handleMobileDone = async () => {
 const handlePwdDone = async () => {
   await formPwdRef.value.validate()
 
-  const res = await apiUpdatePassword(formPwdData);
-  if (res.code == 200) {
-    isPwd.value = true;
-    visiblePwd.value = false;
-    //清空输入框
-    formPwdData.newPassword = ''; 
-    formPwdData.oldPassword = '';
-    formPwdData.rePwd = '';
-    message.success(res.message);
-  }else{
-    message.error(res.message)
+  try {
+    const res = await apiUpdatePassword(formPwdData);
+    if (res.code == 200) {
+      isPwd.value = true;
+      visiblePwd.value = false;
+      //清空输入框
+      formPwdData.newPassword = ''; 
+      formPwdData.oldPassword = '';
+      formPwdData.rePwd = '';
+      message.success(res.message);
+    }else{
+      message.error(res.message)
+    }
+  } catch (e) {
+    console.log("catch:::",e);
+    message.error("当前密码输入错误！")
   }
 }
 onMounted(() => {
