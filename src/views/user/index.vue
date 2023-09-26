@@ -3,7 +3,7 @@
   <div class="m-[20px] scroll-max-h overflow-y-auto">
     <div class="bg-[#FFFFFF] rounded-[2px] px-[40px] py-[20px]">
       <div class="text-[18px] font-medium">账户信息</div>
-      <div class="my-[40px] bg-[#A6DBFF] h-[144px] w-[144px] rounded-full"></div>
+      <img src="@/assets/images/user-logo.png" class="my-[40px] h-[144px] w-[144px] " />
       <div class="user-card">
         <div class="user-title">用户名</div>
         <div class="flex justify-between">

@@ -2,33 +2,38 @@
   <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
     <div class="text-[18px] font-medium mb-[20px]">执行结果</div>
     <div class=" scroll-max-h overflow-y-auto">
-      <a-collapse v-model:activeKey="activeKey">
-        <a-collapse-panel key="1" header="Task ID">
-          <template #extra>
-            <div class="flex">
-              <div class="w-[190px] rounded-[100px] h-[26px] leading-[26px] text-[14px] font-medium text-[#FFFFFF] pl-[16px]"
-                :class="executeStatusColor[status]">
-              {{ executeStatus[status] }}
+      <div v-if="scriptList.length == 0">
+        <NoData />
+      </div>
+      <div v-else>
+        <a-collapse v-model:activeKey="activeKey">
+          <a-collapse-panel key="1" header="Task ID">
+            <template #extra>
+              <div class="flex">
+                <div class="w-[190px] rounded-[100px] h-[26px] leading-[26px] text-[14px] font-medium text-[#FFFFFF] pl-[16px]"
+                  :class="executeStatusColor[status]">
+                {{ executeStatus[status] }}
+                </div>
+                <a-tooltip placement="left" color="#FFFFFF">
+                  <template #title>
+                    <div class="text-[14px]">
+                      <div v-if="status === 1" class="tips-css" @click="cancelExecuteScript">取消执行</div>
+                      <div v-if="status === 3" class="tips-css" @click="downloadScript">下载结果</div>
+                      <div class="tips-css" @click="viewScript">查看脚本</div>
+                    </div>
+                  </template>
+                  <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer ml-[12px]" />
+                </a-tooltip>
               </div>
-              <a-tooltip placement="left" color="#FFFFFF">
-                <template #title>
-                  <div class="text-[14px]">
-                    <div v-if="status === 1" class="tips-css" @click="cancelExecuteScript">取消执行</div>
-                    <div v-if="status === 3" class="tips-css" @click="downloadScript">下载结果</div>
-                    <div class="tips-css" @click="viewScript">查看脚本</div>
-                  </div>
-                </template>
-                <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer ml-[12px]" />
-              </a-tooltip>
+            </template>
+            <div>
+              <div v-if="status === 1" class="text-[#8C8C8C] py-[30px] text-center">NO Data</div>
+              <div v-else>待添加</div>
             </div>
-          </template>
-          <div>
-            <div v-if="status === 1" class="text-[#8C8C8C] py-[30px] text-center">NO Data</div>
-            <div v-else>待添加</div>
-          </div>
-        </a-collapse-panel>
-      </a-collapse>
-      <div class="text-center mt-[20px] cursor-pointer text-[#484FFF]">加载更多…</div>
+          </a-collapse-panel>
+        </a-collapse>
+        <div class="text-center mt-[20px] cursor-pointer text-[#484FFF]">加载更多…</div>
+      </div>
     </div>
   </div>
   
@@ -43,6 +48,7 @@
 import { onMounted, ref } from "vue";
 import { message } from "ant-design-vue";
 import CodeEditor from '@/components/CodeEditor.vue';
+import NoData from '@/components/NoData.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
 import { apiScriptList, apiGetScriptById, apiCancelExecuteScript, apiDownloadScript } from '@/apis/script';
 

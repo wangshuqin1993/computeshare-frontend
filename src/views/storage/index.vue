@@ -36,7 +36,7 @@ import { downloadRequest } from '@/utils/index'
 
 const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg,.txt");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
-const tableData = ref([{name:'123',id:'112'}])
+const tableData = ref([])
 const tableColumns = reactive([
   {
     title: '名称',
