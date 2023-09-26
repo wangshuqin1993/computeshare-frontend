@@ -38,6 +38,8 @@ const props = defineProps({
 })
 const { suffixNames,suffixText } = toRefs(props);
 const emit = defineEmits(["refreshList"])
+// 上传脚本后拿到脚本信息
+const scriptInfo = ref()
 
 const curBarName = ref(router.currentRoute.value.name);
 console.log("curBarName:::",curBarName.value);
@@ -52,6 +54,8 @@ const handleUploadAttachement = async (fileData) => {
     res = await apiUploadStorage(formData);
   } else {
     res = await apiUploadScript(formData);
+    scriptInfo.value = res.data
+    console.log('脚本服务：：',scriptInfo.value)
   }
   console.log("res::::",res);
   if (res.code == 200) {
@@ -88,7 +92,9 @@ const handleFileChange = async(info: UploadChangeParam)=>{
 }
 
 defineExpose({
-  handleUploadAttachement,beforeUpload
+  handleUploadAttachement,
+  beforeUpload,
+  scriptInfo
 })
 </script>
 
