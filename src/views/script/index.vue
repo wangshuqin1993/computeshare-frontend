@@ -14,6 +14,7 @@
           :showUploadList="false"
           :before-upload="beforeUpload"
           :customRequest="handleUploadAttachement"
+          :accept="suffixNames"
         >
           <a-button type="primary" ghost class="ant-btn-ss flex justify-center items-center">
             <template #icon><img src="@/assets/images/upload-icon.png" class="h-[14px]"></template>
