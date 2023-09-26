@@ -2,8 +2,8 @@
   <Header />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
-      <div v-if="noData">
-        <UploadFile ref="uploadRef" :suffixNames="suffixNames"></UploadFile>
+      <div v-if="!uploadContent">
+        <UploadFile ref="uploadRef" :suffixNames="suffixNames" @refreshList="refreshExecutionList"></UploadFile>
       </div>
       <div v-else class="h-[228px] overflow-y-auto border border-solid border-[#A6A6A6] rounded-[8px] p-[20px]">
         <pre>{{ uploadContent }}</pre>
@@ -23,7 +23,7 @@
         <a-button type="primary" class="ant-btn-ss ml-[20px]" @click="executeScript">执行脚本</a-button>
       </div>
     </div>
-    <ExecutionList></ExecutionList>
+    <ExecutionList ref="executionList"></ExecutionList>
   </div>
 </template>
 
@@ -33,10 +33,12 @@ import UploadFile from '@/components/UploadFile.vue';
 import ExecutionList from "./executionList.vue"
 import Header from "@/components/Header.vue";
 import { apiExecuteScript } from '@/apis/script'
+import { message } from "ant-design-vue";
 
-const noData = ref(true);
 const suffixNames = ref(".py");
-const uploadContent = ref("asdfasdf\nasdfa\n")
+const uploadContent = ref()
+const executionList = ref()
+const executionId = ref()
 
 const fileList = ref([]);
 const uploadRef = ref();
@@ -47,11 +49,23 @@ const handleUploadAttachement = async (fileData:any) => {
 const beforeUpload = (file:any) => {
   return uploadRef.value.beforeUpload(file);
 };
+
 // 执行脚本
 const executeScript = async () => {
-  let id = 1;
-  const res = await apiExecuteScript(id);
+  const res = await apiExecuteScript({id:executionId.value});
   console.log("res:::",res);
+  if(res.code==200){
+    message.success('正在执行中')
+  }else{
+    message.error(res.message)
+  }
+}
+
+const refreshExecutionList = ()=>{
+  executionList.value.getScriptList()
+  console.log('那上次：：',uploadRef.value.scriptInfo)
+  uploadContent.value = uploadRef.value.scriptInfo.scriptContent
+  executionId.value = uploadRef.value.scriptInfo.id
 }
 </script>
 
