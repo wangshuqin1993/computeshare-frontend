@@ -6,7 +6,8 @@
         <UploadFile ref="uploadRef" :suffixNames="suffixNames" @refreshList="refreshExecutionList"></UploadFile>
       </div>
       <div v-show="uploadContent" class="h-[228px] overflow-y-auto border border-solid border-[#A6A6A6] rounded-[8px] p-[20px]">
-        <pre>{{ uploadContent }}</pre>
+        <!-- <pre>{{ uploadContent }}</pre> -->
+        <span v-html="uploadContent"></span>
       </div>
       <div class="mt-[20px] text-center flex justify-center items-center">
         <a-upload
@@ -64,9 +65,9 @@ const executeScript = async () => {
 }
 
 const refreshExecutionList = ()=>{
-  executionList.value.getScriptList()
+  // executionList.value.getScriptList()
   console.log('那上次：：',uploadRef.value.scriptInfo)
-  uploadContent.value = uploadRef.value.scriptInfo.scriptContent
+  uploadContent.value = uploadRef.value.scriptInfo.scriptContent.replace(/\n/g, '<br>');
   executionId.value = uploadRef.value.scriptInfo.id
 }
 </script>
