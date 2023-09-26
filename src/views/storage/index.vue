@@ -29,7 +29,7 @@
 import { createVNode, onMounted, reactive, ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
-import { formatDateToLocale } from '@/utils/dateUtil';
+import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
 import { Modal, message } from 'ant-design-vue';
 import { downloadRequest } from '@/utils/index'
@@ -48,7 +48,7 @@ const tableColumns = reactive([
     dataIndex: 'lastModify',
     key: 'lastModify',
     width: '30%',
-    customRender: ({ text: date }) =>  formatDateToLocale(date).format("YYYY/MM/DD HH:mm:ss"),
+    customRender: ({ text: date }) =>  transTimestamp(date),
   },
   {
     title: '文件大小',
