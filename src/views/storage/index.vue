@@ -48,7 +48,7 @@ const tableColumns = reactive([
     dataIndex: 'lastModify',
     key: 'lastModify',
     width: '30%',
-    customRender: ({ text: date }) =>  transTimestamp(date),
+    customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
     title: '文件大小',
