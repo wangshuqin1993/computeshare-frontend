@@ -104,7 +104,7 @@ const getScriptById = async (id:any) => {
   }
 }
 
-// 执行结果
+// 执行结果列表
 const getScriptList = async () => {
   const res = await apiScriptList(listParams);
   if(res.code==200){
