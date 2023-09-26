@@ -2,7 +2,8 @@
 <template>
 <div>
   <div class="flex container-width">
-    <img src="@/assets/images/login-pic.jpg" class=" h-screen w-auto left-width" />
+    <img src="@/assets/images/login-pic-cs.png" class=" h-screen w-auto left-width" />
+    <!-- <img src="@/assets/images/login-pic.jpg" class=" h-screen w-auto left-width" /> -->
     <div class="right-w flex justify-center items-center" :style="{width: rightWidth}">
         <div class="card-div p-[54px] relative">
           <div class="text-[36px] text-[#2E2E2E] font-medium mb-[36px] text-center">登录天天数链共享算力</div>
