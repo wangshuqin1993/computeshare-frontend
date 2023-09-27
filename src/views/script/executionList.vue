@@ -28,7 +28,7 @@
           </div>
         </a-collapse-panel>
       </a-collapse>
-      <div class="text-center mt-[20px] cursor-pointer text-[#484FFF]" @click="gitMoreList">加载更多…</div>
+      <div v-if="total>9 && scriptList.length<total" class="text-center mt-[20px] cursor-pointer text-[#484FFF]" @click="gitMoreList">加载更多…</div>
     </div>
   </div>
   <a-modal :title="scriptTitle"  v-model:open="scriptVisible" :footer="null" width="840px">
@@ -113,7 +113,7 @@ const getScriptList = async () => {
     }else{
       scriptList.value = [...scriptList.value,...res.data.list]
     }
-    total.value = res.total;
+    total.value = res.data.total;
   }
 }
 
