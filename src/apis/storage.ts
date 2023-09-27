@@ -9,7 +9,7 @@ export function apiStorageList(parentId: string, params: storageList) {
   return httpRequest({
     url: `/v1/storage?parentId=${parentId}`,
     method: "get",
-    data: params
+    params: params
   });
 }
 
@@ -28,7 +28,7 @@ export function apiUploadStorage(params: any) {
     method: "post",
     data: params,
     headers: {
-        'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data'
     }
   });
 }
