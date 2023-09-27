@@ -79,19 +79,18 @@ const pagination = reactive({
     // 改变 pageSize时的回调
     pagination.current = current;
     pagination.pageSize = pagesize;
-    getTableData(current, pagesize)
+    getTableData()
   },
   onChange: (current: number) => {
     // 切换分页时的回调，
     pagination.current = current;
-    getTableData(current, pagination.pageSize)
+    getTableData()
   },
 });
 
-const getTableData = async (page:number = pagination.current, size:number = pagination.pageSize) => {
-  console.log("page::", page, size);
+const getTableData = async () => {
   const parentId = '';
-  const res = await apiStorageList(parentId, {page:page, size:size});
+  const res = await apiStorageList(parentId, {page:pagination.current, size:pagination.pageSize});
   if (res.code == 200) {
     tableData.value = res.data;
   }else{
