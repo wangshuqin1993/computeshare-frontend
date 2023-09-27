@@ -50,6 +50,8 @@ onMounted(() => { // 需要获取到element,所以是onMounted的Hook
     
     tooltip: { //鼠标悬浮提示内容
       trigger: 'axis',
+      padding: [20, 20],
+      // position: 'inside',
     },
     xAxis: {
       show: false,

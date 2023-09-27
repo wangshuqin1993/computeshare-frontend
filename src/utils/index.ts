@@ -1,10 +1,10 @@
 // 公共回调
 // 下载 str:下载的内容  name:下载文件的名称  format:下载文件的格式
-export const downloadRequest = (str:string,name:string,format:string)=>{
+export const downloadRequest = (str:string,name:string)=>{
     const url = `data:,${str}`;
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${name}.${format}`;
+    a.download = `${name}`;
     a.click();
     a.remove();
   }
@@ -17,6 +17,7 @@ export function convertToBlob(info: any): Promise<Blob> {
 
     reader.onload = () => {
       const blob = new Blob([reader.result as ArrayBuffer]);
+      console.log('blob',blob)
       resolve(blob);
     };
     reader.onerror = () => {

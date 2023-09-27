@@ -7,9 +7,8 @@ interface listParams {
 }
 export function apiScriptList(params: listParams) {
   return httpRequest({
-    url: '/v1/compute-power/script/list',
+    url: `/v1/compute-power/script/list?page=${params.page}&size=${params.size}`,
     method: "get",
-    data: params
   });
 }
 
@@ -22,9 +21,9 @@ export function apiGetScriptById(id: string) {
 }
 
 // 上传脚本：​ /v1/compute-power/upload
-export function apiUploadScript(file: string) {
+export function apiUploadScript(file: any) {
   return httpRequest({
-    url: `/v1/compute-power/upload`,
+    url: `/v1/compute-power/upload/script`,
     method: "post",
     data: file,
     headers: {
@@ -35,28 +34,31 @@ export function apiUploadScript(file: string) {
 
 // 执行脚本：/v1/compute-power/python
 // id: 执行脚本的id
-export function apiExecuteScript(id: number) {
+interface executeParams {
+  id:number
+}
+export function apiExecuteScript(params: executeParams) {
   return httpRequest({
     url: `/v1/compute-power/python`,
     method: "post",
-    data: id
+    data: params
   });
 }
 
 // 取消执行： /v1/compute-power/python/cancel
-export function apiCancelExecuteScript(id: number) {
+export function apiCancelExecuteScript(params: executeParams) {
   return httpRequest({
     url: `/v1/compute-power/python/cancel`,
     method: "post",
-    data: id
+    data: params
   });
 }
 
 // 下载结果： /v1/compute-power/download
-export function apiDownloadScript(id: number) {
+export function apiDownloadScript(params: executeParams) {
   return httpRequest({
     url: `/v1/compute-power/download`,
     method: "post",
-    data: id
+    data: params
   });
 }

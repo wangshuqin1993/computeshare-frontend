@@ -7,6 +7,7 @@
     :before-upload="beforeUpload"
     :customRequest="handleUploadAttachement"
     @drop="handleDrop"
+    @change="handleFileChange"
     :accept="suffixNames"
   >
     <p class="ant-upload-drag-icon flex justify-center">
@@ -19,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref ,toRefs} from "vue";
-import { message } from 'ant-design-vue';
+import { message, type UploadChangeParam } from 'ant-design-vue';
 import { useRouter } from "vue-router";
 import { apiUploadScript } from '@/apis/script';
 import { apiUploadStorage } from '@/apis/storage';
@@ -36,27 +37,28 @@ const props = defineProps({
   }
 })
 const { suffixNames,suffixText } = toRefs(props);
+const emit = defineEmits(["refreshList"])
+// 上传脚本后拿到脚本信息
+const scriptInfo = ref()
 
 const curBarName = ref(router.currentRoute.value.name);
-console.log("curBarName:::",curBarName.value);
+
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
-  console.log(222222,fileList.value)
-  console.log(11111111,fileData.file)
-  console.log("fileData:::", fileData);
-  // debugger
+  let formData = new FormData();
+  formData.append('file', fileData.file);
   let res:any = {};
   //文件存储
   if (curBarName.value === 'Storage') {
-    res = await apiUploadStorage(JSON.stringify(fileData.file));
+    res = await apiUploadStorage(formData);
   } else {
-    res = await apiUploadScript(JSON.stringify(fileData.file));
+    res = await apiUploadScript(formData);
+    scriptInfo.value = res.data
   }
-  console.log("res::::",res);
   if (res.code == 200) {
-     
+    emit('refreshList')
     message.success(res.message);
-  }else{
+  } else {
     message.error(res.message)
   }
 };
@@ -79,9 +81,17 @@ const beforeUpload = (file) => {
   return isTrue;
 };
 
+const handleFileChange = async(info: UploadChangeParam)=>{
+  console.log('handleFileChange',info)
+  if (info.event !== undefined) {
+
+  }
+}
 
 defineExpose({
-  handleUploadAttachement,beforeUpload
+  handleUploadAttachement,
+  beforeUpload,
+  scriptInfo
 })
 </script>
 

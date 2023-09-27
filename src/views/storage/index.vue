@@ -3,7 +3,7 @@
   <Header />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
-      <UploadFile :suffixNames="suffixNames" :suffixText="suffixText"></UploadFile>
+      <UploadFile :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
@@ -12,7 +12,7 @@
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div class="tips-css" @click="downloadStorage(record.id)">下载</div>
+                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">下载</div>
                   <div class="tips-css" @click="delStorage(record.id)">删除</div>
                 </div>
               </template>
@@ -29,13 +29,14 @@
 import { createVNode, onMounted, reactive, ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
-import { formatDateToLocale } from '@/utils/dateUtil';
+import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
 import { Modal, message } from 'ant-design-vue';
+import { downloadRequest } from '@/utils/index'
 
-const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg");
+const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg,.txt");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
-const tableData = ref([{name:'123',id:'112'}])
+const tableData = ref([])
 const tableColumns = reactive([
   {
     title: '名称',
@@ -46,14 +47,15 @@ const tableColumns = reactive([
     title: '修改时间',
     dataIndex: 'lastModify',
     key: 'lastModify',
-    width: '20%',
-    customRender: ({ text: date }) => formatDateToLocale(date).format("YYYY/MM/DD HH:mm:ss"),
+    width: '30%',
+    customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
     title: '文件大小',
     dataIndex: 'size',
     key: 'size',
-    width: '15%'
+    width: '15%',
+    align:'center'
   },
   {
     title: '',
@@ -96,12 +98,13 @@ const getTableData = async (page:number = pagination.current, size:number = pagi
     message.error(res.message)
   }
 }
-const downloadStorage = async (id: string) => {
-  const res = await apiDownloadStorage(id);
-  if (res.code == 200) {
-    message.success(res.message)
-  }else{
-    message.error(res.message)
+const downloadStorage = async (id: string, name:string) => {
+  const data = await apiDownloadStorage(id);
+  try {
+    await downloadRequest(data,name)
+    message.success('下载成功')
+  } catch (error:any) {
+    message.error('下载失败')
   }
 }
 const delStorage = async (id: string) => {
@@ -126,9 +129,7 @@ const delStorage = async (id: string) => {
   
 }
 onMounted(() => {
-  // getTableData();
-  
-  
+  getTableData();
 })
 </script>
 

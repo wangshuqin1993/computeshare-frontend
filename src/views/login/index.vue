@@ -1,9 +1,10 @@
 <!-- 登录注册 -->
 <template>
 <div>
-  <div class="flex">
-    <img src="@/assets/images/login-pic.jpg" class=" h-screen w-[600px]" />
-    <div class="right-w flex justify-center items-center">
+  <div class="flex container-width">
+    <img src="@/assets/images/login-pic-cs.png" class=" h-screen w-auto left-width" />
+    <!-- <img src="@/assets/images/login-pic.jpg" class=" h-screen w-auto left-width" /> -->
+    <div class="right-w flex justify-center items-center" :style="{width: rightWidth}">
         <div class="card-div p-[54px] relative">
           <div class="text-[36px] text-[#2E2E2E] font-medium mb-[36px] text-center">登录天天数链共享算力</div>
           <a-tabs v-model:activeKey="activeKey">
@@ -51,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import dragVerify from '@/components/demo.vue'
 import { message } from 'ant-design-vue';
@@ -75,7 +76,8 @@ const formPwdData = reactive({
   telephoneNumber: '',
   password: '',
 });
-const drag = ref()
+const drag = ref();
+const rightWidth = ref('');
 
 // Form rules
 const checkMobile = () => {
@@ -174,17 +176,21 @@ const getSmsCode = async()=>{
   const res = await apiSMS(params)
   if(res.code==200){
     formNoteData.validateCode = '000000'
+    // message.success('请查收短信验证码')
   }else{
     message.error(res.message)
   }
 }
 
+onMounted(() => {
+  rightWidth.value = (document.getElementsByClassName('container-width')[0].clientWidth - document.getElementsByClassName('left-width')[0].clientWidth) + 'px';
+})
 </script>
 
 <style scoped lang="less">
-.right-w{
-  width: calc(100% - 600px);
-}
+// .right-w{
+//   // width: calc(100% - 600px);
+// }
 .card-div{
   width: 590px;
   height: 742px;
@@ -205,5 +211,11 @@ const getSmsCode = async()=>{
 }
 :deep(.ant-tabs-tab-active){
   color: #484FFF;
+}
+:deep(.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn){
+  color: #484FFF;
+}
+:deep(.ant-tabs .ant-tabs-ink-bar){
+  background: #484FFF;
 }
 </style>
