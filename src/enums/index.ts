@@ -7,8 +7,8 @@ export enum sidebarName {
 export enum resourceStatus {
   '启动中' = 0,
   '运行中' = 1,
-  '连接中断' = 2,
-  '过期' = 3,
+  '已停止' = 2,
+  '已过期' = 3,
 }
 export enum resourceStatusColor {
   // 'bg-[#6A9DCB]' = 1,
