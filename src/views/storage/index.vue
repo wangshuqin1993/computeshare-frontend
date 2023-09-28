@@ -32,9 +32,9 @@ import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
 import { Modal, message } from 'ant-design-vue';
-import { downloadRequest } from '@/utils/index'
+import { downloadRequest, getfilesize } from '@/utils/index'
 
-const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg,.txt");
+const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
 const tableColumns = reactive([
@@ -55,7 +55,8 @@ const tableColumns = reactive([
     dataIndex: 'size',
     key: 'size',
     width: '15%',
-    align:'center'
+    align:'center',
+    customRender: ({ text: date }) =>  getfilesize(date),
   },
   {
     title: '',
