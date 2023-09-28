@@ -510,11 +510,6 @@
   "resolved" "https://registry.npmmirror.com/dom-scroll-into-view/-/dom-scroll-into-view-2.0.1.tgz"
   "version" "2.0.1"
 
-"downloadjs@^1.4.7":
-  "integrity" "sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q=="
-  "resolved" "https://registry.npmmirror.com/downloadjs/-/downloadjs-1.4.7.tgz"
-  "version" "1.4.7"
-
 "echarts@^5.4.3":
   "integrity" "sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA=="
   "resolved" "https://registry.npmmirror.com/echarts/-/echarts-5.4.3.tgz"
