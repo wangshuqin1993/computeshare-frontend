@@ -34,7 +34,7 @@ import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storag
 import { Modal, message } from 'ant-design-vue';
 import { getfilesize, downloadRequest } from '@/utils/index'
 
-const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg,.txt");
+const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
 const tableColumns = reactive([
