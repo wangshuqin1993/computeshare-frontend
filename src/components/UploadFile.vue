@@ -67,9 +67,9 @@ function handleDrop(e: DragEvent) {
 }
 //文件后缀名验证
 const beforeUpload = (file) => {
-  // if(suffixNames.value=='.*'){
-  //   return true
-  // }
+  if(suffixNames.value=='.*'){
+    return true
+  }
   let suffixArr = suffixNames.value.split(',');
   let suffixVal = file.name.substring(file.name.indexOf("."), file.name.length);
   let isTrue = false;
