@@ -8,8 +8,8 @@
     :customRequest="handleUploadAttachement"
     @drop="handleDrop"
     @change="handleFileChange"
-    :accept="suffixNames"
   >
+  <!--     :accept="suffixNames" -->
     <p class="ant-upload-drag-icon flex justify-center">
       <img src="@/assets/images/upload.png" class="h-[36px]">
     </p>
@@ -79,7 +79,7 @@ const beforeUpload = (file) => {
     }
   });
   if (!isTrue) {
-    message.error(`${file.name} is not a ${suffixText.value} file`);
+    message.error(`请上传${suffixText.value}的文件`);
   }
   return isTrue;
 };
