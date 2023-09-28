@@ -70,18 +70,18 @@ const beforeUpload = (file) => {
   // if(suffixNames.value=='.*'){
   //   return true
   // }
-  // let suffixArr = suffixNames.value.split(',');
-  // let suffixVal = file.name.substring(file.name.indexOf("."), file.name.length);
-  // let isTrue = false;
-  // suffixArr.forEach((ele:string) => {
-  //   if (suffixVal === ele) {
-  //     isTrue = true;
-  //   }
-  // });
-  // if (!isTrue) {
-  //   message.error(`${file.name} is not a ${suffixText.value} file`);
-  // }
-  // return isTrue;
+  let suffixArr = suffixNames.value.split(',');
+  let suffixVal = file.name.substring(file.name.indexOf("."), file.name.length);
+  let isTrue = false;
+  suffixArr.forEach((ele:string) => {
+    if (suffixVal === ele) {
+      isTrue = true;
+    }
+  });
+  if (!isTrue) {
+    message.error(`${file.name} is not a ${suffixText.value} file`);
+  }
+  return isTrue;
 };
 
 const handleFileChange = async(info: UploadChangeParam)=>{

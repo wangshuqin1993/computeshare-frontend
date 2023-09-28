@@ -35,7 +35,7 @@ import { Modal, message } from 'ant-design-vue';
 import { getfilesize } from '@/utils/index'
 import download from "downloadjs";
 
-const suffixNames = ref(".*");
+const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg,.txt");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
 const tableColumns = reactive([
