@@ -32,7 +32,8 @@ import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
 import { Modal, message } from 'ant-design-vue';
-import { downloadRequest, getfilesize } from '@/utils/index'
+import { getfilesize } from '@/utils/index'
+import download from "downloadjs";
 
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
@@ -101,7 +102,9 @@ const getTableData = async () => {
 const downloadStorage = async (id: string, name:string) => {
   const data = await apiDownloadStorage(id);
   try {
-    await downloadRequest(data,name)
+    // const blob = new Blob([data], {type:'application/pdf'});
+    // FileSaver.saveAs(blob,name);
+    download(new Blob([data]), name, "application/octet-stream");
     message.success('下载成功')
   } catch (error:any) {
     message.error('下载失败')
