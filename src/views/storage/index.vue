@@ -100,6 +100,7 @@ const getTableData = async () => {
 }
 const downloadStorage = async (id: string, name:string) => {
   const data = await apiDownloadStorage(id);
+  
   try {
     await downloadRequest(data,name)
     message.success('下载成功')

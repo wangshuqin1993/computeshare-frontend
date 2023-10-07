@@ -36,6 +36,7 @@ export function apiUploadStorage(params: any) {
 // 下载
 export function apiDownloadStorage(id: string) {
   return httpRequest({
+    responseType: 'blob', // 重点，responseType设置为 blob
     url: `/v1/storage/download?id=${id}`,
     method: "post",
   });
