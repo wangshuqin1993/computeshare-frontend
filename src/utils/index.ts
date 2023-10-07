@@ -1,7 +1,6 @@
 // 公共回调
 // 下载 str:下载的内容  name:下载文件的名称  format:下载文件的格式
 export const downloadRequest = (str: string, name: string) => {
-
   var elink = document.createElement('a');
   elink.download = name;
   elink.style.display = 'none';
