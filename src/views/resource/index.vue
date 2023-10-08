@@ -195,9 +195,4 @@ onUnmounted(()=>{
 .border-t{
   border-top: 1px solid #E9E9E9;
 }
-.text-ellipsis{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 </style>

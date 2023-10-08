@@ -16,12 +16,14 @@
     <p class="ant-upload-text">可将脚本文件拖至此处上传</p>
     <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
   </a-upload-dragger>
+  <FileTips v-if="fileList.length > 0 && curBarName === 'Storage'" :fileList="fileList"></FileTips>
 </template>
 
 <script setup lang="ts">
 import { ref ,toRefs} from "vue";
 import { message, type UploadChangeParam } from 'ant-design-vue';
 import { useRouter } from "vue-router";
+import FileTips from "./FileTips.vue";
 import { apiUploadScript } from '@/apis/script';
 import { apiUploadStorage } from '@/apis/storage';
 
@@ -57,11 +59,20 @@ const handleUploadAttachement = async (fileData) => {
   }
   if (res.code == 200) {
     emit('refreshList')
+    setFileStatus(fileData.file.uid, 'done');
     message.success(res.message);
   } else {
+    setFileStatus(fileData.file.uid, 'error');
     message.error(res.message)
   }
 };
+const setFileStatus = (fileUid, newStatus) => {
+  fileList.value.forEach((ele) => {
+    if (ele.uid === fileUid) {
+      ele.status = newStatus;
+    }
+  });
+}
 function handleDrop(e: DragEvent) {
   console.log(e);
 }
