@@ -16,7 +16,7 @@
     <p class="ant-upload-text">可将脚本文件拖至此处上传</p>
     <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
   </a-upload-dragger>
-  <FileTips v-if="fileList.length > 0 && curBarName === 'Storage'" :fileList="fileList"></FileTips>
+  <!-- <FileTips v-if="fileList.length > 0 && curBarName === 'Storage'" :fileList="fileList"></FileTips> -->
 </template>
 
 <script setup lang="ts">
@@ -52,7 +52,13 @@ const handleUploadAttachement = async (fileData) => {
   let res:any = {};
   //文件存储
   if (curBarName.value === 'Storage') {
-    res = await apiUploadStorage(formData);
+    try {
+      res = await apiUploadStorage(formData);
+    } catch (error:any) {
+      setFileStatus(fileData.file.uid, 'error');
+      message.error('上传失败')
+      return
+    }
   } else {
     res = await apiUploadScript(formData);
     scriptInfo.value = res.data
