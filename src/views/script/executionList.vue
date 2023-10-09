@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, onUnmounted } from "vue";
 import { message } from "ant-design-vue";
 import CodeEditor from '@/components/CodeEditor.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
@@ -57,6 +57,7 @@ const listParams = reactive({
 const total = ref(0);
 const scriptList = ref([]);
 const checkScriptInfo = ref({});
+let isScriptLoop = ref()
 
 //查看脚本
 const viewScript = async (info:any) => {
@@ -114,6 +115,14 @@ const getScriptList = async () => {
       scriptList.value = [...scriptList.value,...res.data.list]
     }
     total.value = res.data.total;
+    // 判定循环终止
+    const isStop = scriptList.value.filter((item:any)=>{
+      return item.executeState==1 || item.executeState==2
+    }).length
+    console.log('判定循环终止',isStop)
+    if(isStop==0){
+      clearInterval(isScriptLoop.value)
+    }
   }
 }
 
@@ -123,12 +132,23 @@ const gitMoreList = ()=>{
   getScriptList()
 }
 
+const useInterval = ()=>{
+  isScriptLoop.value = setInterval(() => {
+    getScriptList()
+  }, 1000);
+}
+
 onMounted(() => {
-  getScriptList();
+  useInterval()
+})
+
+onUnmounted(()=>{
+  clearInterval(isScriptLoop.value)
 })
 
 defineExpose({
-  getScriptList
+  getScriptList,
+  useInterval
 })
 </script>
 

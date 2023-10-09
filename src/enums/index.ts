@@ -28,5 +28,6 @@ export enum executeStatusColor {
   'bg-[#6A9DCB]' = 1,
   'bg-[#008FFF]' = 2,
   'bg-[#00C900]' = 3,
+  'bg-[#F52222]' = 4,
   'bg-[#AEAEAE]' = 5,
 }
