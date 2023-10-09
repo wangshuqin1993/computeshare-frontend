@@ -1,6 +1,6 @@
 FROM node:18
 WORKDIR /app
-ADD . /app
+COPY . /app
 RUN npm install && npm run build
 
 FROM nginx:1.20
