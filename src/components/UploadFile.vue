@@ -8,20 +8,22 @@
     :customRequest="handleUploadAttachement"
     @drop="handleDrop"
     @change="handleFileChange"
-    :accept="suffixNames"
   >
+  <!--     :accept="suffixNames" -->
     <p class="ant-upload-drag-icon flex justify-center">
       <img src="@/assets/images/upload.png" class="h-[36px]">
     </p>
     <p class="ant-upload-text">可将脚本文件拖至此处上传</p>
     <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
   </a-upload-dragger>
+  <!-- <FileTips v-if="fileList.length > 0 && curBarName === 'Storage'" :fileList="fileList"></FileTips> -->
 </template>
 
 <script setup lang="ts">
 import { ref ,toRefs} from "vue";
 import { message, type UploadChangeParam } from 'ant-design-vue';
 import { useRouter } from "vue-router";
+import FileTips from "./FileTips.vue";
 import { apiUploadScript } from '@/apis/script';
 import { apiUploadStorage } from '@/apis/storage';
 
@@ -50,23 +52,46 @@ const handleUploadAttachement = async (fileData) => {
   let res:any = {};
   //文件存储
   if (curBarName.value === 'Storage') {
-    res = await apiUploadStorage(formData);
+    try {
+      res = await apiUploadStorage(formData);
+    } catch (error:any) {
+      setFileStatus(fileData.file.uid, 'error');
+      message.error('上传失败')
+      return
+    }
   } else {
     res = await apiUploadScript(formData);
     scriptInfo.value = res.data
   }
   if (res.code == 200) {
     emit('refreshList')
+    setFileStatus(fileData.file.uid, 'done');
     message.success(res.message);
   } else {
+    setFileStatus(fileData.file.uid, 'error');
     message.error(res.message)
   }
 };
+const setFileStatus = (fileUid, newStatus) => {
+  fileList.value.forEach((ele) => {
+    if (ele.uid === fileUid) {
+      ele.status = newStatus;
+    }
+  });
+}
 function handleDrop(e: DragEvent) {
   console.log(e);
 }
 //文件后缀名验证
 const beforeUpload = (file) => {
+  console.log('文件后缀名验证:',file.size)
+  if(file.size>102400){
+    message.error('目前支持存储不超过 100MB 的文件。后续将持续优化,扩大文件存储上限。')
+    return false
+  }
+  if(suffixNames.value=='.*'){
+    return true
+  }
   let suffixArr = suffixNames.value.split(',');
   let suffixVal = file.name.substring(file.name.indexOf("."), file.name.length);
   let isTrue = false;
@@ -76,7 +101,7 @@ const beforeUpload = (file) => {
     }
   });
   if (!isTrue) {
-    message.error(`${file.name} is not a ${suffixText.value} file`);
+    message.error(`请上传${suffixText.value}的文件`);
   }
   return isTrue;
 };

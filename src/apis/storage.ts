@@ -9,7 +9,7 @@ export function apiStorageList(parentId: string, params: storageList) {
   return httpRequest({
     url: `/v1/storage?parentId=${parentId}`,
     method: "get",
-    data: params
+    params: params
   });
 }
 
@@ -28,7 +28,7 @@ export function apiUploadStorage(params: any) {
     method: "post",
     data: params,
     headers: {
-        'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data'
     }
   });
 }
@@ -36,6 +36,7 @@ export function apiUploadStorage(params: any) {
 // 下载
 export function apiDownloadStorage(id: string) {
   return httpRequest({
+    responseType: 'blob', // 重点，responseType设置为 blob
     url: `/v1/storage/download?id=${id}`,
     method: "post",
   });

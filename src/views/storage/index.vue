@@ -32,9 +32,9 @@ import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
 import { Modal, message } from 'ant-design-vue';
-import { downloadRequest } from '@/utils/index'
+import { getfilesize, downloadRequest } from '@/utils/index'
 
-const suffixNames = ref(".rar,.zip,.doc,.docx,.pdf,.jpg,.txt");
+const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
 const tableColumns = reactive([
@@ -55,7 +55,8 @@ const tableColumns = reactive([
     dataIndex: 'size',
     key: 'size',
     width: '15%',
-    align:'center'
+    align:'center',
+    customRender: ({ text: date }) =>  getfilesize(date),
   },
   {
     title: '',
@@ -79,19 +80,18 @@ const pagination = reactive({
     // 改变 pageSize时的回调
     pagination.current = current;
     pagination.pageSize = pagesize;
-    getTableData(current, pagesize)
+    getTableData()
   },
   onChange: (current: number) => {
     // 切换分页时的回调，
     pagination.current = current;
-    getTableData(current, pagination.pageSize)
+    getTableData()
   },
 });
 
-const getTableData = async (page:number = pagination.current, size:number = pagination.pageSize) => {
-  console.log("page::", page, size);
+const getTableData = async () => {
   const parentId = '';
-  const res = await apiStorageList(parentId, {page:page, size:size});
+  const res = await apiStorageList(parentId, {page:pagination.current, size:pagination.pageSize});
   if (res.code == 200) {
     tableData.value = res.data;
   }else{

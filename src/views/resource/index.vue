@@ -1,6 +1,6 @@
 <!-- 我的资源 -->
 <template>
-  <Header ref="headRef" @handleDone="getInstanceList" />
+  <Header ref="headRef" @handleDone="handleDone" />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] scroll-max-h rounded-[2px] p-[20px] overflow-y-auto">
       <div v-if="!instanceList.length" class="bg-[#FAFBFF] border border-dashed border-[#A6A6A6] rounded-[8px] py-[100px] px-[120px]">
@@ -76,8 +76,6 @@ const instanceList = ref([]);
 const headRef = ref();
 
 const echartsWidth = ref('');
-const echartsXData = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-const echartsData = ref([20, 502, 181, 234, 110, 10, 10, 10, 10, 10]);
 let isLoop = ref()
 
 const operate = (id: string)=>{
@@ -128,7 +126,6 @@ const instanceDelete = async (id: string) => {
 
 // 实例列表
 const getInstanceList = async () => {
-
   const res = await apiGetInstanceList();
   if (res.code == 200) {
     instanceList.value = res.data
@@ -144,11 +141,28 @@ const getInstanceList = async () => {
       })
       return {cpuArr,memoryArr,...item}
     })
-    console.log('实例列表:',instanceList.value)
+    // 判定循环终止
+    const isStop = instanceList.value.filter((item:any)=>{
+      return item.status==0
+    }).length
+    console.log('判定循环终止',isStop)
+    if(isStop==0){
+      clearInterval(isLoop.value)
+    }
   }else{
     message.error(res.message)
   }
 }
+
+// 新建实例完成
+const handleDone = ()=>{
+  getInstanceList()
+  // 开启循环去实时调实例的状态
+  isLoop.value = setInterval(() => {
+    getInstanceList()
+  }, 1000);
+}
+
 onMounted(() => {
   getInstanceList();
   
@@ -157,10 +171,6 @@ onMounted(() => {
       echartsWidth.value = (document.getElementsByClassName('echarts-width')[0].clientWidth - 2) + 'px';
     }
   }, 1000);
-  // 开启循环去实时调cpu和内存使用率
-  isLoop.value = setInterval(() => {
-    // getInstanceList()
-  }, 3000);
 })
 
 onUnmounted(()=>{
@@ -184,10 +194,5 @@ onUnmounted(()=>{
 }
 .border-t{
   border-top: 1px solid #E9E9E9;
-}
-.text-ellipsis{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>

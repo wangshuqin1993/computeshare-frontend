@@ -14,7 +14,7 @@
                 <template #title>
                   <div class="text-[14px]">
                     <div v-if="item.executeState === 1" class="tips-css" @click="cancelExecuteScript(item.id)">取消执行</div>
-                    <div v-if="item.executeState === 3" class="tips-css" @click="downloadScript(item.id,item.scriptName)">下载结果</div>
+                    <div v-if="item.executeState === 3" class="tips-css" @click="downloadScript(item.id,item.taskNumber)">下载结果</div>
                     <div class="tips-css" @click="viewScript(item)">查看脚本</div>
                   </div>
                 </template>
@@ -28,7 +28,7 @@
           </div>
         </a-collapse-panel>
       </a-collapse>
-      <div class="text-center mt-[20px] cursor-pointer text-[#484FFF]" @click="gitMoreList">加载更多…</div>
+      <div v-if="total>9 && scriptList.length<total" class="text-center mt-[20px] cursor-pointer text-[#484FFF]" @click="gitMoreList">加载更多…</div>
     </div>
   </div>
   <a-modal :title="scriptTitle"  v-model:open="scriptVisible" :footer="null" width="840px">
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, onUnmounted } from "vue";
 import { message } from "ant-design-vue";
 import CodeEditor from '@/components/CodeEditor.vue';
 import { executeStatus, executeStatusColor } from '@/enums/index';
@@ -57,6 +57,7 @@ const listParams = reactive({
 const total = ref(0);
 const scriptList = ref([]);
 const checkScriptInfo = ref({});
+let isScriptLoop = ref()
 
 //查看脚本
 const viewScript = async (info:any) => {
@@ -77,10 +78,10 @@ const cancelExecuteScript = async (id:number) => {
 }
 
 // 下载脚本
-const downloadScript = async (id:number,scriptName:string) => {
+const downloadScript = async (id:number,taskNumber:string) => {
   const data = await apiDownloadScript({id});
   try {
-    await downloadRequest(data,scriptName)
+    await downloadRequest(data,`scriptingService_${taskNumber}.log`)
   } catch (error:any) {
     message.error(error)
   }
@@ -113,7 +114,15 @@ const getScriptList = async () => {
     }else{
       scriptList.value = [...scriptList.value,...res.data.list]
     }
-    total.value = res.total;
+    total.value = res.data.total;
+    // 判定循环终止
+    const isStop = scriptList.value.filter((item:any)=>{
+      return item.executeState==1 || item.executeState==2
+    }).length
+    console.log('判定循环终止',isStop)
+    if(isStop==0){
+      clearInterval(isScriptLoop.value)
+    }
   }
 }
 
@@ -123,12 +132,23 @@ const gitMoreList = ()=>{
   getScriptList()
 }
 
+const useInterval = ()=>{
+  isScriptLoop.value = setInterval(() => {
+    getScriptList()
+  }, 1000);
+}
+
 onMounted(() => {
-  getScriptList();
+  useInterval()
+})
+
+onUnmounted(()=>{
+  clearInterval(isScriptLoop.value)
 })
 
 defineExpose({
-  getScriptList
+  getScriptList,
+  useInterval
 })
 </script>
 
