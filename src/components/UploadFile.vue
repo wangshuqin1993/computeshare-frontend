@@ -84,6 +84,11 @@ function handleDrop(e: DragEvent) {
 }
 //文件后缀名验证
 const beforeUpload = (file) => {
+  console.log('文件后缀名验证:',file.size)
+  if(file.size>102400){
+    message.error('目前支持存储不超过 100MB 的文件。后续将持续优化,扩大文件存储上限。')
+    return false
+  }
   if(suffixNames.value=='.*'){
     return true
   }
