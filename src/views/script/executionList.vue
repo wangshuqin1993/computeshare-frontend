@@ -14,7 +14,7 @@
                 <template #title>
                   <div class="text-[14px]">
                     <div v-if="item.executeState === 1" class="tips-css" @click="cancelExecuteScript(item.id)">取消执行</div>
-                    <div v-if="item.executeState === 3" class="tips-css" @click="downloadScript(item.id,item.scriptName)">下载结果</div>
+                    <div v-if="item.executeState === 3" class="tips-css" @click="downloadScript(item.id,item.taskNumber)">下载结果</div>
                     <div class="tips-css" @click="viewScript(item)">查看脚本</div>
                   </div>
                 </template>
@@ -78,10 +78,10 @@ const cancelExecuteScript = async (id:number) => {
 }
 
 // 下载脚本
-const downloadScript = async (id:number,scriptName:string) => {
+const downloadScript = async (id:number,taskNumber:string) => {
   const data = await apiDownloadScript({id});
   try {
-    await downloadRequest(data,scriptName)
+    await downloadRequest(data,`scriptingService_${taskNumber}.log`)
   } catch (error:any) {
     message.error(error)
   }
