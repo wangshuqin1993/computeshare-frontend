@@ -10,25 +10,25 @@
             </a-select>
           </a-form-item>
 
-          <a-form-item label="云服务器实例" name="computerId"
+          <a-form-item label="云服务器实例" name="instanceName"
             :rules="[{ required: true, message: '请选择云服务器实例' }]">
-            <a-select v-model:value="formState.computerId" placeholder="please select your zone">
+            <a-select v-model:value="formState.instanceName" placeholder="please select your zone">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
               }}</a-select-option>
             </a-select>
           </a-form-item>
 
-          <a-form-item label="私网端口" name="computerPort"
+          <a-form-item label="私网端口" name="instancePort"
             :rules="[{ required: true, message: '请输入私网端口' }]">
-            <a-input v-model:value="formState.computerPort" />
+            <a-input v-model:value="formState.instancePort" />
           </a-form-item>
           <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
             <!-- <a-input v-model:value="formState.password" /> -->
-            <div>111</div>
+            <div>{{ formState.gatewayIp }}</div>
           </a-form-item>
           <a-form-item label="公网端口" name="password" :rules="[{ required: false }]">
             <!-- <a-input v-model:value="formState.password" /> -->
-            <div>222</div>
+            <div>{{ formState.gatewayPort }}</div>
           </a-form-item>
           <div class="text-center mt-[50px]">
             <a-button class="w-[200px] h-[38px]" type="primary" @click="primaryBtn">确定</a-button>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs, onMounted } from "vue";
+import { ref, reactive, toRefs, onMounted, watch } from "vue";
 import { apiGetInstanceList } from '@/apis/compute';
 import { apiNetworkMap } from "@/apis/mapping";
 
@@ -52,26 +52,30 @@ const props = defineProps({
     default: false,
   },
   formStateData: {
-    type: Array,
+    type: Array as any,
     default: () => { },
   }
 })
 
-const { mapValue, formStateData } = toRefs(props);
+const { mapValue } = toRefs(props);
 const emit = defineEmits(['closeModal', 'createSuccess'])
 
 const formRef = ref()
 const instanceList = ref([]);
 interface FormState {
-  name: string;
-  computerId: string;
-  computerPort: number,
+  name: string; //协议
+  instanceName: string; //实例
+  instancePort: number, //私网端口
+  gatewayPort: number, //公网端口
+  gatewayIp: string, //公网IP
 }
 
-const formState = reactive<FormState>({
+const formState = ref<FormState>({
   name: '',
-  computerId: '',
-  computerPort: 0,
+  instanceName: '',
+  instancePort: 0,
+  gatewayPort: 0,
+  gatewayIp: '',
 });
 
 const getInstanceList = async () => {
@@ -85,7 +89,12 @@ const getInstanceList = async () => {
 const primaryBtn = async () => {
   await formRef.value.validate();
   console.log('kkkk')
-  const res = await apiNetworkMap(formState);
+  let param = {
+    name: formState.value.name,
+    computerId: formState.value.instanceName,
+    computerPort: formState.value.instancePort,
+  }
+  const res = await apiNetworkMap(param);
   console.log(res, 'res')
   if (res.code == 200) {
     console.log(res, 'data')
@@ -110,6 +119,27 @@ const cancelModal = () => {
   emit('closeModal')
 }
 
+watch(
+  () => props.formStateData,
+  (value) => {
+    if (Object.keys(value).length > 0) {
+      formState.value.gatewayPort = value.gatewayPort;
+      formState.value.instanceName = value.instanceName;
+      formState.value.instancePort = value.instancePort;
+      formState.value.name = value.name;
+      formState.value.gatewayIp = value.gatewayIp;
+    } else {
+      formState.value = {
+        name: '',
+        instanceName: '',
+        instancePort: 0,
+        gatewayPort: 0,
+        gatewayIp: '',
+      }
+    }
+    console.log("watch:",value);
+  }, { deep: true, immediate: true }
+);
 
 onMounted(async () => {
   await getInstanceList()

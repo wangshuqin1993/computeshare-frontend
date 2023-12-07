@@ -13,7 +13,7 @@
           </template>
           <template v-if="column.key === 'action'">
             <span class="text-[16px]">
-              <span @click="edit" class="cursor-pointer text-[#484FFF]">编辑</span>
+              <span @click="edit(record)" class="cursor-pointer text-[#484FFF]">编辑</span>
               <span @click="configurationDomain" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
               <a-popconfirm title="Are you sure delete this domain?" ok-text="确认" cancel-text="取消"
                 @confirm="confirm(record)">
@@ -24,7 +24,7 @@
       </a-table>
     </div>
   </div>
-  <MapModal :mapValue="mapValue" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
+  <MapModal :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
   <DomainModal :daomainValue="daomainValue" @closeModal="daomainValue = false"></DomainModal>
 </template>
 
@@ -36,6 +36,7 @@ import { apiNetworkMap, apiNetworkMapList, apiNetworkMapById, apiDeleteNetworkMa
 
 const daomainValue = ref(false);
 const mapValue = ref(false);
+const formStateData = ref({})
 const networkMapList = ref([]);
 const columns = [
   {
@@ -78,10 +79,13 @@ const columns = [
 
 
 const createMap = () => {
+  formStateData.value = {};
   mapValue.value = true;
 }
 
-const edit = () => {
+const edit = (record: any) => {
+  console.log("edit:",record);
+  formStateData.value = record;
   mapValue.value = true;
 }
 
