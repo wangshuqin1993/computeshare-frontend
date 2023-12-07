@@ -5,14 +5,14 @@
         <a-form :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" autocomplete="off"
           @finish="onFinish" @finishFailed="onFinishFailed" ref="formRef">
           <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: '请选择支持协议' }]">
-            <a-select v-model:value="formState.name" placeholder="please select your zone">
+            <a-select v-model:value="formState.name" placeholder="请选择支持协议">
               <a-select-option value="TCP">TCP</a-select-option>
             </a-select>
           </a-form-item>
 
           <a-form-item label="云服务器实例" name="instanceName"
             :rules="[{ required: true, message: '请选择云服务器实例' }]">
-            <a-select v-model:value="formState.instanceName" placeholder="please select your zone">
+            <a-select v-model:value="formState.instanceName" placeholder="请选择云服务器实例">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
               }}</a-select-option>
             </a-select>
@@ -20,7 +20,7 @@
 
           <a-form-item label="私网端口" name="instancePort"
             :rules="[{ required: true, message: '请输入私网端口' }]">
-            <a-input v-model:value="formState.instancePort" />
+            <a-input v-model:value="formState.instancePort" placeholder="请输入私网端口" />
           </a-form-item>
           <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
             <!-- <a-input v-model:value="formState.password" /> -->
@@ -65,7 +65,7 @@ const instanceList = ref([]);
 interface FormState {
   name: string; //协议
   instanceName: string; //实例
-  instancePort: number, //私网端口
+  instancePort: string, //私网端口
   gatewayPort: number, //公网端口
   gatewayIp: string, //公网IP
 }
@@ -73,7 +73,7 @@ interface FormState {
 const formState = ref<FormState>({
   name: '',
   instanceName: '',
-  instancePort: 0,
+  instancePort: '',
   gatewayPort: 0,
   gatewayIp: '',
 });
@@ -92,7 +92,7 @@ const primaryBtn = async () => {
   let param = {
     name: formState.value.name,
     computerId: formState.value.instanceName,
-    computerPort: formState.value.instancePort,
+    computerPort: Number(formState.value.instancePort),
   }
   const res = await apiNetworkMap(param);
   console.log(res, 'res')
@@ -135,7 +135,7 @@ watch(
       formState.value = {
         name: '',
         instanceName: '',
-        instancePort: 0,
+        instancePort: '',
         gatewayPort: 0,
         gatewayIp: '',
       }
