@@ -83,9 +83,7 @@ import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
 import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete } from '@/apis/compute';
-// import Header from "@/components/Header.vue";
-// import ResourceHeader from "./components/resourceHeader.vue";
-// import NetworkMap from './networkMap.vue';
+
 import CreateModal from "@/views/resource/create.vue";
 const instanceList = ref([]);
 const headRef = ref();
