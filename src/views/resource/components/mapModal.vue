@@ -1,17 +1,17 @@
 <template>
   <div>
-    <a-modal v-model:open="mapValue" title="配置映射" @ok="handleOk" @cancel="cancelModal" width="828px" :footer="null">
+    <a-modal v-model:open="mapValue" title="配置映射" @ok="handleOk" @cancel="cancelModal" width="758px" :footer="null">
       <div class="mt-[32px]">
-        <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off"
+        <a-form :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" autocomplete="off"
           @finish="onFinish" @finishFailed="onFinishFailed" ref="formRef">
-          <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: 'Please input your username!' }]">
+          <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: '请选择支持协议' }]">
             <a-select v-model:value="formState.name" placeholder="please select your zone">
               <a-select-option value="TCP">TCP</a-select-option>
             </a-select>
           </a-form-item>
 
           <a-form-item label="云服务器实例" name="computerId"
-            :rules="[{ required: true, message: 'Please input your username!' }]">
+            :rules="[{ required: true, message: '请选择云服务器实例' }]">
             <a-select v-model:value="formState.computerId" placeholder="please select your zone">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
               }}</a-select-option>
@@ -19,7 +19,7 @@
           </a-form-item>
 
           <a-form-item label="私网端口" name="computerPort"
-            :rules="[{ required: true, message: 'Please input your password!' }]">
+            :rules="[{ required: true, message: '请输入私网端口' }]">
             <a-input v-model:value="formState.computerPort" />
           </a-form-item>
           <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
@@ -30,7 +30,7 @@
             <!-- <a-input v-model:value="formState.password" /> -->
             <div>222</div>
           </a-form-item>
-          <div class="text-center">
+          <div class="text-center mt-[50px]">
             <a-button class="w-[200px] h-[38px]" type="primary" @click="primaryBtn">确定</a-button>
           </div>
 
