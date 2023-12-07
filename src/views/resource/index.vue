@@ -4,7 +4,7 @@
     <div class="top-css">
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="云服务器">
-          <Resoure></Resoure>
+          <Resoure @changeTabKey="changeTabKey"></Resoure>
         </a-tab-pane>
         <a-tab-pane key="2" tab="网络映射">
           <NetworkMap></NetworkMap>
@@ -22,23 +22,12 @@
         </a-tooltip>
       </div>
     </div>
-
-    <!-- <div class="h-[130px] px-[40px] flex justify-between items-center">
-      <div class="menu-title">{{ sidebarName[curBarName] }}</div>
-      <a-button v-if="curBarName === 'Resource'" type="primary" class="ant-btn-s"
-        @click="createVisible = true;">创建实例</a-button>
-    </div> -->
   </div>
-
-  <!-- <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible"
-    @handleCancelCreate="createVisible = false;" @handleDone="handleDone"></CreateModal> -->
 </template>
 
 <script setup lang="ts">
 import { watch, ref } from 'vue';
 import { useRouter } from "vue-router";
-import { sidebarName } from '@/enums/index';
-import CreateModal from "@/views/resource/create.vue";
 import NetworkMap from './networkMap.vue';
 import Resoure from "./resoure.vue";
 const router = useRouter();
@@ -49,10 +38,6 @@ const activeKey = ref('1');
 
 const emit = defineEmits(["handleDone"])
 
-const handleDone = () => {
-  createVisible.value = false
-  emit('handleDone')
-}
 // 创建实例
 const showCreateModal = () => {
   createVisible.value = true;
@@ -65,6 +50,10 @@ const goUser = () => {
 const logout = () => {
   localStorage.removeItem('token')
   router.push('/login')
+}
+
+const changeTabKey = ()=>{
+  activeKey.value = '2'
 }
 
 watch(() => router.currentRoute.value,

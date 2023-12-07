@@ -52,6 +52,7 @@ const columns = [
     title: '私网端口',
     dataIndex: 'instancePort',
     key: ' instancePort',
+    align:'center'
   },
   {
     title: '公网IP',
@@ -62,6 +63,7 @@ const columns = [
     title: '公网端口',
     key: 'gatewayPort',
     dataIndex: 'gatewayPort',
+    align:'center'
   },
   {
     title: '绑定域名',
@@ -105,6 +107,7 @@ const getNetworkMapList = async () => {
 }
 
 const createSuccess = () => {
+  mapValue.value = false
   getNetworkMapList();
 }
 

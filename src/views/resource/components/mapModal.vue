@@ -58,7 +58,7 @@ const props = defineProps({
 })
 
 const { mapValue, formStateData } = toRefs(props);
-const emit = defineEmits(['closeModal, createSuccess'])
+const emit = defineEmits(['closeModal', 'createSuccess'])
 const instanceList = ref([]);
 interface FormState {
   name: string;

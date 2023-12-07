@@ -78,7 +78,6 @@
 import { onMounted, ref, onUnmounted } from "vue";
 import { message } from "ant-design-vue";
 import { transTimestamp } from '@/utils/dateUtil';
-import { sidebarName } from '@/enums/index';
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
@@ -90,6 +89,8 @@ const headRef = ref();
 const createVisible = ref(false);
 const echartsWidth = ref('');
 let isLoop = ref()
+
+const emit = defineEmits(['changeTabKey'])
 
 const operate = (id: string) => {
   // 访问实例是跳走，需要带走实例id
@@ -128,6 +129,7 @@ const instanceStop = async (id: string) => {
 // 配置映射
 const configurationMapping = (id: string) => {
   console.log(id, 'kk')
+  emit('changeTabKey')
 }
 
 //删除实例
@@ -174,6 +176,7 @@ const getInstanceList = async () => {
 
 // 新建实例完成
 const handleDone = () => {
+  createVisible.value = false;
   getInstanceList()
   // 开启循环去实时调实例的状态
   isLoop.value = setInterval(() => {
