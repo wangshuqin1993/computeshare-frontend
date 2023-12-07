@@ -7,7 +7,7 @@
             <a-input v-model:value="formState.domainName" placeholder="请输入需绑定域名" allow-clear />
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" class="w-[96px]">Submit</a-button>
+            <a-button type="primary" class="w-[96px]">绑定</a-button>
           </a-form-item>
         </a-form>
         <div class="mt-[32px]">
@@ -72,7 +72,7 @@ const columns = [
     align: 'right',
   },
   {
-    title: 'Action',
+    title: '操作',
     key: 'action',
   },
 ]

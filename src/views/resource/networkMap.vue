@@ -78,7 +78,7 @@ const columns = [
 ];
 
 
-const createMap = () => {
+const createMap = async () => {
   formStateData.value = {};
   mapValue.value = true;
 }

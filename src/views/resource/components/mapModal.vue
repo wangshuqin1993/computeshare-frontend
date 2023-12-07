@@ -122,6 +122,9 @@ const cancelModal = () => {
 watch(
   () => props.formStateData,
   (value) => {
+    if (formRef.value != undefined) {
+      formRef.value.clearValidate();
+    }
     if (Object.keys(value).length > 0) {
       formState.value.gatewayPort = value.gatewayPort;
       formState.value.instanceName = value.instanceName;
