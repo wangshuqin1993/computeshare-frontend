@@ -31,3 +31,10 @@ export enum executeStatusColor {
   'bg-[#F52222]' = 4,
   'bg-[#AEAEAE]' = 5,
 }
+
+
+export enum boundDomainStatus {
+  '状态正常' = 1,
+  '状态异常' = 2,
+  '解析中…' = 3
+}
