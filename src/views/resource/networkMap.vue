@@ -72,7 +72,7 @@ const columns = [
     dataIndex: 'domains',
   },
   {
-    title: 'Action',
+    title: '操作',
     key: 'action',
   },
 ];

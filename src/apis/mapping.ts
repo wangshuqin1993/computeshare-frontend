@@ -40,3 +40,11 @@ export function apiDeleteNetworkMapById(id:string) {
     method: "delete",
   });
 }
+
+// 获取公网Ip和端口
+export function apiPublicNetworkInfo() {
+  return httpRequest({
+    url: `/v1/network-mappings/next`,
+    method: "get",
+  });
+}

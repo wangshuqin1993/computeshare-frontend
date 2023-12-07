@@ -20,7 +20,7 @@
 
           <a-form-item label="私网端口" name="instancePort"
             :rules="[{ required: true, message: '请输入私网端口' }]">
-            <a-input v-model:value="formState.instancePort" placeholder="请输入私网端口" />
+            <a-input v-model:value="formState.instancePort" placeholder="请输入" />
           </a-form-item>
           <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
             <!-- <a-input v-model:value="formState.password" /> -->
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, watch } from "vue";
 import { apiGetInstanceList } from '@/apis/compute';
-import { apiNetworkMap } from "@/apis/mapping";
+import { apiNetworkMap, apiPublicNetworkInfo } from "@/apis/mapping";
 
 const props = defineProps({
   mapValue: {
@@ -144,8 +144,14 @@ watch(
   }, { deep: true, immediate: true }
 );
 
+const getPublicNetwrokInfo = async()=>{
+  const res = await apiPublicNetworkInfo()
+  console.log('getPublicNetwrokInfo',res)
+}
+
 onMounted(async () => {
   await getInstanceList()
+  await getPublicNetwrokInfo()
 })
 
 </script>
