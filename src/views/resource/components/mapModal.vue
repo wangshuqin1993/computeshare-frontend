@@ -3,7 +3,7 @@
     <a-modal v-model:open="mapValue" title="配置映射" @ok="handleOk" @cancel="cancelModal" width="828px" :footer="null">
       <div class="mt-[32px]">
         <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off"
-          @finish="onFinish" @finishFailed="onFinishFailed">
+          @finish="onFinish" @finishFailed="onFinishFailed" ref="formRef">
           <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: 'Please input your username!' }]">
             <a-select v-model:value="formState.name" placeholder="please select your zone">
               <a-select-option value="TCP">TCP</a-select-option>
@@ -59,6 +59,8 @@ const props = defineProps({
 
 const { mapValue, formStateData } = toRefs(props);
 const emit = defineEmits(['closeModal', 'createSuccess'])
+
+const formRef = ref()
 const instanceList = ref([]);
 interface FormState {
   name: string;
@@ -81,6 +83,7 @@ const getInstanceList = async () => {
 }
 
 const primaryBtn = async () => {
+  await formRef.value.validate();
   console.log('kkkk')
   const res = await apiNetworkMap(formState);
   console.log(res, 'res')
