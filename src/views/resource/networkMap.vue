@@ -5,7 +5,7 @@
       <a-button type="primary" class="ant-btn-s" @click="createMap">创建映射</a-button>
     </div>
     <div class="m-[20px] bg-[#ffffff] p-[20px] rounded-[2px]">
-      <a-table :columns="columns" :data-source="networkMapList">
+      <a-table :columns="columns" :data-source="networkMapList" :rowClassName="setRowClassName">
         <template #bodyCell="{ column, text, record }">
           <template v-if="column.key === 'domains'">
             <div>{{ text[0]?.name }}</div>
@@ -102,6 +102,9 @@ const pagination = reactive({
     getNetworkMapList()
   },
 });
+const setRowClassName = (record: any, index: number) => {
+  return 'rowClass'
+}
 
 const createMap = async () => {
   formStateData.value = {};
@@ -167,5 +170,8 @@ onMounted(() => {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.85);
+}
+:deep(.rowClass){
+  height: 90px;
 }
 </style>
