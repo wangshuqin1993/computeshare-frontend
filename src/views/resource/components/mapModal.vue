@@ -12,7 +12,7 @@
 
           <a-form-item label="云服务器实例" name="instanceName"
             :rules="[{ required: true, message: '请选择云服务器实例' }]">
-            <a-select v-model:value="formState.instanceName" placeholder="请选择云服务器实例">
+            <a-select v-model:value="formState.instanceName" placeholder="请选择云服务器实例" @select="selectCloudInstance">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
               }}</a-select-option>
             </a-select>
@@ -23,15 +23,13 @@
             <a-input v-model:value="formState.instancePort" placeholder="请输入" />
           </a-form-item>
           <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
-            <!-- <a-input v-model:value="formState.password" /> -->
             <div>{{ formState.gatewayIp }}</div>
           </a-form-item>
           <a-form-item label="公网端口" name="password" :rules="[{ required: false }]">
-            <!-- <a-input v-model:value="formState.password" /> -->
             <div>{{ formState.gatewayPort }}</div>
           </a-form-item>
           <div class="text-center mt-[50px]">
-            <a-button class="w-[200px] h-[38px]" type="primary" @click="primaryBtn">确定</a-button>
+            <a-button class="w-[200px] h-[38px]" type="primary" @click="createMap">确定</a-button>
           </div>
 
         </a-form>
@@ -66,7 +64,7 @@ interface FormState {
   name: string; //协议
   instanceName: string; //实例
   instancePort: string, //私网端口
-  gatewayPort: number, //公网端口
+  gatewayPort: number | string, //公网端口
   gatewayIp: string, //公网IP
 }
 
@@ -86,7 +84,7 @@ const getInstanceList = async () => {
   }
 }
 
-const primaryBtn = async () => {
+const createMap = async () => {
   await formRef.value.validate();
   console.log('kkkk')
   let param = {
@@ -136,7 +134,7 @@ watch(
         name: '',
         instanceName: '',
         instancePort: '',
-        gatewayPort: 0,
+        gatewayPort: '',
         gatewayIp: '',
       }
     }
@@ -144,14 +142,19 @@ watch(
   }, { deep: true, immediate: true }
 );
 
-const getPublicNetwrokInfo = async()=>{
-  const res = await apiPublicNetworkInfo()
+const selectCloudInstance = ()=>{
+  getPublicNetwrokInfo(formState.value.instanceName)
+}
+
+const getPublicNetwrokInfo = async(id: string)=>{
+  const res = await apiPublicNetworkInfo(id)
   console.log('getPublicNetwrokInfo',res)
+  formState.value.gatewayIp = res.data.publicIp
+  formState.value.gatewayPort = res.data.publicPort
 }
 
 onMounted(async () => {
   await getInstanceList()
-  await getPublicNetwrokInfo()
 })
 
 </script>

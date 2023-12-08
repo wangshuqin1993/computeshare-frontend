@@ -8,15 +8,15 @@
       <a-table :columns="columns" :data-source="networkMapList">
         <template #bodyCell="{ column, text, record }">
           <template v-if="column.key === 'domains'">
-            <div>{{ text[0] }}</div>
-            <div class="text-[#484FFF]" v-if="text.length > 1">{{ `等${text.length}个域名` }}</div>
+            <div>{{ text[0]?.name }}</div>
+            <div class="text-[#484FFF] underline underline-offset-1 cursor-pointer" v-if="text.length > 1" @click="configurationDomain(record)">{{ `等${text.length}个域名` }}</div>
           </template>
           <template v-if="column.key === 'action'">
             <span class="text-[16px]">
-              <span @click="edit(record)" class="cursor-pointer text-[#484FFF]">编辑</span>
-              <span @click="configurationDomain" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
-              <a-popconfirm title="Are you sure delete this domain?" ok-text="确认" cancel-text="取消"
-                @confirm="confirm(record)">
+              <span @click="edit(record)" class="text-[#484FFF]">编辑</span>
+              <span @click="configurationDomain(record)" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
+              <a-popconfirm title="确定删除吗?" ok-text="确认" cancel-text="取消"
+                @confirm="delNetwork(record)">
                 <span class="cursor-pointer text-[#F52222]">删除</span>
               </a-popconfirm>
             </span>
@@ -25,19 +25,21 @@
     </div>
   </div>
   <MapModal :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
-  <DomainModal :daomainValue="daomainValue" @closeModal="daomainValue = false"></DomainModal>
+  <DomainModal v-if="showDomainCon" :showDomainCon="showDomainCon" :networkMappingId="networkMappingId"  @closeModal="showDomainCon = false"></DomainModal>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import MapModal from "./components/mapModal.vue";
 import DomainModal from "./components/domainModal.vue";
 import { apiNetworkMap, apiNetworkMapList, apiNetworkMapById, apiDeleteNetworkMapById } from "@/apis/mapping";
+import { message } from "ant-design-vue";
 
-const daomainValue = ref(false);
+const showDomainCon = ref(false);
 const mapValue = ref(false);
 const formStateData = ref({})
 const networkMapList = ref([]);
+const networkMappingId = ref('')
 const columns = [
   {
     title: '实例',
@@ -77,6 +79,29 @@ const columns = [
   },
 ];
 
+const pagination = reactive({
+  // 分页配置器
+  pageSize: 5, // 一页的数据限制
+  current: 1, // 当前页
+  total: 10, // 总数
+  size: 'small',
+  position: ['bottomCenter'], //指定分页显示的位置
+  hideOnSinglePage: false, // 只有一页时是否隐藏分页器
+  showQuickJumper: false, // 是否可以快速跳转至某页
+  showSizeChanger: false, // 是否可以改变 pageSize
+  pageSizeOptions: ['5', '10', '15'], // 指定每页可以显示多少条
+  onShowSizeChange: (current: number, pagesize: number) => {
+    // 改变 pageSize时的回调
+    pagination.current = current;
+    pagination.pageSize = pagesize;
+    getNetworkMapList()
+  },
+  onChange: (current: number) => {
+    // 切换分页时的回调，
+    pagination.current = current;
+    getNetworkMapList()
+  },
+});
 
 const createMap = async () => {
   formStateData.value = {};
@@ -84,29 +109,40 @@ const createMap = async () => {
 }
 
 const edit = (record: any) => {
+  return
   console.log("edit:",record);
   formStateData.value = record;
   mapValue.value = true;
 }
 
-const confirm = (record: any) => {
+const delNetwork = async(record: any) => {
+  const res = await apiDeleteNetworkMapById(record.id)
+  if(res.code===200){
+    getNetworkMapList()
+  }else{
+    message.error(res.message)
+  }
   console.log(record)
 }
 
-const configurationDomain = () => {
-  daomainValue.value = true;
+const configurationDomain = (record:any) => {
+  console.log(11111111111111,record)
+  networkMappingId.value = record.id
+  showDomainCon.value = true;
 }
 
 const getNetworkMapList = async () => {
   const params = {
-    page: 1,
-    size: 10,
+    page: pagination.current,
+    size: pagination.pageSize,
   }
   const res = await apiNetworkMapList(params)
 
   if (res.code === 200) {
     networkMapList.value = res.data.list;
     console.log(res, 'res')
+  }else{
+    message.error(res.message)
   }
 }
 

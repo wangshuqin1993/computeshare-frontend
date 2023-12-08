@@ -42,9 +42,64 @@ export function apiDeleteNetworkMapById(id:string) {
 }
 
 // 获取公网Ip和端口
-export function apiPublicNetworkInfo() {
+export function apiPublicNetworkInfo(computerId: string) {
   return httpRequest({
-    url: `/v1/network-mappings/next`,
+    url: `/v1/network-mappings/next?computerId=${computerId}`,
     method: "get",
   });
 }
+
+// 获取已绑定域名列表
+export function apiDomainBindingList(page: number, size: number, networkMappingId: string) {
+  return httpRequest({
+    url: `/v1/domain-binding?page=${page}&size=${size}&networkMappingId=${networkMappingId}`,
+    method: "get",
+  });
+}
+
+// 绑定域名
+export function apiBindDomain(params: bindDomainParams) {
+  return httpRequest({
+    url: `/v1/domain-binding`,
+    method: "post",
+    data: params
+  });
+}
+
+interface bindDomainParams {
+  networkMappingId: string,
+  name: string,
+  domain: string
+}
+
+// 获取公网Ip和端口
+// export function apiPublicNetworkInfo(computerId: string) {
+//   return httpRequest({
+//     url: `/v1/network-mappings/next?computerId=${computerId}`,
+//     method: "get",
+//   });
+// }
+
+// 获取公网Ip和端口
+// export function apiPublicNetworkInfo(computerId: string) {
+//   return httpRequest({
+//     url: `/v1/network-mappings/next?computerId=${computerId}`,
+//     method: "get",
+//   });
+// }
+
+// 获取公网Ip和端口
+// export function apiPublicNetworkInfo(computerId: string) {
+//   return httpRequest({
+//     url: `/v1/network-mappings/next?computerId=${computerId}`,
+//     method: "get",
+//   });
+// }
+
+// 获取公网Ip和端口
+// export function apiPublicNetworkInfo(computerId: string) {
+//   return httpRequest({
+//     url: `/v1/network-mappings/next?computerId=${computerId}`,
+//     method: "get",
+//   });
+// }
