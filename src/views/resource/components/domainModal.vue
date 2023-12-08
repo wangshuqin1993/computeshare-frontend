@@ -16,7 +16,7 @@
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'statu'">
                 <span
-                  class="w-[120px] bg-[#00C900] text-[#ffffff] text-[12px] rounded-full pr-[100px] pl-[16px] py-[2px]">
+                  class="w-[120px] bg-[#00C900] text-[#ffffff] text-[12px] rounded-full pr-[100px] pl-[16px] py-[4px]">
                   状态正常
 
                 </span>
