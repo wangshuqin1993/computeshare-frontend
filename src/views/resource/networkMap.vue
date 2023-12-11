@@ -25,7 +25,7 @@
     </div>
   </div>
   <MapModal :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
-  <DomainModal v-if="showDomainCon" :showDomainCon="showDomainCon" :networkMappingId="networkMappingId"  @closeModal="showDomainCon = false"></DomainModal>
+  <DomainModal v-if="showDomainCon" :showDomainCon="showDomainCon" :networkMappingId="networkMappingId"  @closeModal="closeDomainModal"></DomainModal>
 </template>
 
 <script setup lang="ts">
@@ -132,6 +132,11 @@ const delNetwork = async(record: any) => {
 const configurationDomain = (record:any) => {
   networkMappingId.value = record.id
   showDomainCon.value = true;
+}
+
+const closeDomainModal = ()=>{
+  showDomainCon.value = false
+  getNetworkMapList();
 }
 
 const getNetworkMapList = async () => {
