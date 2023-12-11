@@ -1,9 +1,9 @@
 <template>
   <div>
-    <a-modal v-model:open="mapValue" title="配置映射" @ok="handleOk" @cancel="cancelModal" width="758px" :footer="null">
+    <a-modal v-model:open="mapValue" title="配置映射" @cancel="cancelModal" width="758px" :footer="null">
       <div class="mt-[32px]">
         <a-form :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" autocomplete="off"
-          @finish="onFinish" @finishFailed="onFinishFailed" ref="formRef">
+           ref="formRef">
           <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: '请选择支持协议' }]">
             <a-select v-model:value="formState.name" placeholder="请选择支持协议">
               <a-select-option value="TCP">TCP</a-select-option>
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs, onMounted, watch } from "vue";
+import { ref, toRefs, onMounted, watch } from "vue";
 import { apiGetInstanceList } from '@/apis/compute';
 import { apiNetworkMap, apiPublicNetworkInfo } from "@/apis/mapping";
 
@@ -98,19 +98,6 @@ const createMap = async () => {
     console.log(res, 'data')
     emit('createSuccess')
   }
-}
-
-
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
-
-const handleOk = () => {
-  cancelModal()
 }
 
 const cancelModal = () => {

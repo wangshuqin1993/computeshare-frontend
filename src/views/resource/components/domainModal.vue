@@ -16,9 +16,9 @@
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'statu'">
                 <span
-                  class="w-[120px] bg-[#00C900] text-[#ffffff] text-[12px] rounded-full pr-[100px] pl-[16px] py-[4px]">
-                  状态正常
-
+                :class="boundDomainStatusColor[record.status]"
+                  class="w-[120px] text-[#ffffff] text-[12px] rounded-full pl-[16px] pr-[16px] py-[4px]">
+                  {{boundDomainStatus[record?.status]}}
                 </span>
               </template>
               <template v-if="column.key === 'action'">
@@ -37,8 +37,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted } from "vue";
-import { boundDomainStatus } from "@/enums/index";
-import { apiBindDomain, apiDomainBindingList } from '@/apis/mapping'
+import { boundDomainStatus, boundDomainStatusColor } from "@/enums/index";
+import { apiBindDomain, apiDomainBindingList, apiNslookup, apiUnbind } from '@/apis/mapping'
 import { message } from "ant-design-vue";
 
 const props = defineProps({
@@ -90,16 +90,19 @@ const columns = [
     title: '域名',
     dataIndex: 'name',
     key: 'name',
+    // width: '50%'
   },
   {
     title: '',
     dataIndex: 'statu',
     key: 'statu',
-    align: 'right',
+    align: 'left',
+    // width: '20%'
   },
   {
     title: '操作',
     key: 'action',
+    // width: '30%'
   },
 ]
 
@@ -114,13 +117,32 @@ const closeModal = () => {
   emit('closeModal')
 }
 
-const unbindClick = (record: any) => {
+const unbindClick = async(record: any) => {
   console.log(record, 'record')
+  const res = await apiUnbind(record.id)
+  if(res.code===200){
+    // getDomainBindingList()
+    bindingListData.value = bindingListData.value.filter((item:any)=>{
+      return item.id != record.id
+    })
+  }else{
+    message.error(res.message)
+  }
 }
 
-const automaticAnalysisClick = (record: any) => {
+const automaticAnalysisClick = async(record: any) => {
   console.log(record, 'record')
-
+  const index = bindingListData.value.findIndex((item:any)=>{
+    return item.id === record.id
+  })
+  bindingListData.value[index].status = '3'
+  const res = await apiNslookup(record.domain, record.networkMappingId)
+  if(res.code===200){
+    // res.data = true 解析成功, false 解析失败
+    res.data ? bindingListData.value[index].status = '1' : bindingListData.value[index].status = '2'
+  }else{
+    message.error(res.message)
+  }
 }
 
 // 配置域名

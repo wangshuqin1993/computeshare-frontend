@@ -72,34 +72,18 @@ interface bindDomainParams {
   domain: string
 }
 
-// 获取公网Ip和端口
-// export function apiPublicNetworkInfo(computerId: string) {
-//   return httpRequest({
-//     url: `/v1/network-mappings/next?computerId=${computerId}`,
-//     method: "get",
-//   });
-// }
+// 解析域名
+export function apiNslookup(domain: string, networkMappingId: string) {
+  return httpRequest({
+    url: `/v1/domain-binding/nslookup?domain=${domain}&networkMappingId=${networkMappingId}`,
+    method: "get",
+  });
+}
 
-// 获取公网Ip和端口
-// export function apiPublicNetworkInfo(computerId: string) {
-//   return httpRequest({
-//     url: `/v1/network-mappings/next?computerId=${computerId}`,
-//     method: "get",
-//   });
-// }
-
-// 获取公网Ip和端口
-// export function apiPublicNetworkInfo(computerId: string) {
-//   return httpRequest({
-//     url: `/v1/network-mappings/next?computerId=${computerId}`,
-//     method: "get",
-//   });
-// }
-
-// 获取公网Ip和端口
-// export function apiPublicNetworkInfo(computerId: string) {
-//   return httpRequest({
-//     url: `/v1/network-mappings/next?computerId=${computerId}`,
-//     method: "get",
-//   });
-// }
+// 解绑
+export function apiUnbind(id: string) {
+  return httpRequest({
+    url: `/v1/domain-binding/${id}`,
+    method: "delete",
+  });
+}

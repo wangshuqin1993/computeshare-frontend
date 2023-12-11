@@ -32,7 +32,7 @@
 import { ref, reactive, onMounted } from "vue";
 import MapModal from "./components/mapModal.vue";
 import DomainModal from "./components/domainModal.vue";
-import { apiNetworkMap, apiNetworkMapList, apiNetworkMapById, apiDeleteNetworkMapById } from "@/apis/mapping";
+import { apiNetworkMapList, apiDeleteNetworkMapById } from "@/apis/mapping";
 import { message } from "ant-design-vue";
 
 const showDomainCon = ref(false);
@@ -81,7 +81,7 @@ const columns = [
 
 const pagination = reactive({
   // 分页配置器
-  pageSize: 5, // 一页的数据限制
+  pageSize: 10, // 一页的数据限制
   current: 1, // 当前页
   total: 10, // 总数
   size: 'small',
@@ -89,7 +89,7 @@ const pagination = reactive({
   hideOnSinglePage: false, // 只有一页时是否隐藏分页器
   showQuickJumper: false, // 是否可以快速跳转至某页
   showSizeChanger: false, // 是否可以改变 pageSize
-  pageSizeOptions: ['5', '10', '15'], // 指定每页可以显示多少条
+  pageSizeOptions: ['10', '20', '50'], // 指定每页可以显示多少条
   onShowSizeChange: (current: number, pagesize: number) => {
     // 改变 pageSize时的回调
     pagination.current = current;
