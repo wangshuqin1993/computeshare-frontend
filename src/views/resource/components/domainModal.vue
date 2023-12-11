@@ -153,6 +153,7 @@ const bindDomain = async()=>{
   const res = await apiBindDomain(params)
   console.log('配置域名:', res)
   if(res.code===200){
+    formState.domainName = ''
     getDomainBindingList()
   }else{
     message.error(res.message)
