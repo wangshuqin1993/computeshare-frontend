@@ -127,7 +127,6 @@ const delNetwork = async(record: any) => {
   }else{
     message.error(res.message)
   }
-  console.log(record)
 }
 
 const configurationDomain = (record:any) => {

@@ -118,7 +118,6 @@ const closeModal = () => {
 }
 
 const unbindClick = async(record: any) => {
-  console.log(record, 'record')
   const res = await apiUnbind(record.id)
   if(res.code===200){
     // getDomainBindingList()
@@ -131,7 +130,6 @@ const unbindClick = async(record: any) => {
 }
 
 const automaticAnalysisClick = async(record: any) => {
-  console.log(record, 'record')
   const index = bindingListData.value.findIndex((item:any)=>{
     return item.id === record.id
   })

@@ -128,7 +128,6 @@ const instanceStop = async (id: string) => {
 
 // 配置映射
 const configurationMapping = (id: string) => {
-  console.log(id, 'kk')
   emit('changeTabKey')
 }
 

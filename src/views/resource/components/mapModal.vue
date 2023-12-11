@@ -43,6 +43,7 @@
 import { ref, toRefs, onMounted, watch } from "vue";
 import { apiGetInstanceList } from '@/apis/compute';
 import { apiNetworkMap, apiPublicNetworkInfo } from "@/apis/mapping";
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   mapValue: {
@@ -80,23 +81,21 @@ const getInstanceList = async () => {
   const res = await apiGetInstanceList();
   if (res.code == 200) {
     instanceList.value = res.data
-    console.log(res, 'uuu')
   }
 }
 
 const createMap = async () => {
   await formRef.value.validate();
-  console.log('kkkk')
   let param = {
     name: formState.value.name,
     computerId: formState.value.instanceName,
     computerPort: Number(formState.value.instancePort),
   }
   const res = await apiNetworkMap(param);
-  console.log(res, 'res')
-  if (res.code == 200) {
-    console.log(res, 'data')
+  if(res.code == 200) {
     emit('createSuccess')
+  }else{
+    message.error(res.message)
   }
 }
 
@@ -135,9 +134,10 @@ const selectCloudInstance = ()=>{
 
 const getPublicNetwrokInfo = async(id: string)=>{
   const res = await apiPublicNetworkInfo(id)
-  console.log('getPublicNetwrokInfo',res)
-  formState.value.gatewayIp = res.data.publicIp
-  formState.value.gatewayPort = res.data.publicPort
+  if(res.code===200){
+    formState.value.gatewayIp = res.data.publicIp
+    formState.value.gatewayPort = res.data.publicPort
+  }
 }
 
 onMounted(async () => {
