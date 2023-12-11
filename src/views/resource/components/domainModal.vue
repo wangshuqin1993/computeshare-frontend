@@ -22,7 +22,7 @@
                 </span>
               </template>
               <template v-if="column.key === 'action'">
-                <span class="text-[#484FFF]">
+                <span class="text-[#484FFF] text-[14px]">
                   <span class="cursor-pointer mr-[20px]" @click="automaticAnalysisClick(record)">自动解析</span>
                   <span class="cursor-pointer" @click="unbindClick(record)">解绑</span>
                 </span>
@@ -166,6 +166,7 @@ const getDomainBindingList = async()=>{
   const res = await apiDomainBindingList(pagination.current, pagination.pageSize, networkMappingId.value)
   if(res.code===200){
     bindingListData.value = res.data.list
+    pagination.total = res.data.total
   }
   console.log('获取已绑定域名列表',res)
 }

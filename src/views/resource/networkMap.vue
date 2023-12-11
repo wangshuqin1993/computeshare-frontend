@@ -102,6 +102,8 @@ const pagination = reactive({
     getNetworkMapList()
   },
 });
+
+// 设置单元格的高度
 const setRowClassName = (record: any, index: number) => {
   return 'rowClass'
 }
@@ -129,7 +131,6 @@ const delNetwork = async(record: any) => {
 }
 
 const configurationDomain = (record:any) => {
-  console.log(11111111111111,record)
   networkMappingId.value = record.id
   showDomainCon.value = true;
 }
@@ -140,10 +141,9 @@ const getNetworkMapList = async () => {
     size: pagination.pageSize,
   }
   const res = await apiNetworkMapList(params)
-
   if (res.code === 200) {
     networkMapList.value = res.data.list;
-    console.log(res, 'res')
+    pagination.total = res.data.total
   }else{
     message.error(res.message)
   }
