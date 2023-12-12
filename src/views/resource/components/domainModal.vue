@@ -140,6 +140,7 @@ const automaticAnalysisClick = async(record: any) => {
     res.data ? bindingListData.value[index].status = '1' : bindingListData.value[index].status = '2'
   }else{
     message.error(res.message)
+    bindingListData.value[index].status = '2'
   }
 }
 
