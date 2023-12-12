@@ -9,14 +9,13 @@
         <template #bodyCell="{ column, text, record }">
           <template v-if="column.key === 'domains'">
             <div>{{ text[0]?.name }}</div>
-            <div class="text-[#484FFF] underline underline-offset-1 cursor-pointer" v-if="text.length > 1" @click="configurationDomain(record)">{{ `等${text.length}个域名` }}</div>
+            <div class="text-[#484FFF] underline underline-offset-1 cursor-pointer" v-if="text?.length > 1" @click="configurationDomain(record)">{{ `等${text.length}个域名` }}</div>
           </template>
           <template v-if="column.key === 'action'">
             <span class="text-[16px]">
               <span @click="editMap(record)" class="text-[#484FFF]">编辑</span>
               <span @click="configurationDomain(record)" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
-              <a-popconfirm title="确定删除吗?" ok-text="确认" cancel-text="取消"
-                @confirm="delNetwork(record)">
+              <a-popconfirm title="确定删除吗?" ok-text="确认" cancel-text="取消" @confirm="delNetwork(record)">
                 <span class="cursor-pointer text-[#F52222]">删除</span>
               </a-popconfirm>
             </span>
