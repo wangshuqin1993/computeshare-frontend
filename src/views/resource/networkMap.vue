@@ -20,7 +20,8 @@
                 <span class="cursor-pointer text-[#F52222]">删除</span>
               </a-popconfirm>
             </span>
-          </template></template>
+          </template>
+        </template>
       </a-table>
     </div>
   </div>
