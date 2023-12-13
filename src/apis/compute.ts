@@ -81,3 +81,12 @@ export function apiInstanceDelete(id: string) {
     method: "delete",
   });
 }
+
+//重启实例
+export function apiInstanceRestart(id: string) {
+  return httpRequest({
+    url: `/v1/instance/${id}/restart`,
+    method: "put",
+    data:{}
+  });
+}

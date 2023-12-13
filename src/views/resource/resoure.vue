@@ -82,7 +82,7 @@ import { transTimestamp } from '@/utils/dateUtil';
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
-import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete } from '@/apis/compute';
+import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete, apiInstanceRestart } from '@/apis/compute';
 
 import CreateModal from "@/views/resource/create.vue";
 const instanceList = ref([]);
@@ -117,14 +117,13 @@ const instanceStart = async (id: string) => {
 
 // 重启实例
 const reStart = async(id: string)=>{
-  console.log('重启实例',id)
-  // const res = await apiInstanceStop(id);
-  // if (res.code == 200) {
-  //   getInstanceList()
-  //   message.success(res.message)
-  // } else {
-  //   message.error(res.message)
-  // }
+  const res = await apiInstanceRestart(id);
+  if (res.code == 200) {
+    getInstanceList()
+    message.success(res.message)
+  } else {
+    message.error(res.message)
+  }
 }
 
 //关闭实例
