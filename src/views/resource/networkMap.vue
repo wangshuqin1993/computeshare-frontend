@@ -24,7 +24,7 @@
       </a-table>
     </div>
   </div>
-  <MapModal :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
+  <MapModal v-if="mapValue" :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
   <DomainModal v-if="showDomainCon" :showDomainCon="showDomainCon" :networkMappingId="networkMappingId"  @closeModal="closeDomainModal"></DomainModal>
 </template>
 
