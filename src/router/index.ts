@@ -41,7 +41,18 @@ let router = createRouter({
           component: () => import('@/views/user/index.vue'),
           meta: {
             isShow: true,
+            isPersonal: true,
             sidebarMap: ['User'],
+          }
+        },
+        {
+          path: "/dashboard/developer",
+          name: "Developer",
+          component: () => import('@/views/developer/index.vue'),
+          meta: {
+            isShow: true,
+            isPersonal: true,
+            sidebarMap: ['Developer'],
           }
         }
       ]
