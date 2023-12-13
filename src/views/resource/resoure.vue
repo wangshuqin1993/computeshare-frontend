@@ -19,13 +19,14 @@
             <a-tooltip placement="bottom" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div v-if="item.status === 1">
+                  <div v-if="item.status === 2">
                     <div class="tips-css" @click="operate(item.id)">访问实例</div>
+                    <div class="tips-css" @click="reStart(item.id)">重启实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                     <div class="tips-css" @click="configurationMapping(item.id)">配置映射</div>
                   </div>
-                  <div v-else-if="item.status === 2" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
-                  <div v-else-if="item.status === 3" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
+                  <div v-else-if="item.status === 4" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
+                  <div v-else-if="item.status === 5" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
                   <div v-else class="tips-css-none">暂无操作</div>
                 </div>
               </template>
@@ -112,6 +113,18 @@ const instanceStart = async (id: string) => {
   } else {
     message.error(res.message)
   }
+}
+
+// 重启实例
+const reStart = async(id: string)=>{
+  console.log('重启实例',id)
+  // const res = await apiInstanceStop(id);
+  // if (res.code == 200) {
+  //   getInstanceList()
+  //   message.success(res.message)
+  // } else {
+  //   message.error(res.message)
+  // }
 }
 
 //关闭实例
