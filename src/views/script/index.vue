@@ -55,6 +55,7 @@ const beforeUpload = (file: any) => {
 
 // 执行脚本
 const executeScript = async () => {
+  if(!uploadContent.value) return
   const res = await apiExecuteScript({id:executionId.value});
   console.log("res:::",res);
   if(res.code==200){
