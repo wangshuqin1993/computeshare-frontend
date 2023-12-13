@@ -1,7 +1,7 @@
 FROM node:18
 WORKDIR /app
 ADD . /app
-RUN yarn && yarn build
+RUN npm install && npm run build
 
 FROM nginx:1.20
 ADD script/default.conf /etc/nginx/conf.d
