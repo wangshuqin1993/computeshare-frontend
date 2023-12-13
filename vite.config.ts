@@ -19,7 +19,9 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://computeshare.hamster.newtouch.com/",
+        // target: "http://127.0.0.1:8000/",
         changeOrigin: true, //是否跨域
+        ws: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     }
