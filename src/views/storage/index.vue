@@ -123,10 +123,10 @@ const delStorage = async (id: string) => {
       }
     },
     onCancel() {
-        
+
     },
   });
-  
+
 }
 onMounted(() => {
   getTableData();
