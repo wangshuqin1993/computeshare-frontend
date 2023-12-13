@@ -34,8 +34,11 @@ const curBarName = ref(router.currentRoute.value.name);
 const selectedKeys = ref<any>(['']);
 const menuRouterList = ref<any>([]);
 
+const serviceBool = ref(false)
+const userBool = ref(false)
+
 const goHome = () => {
-  if (curBarName.value === 'User') {
+  if (userBool.value) {
     window.open('/')
   } else {
     router.push('/')
@@ -44,18 +47,24 @@ const goHome = () => {
 
 onBeforeMount(() => {
   const dashboard: any = router.options.routes.find((val) => { return val.path === '/' });
-  
-  dashboard.children.map((val: any) => {
-    if (val.meta?.isShow) {
-      if (curBarName.value === 'User') {
-        if (val.name === 'User') {
-          menuRouterList.value.push(val)
-        }
-      } else if(val.name !== 'User'){
-        menuRouterList.value.push(val)
-      }
-    }
+
+  // 过滤出所有服务那边的菜单
+  const serviceArr = dashboard.children.filter((item:any)=>{
+    return item.meta.isShow && !item.meta.isPersonal
   })
+  serviceBool.value = serviceArr.map((item:any)=>{return item.name}).includes(curBarName.value)
+  if(serviceBool.value){
+    menuRouterList.value = serviceArr
+  }
+
+  // 过滤出所有账户那边的菜单
+  const userArr = dashboard.children.filter((item:any)=>{
+    return item.meta.isShow && item.meta.isPersonal
+  })
+  userBool.value = userArr.map((item:any)=>{return item.name}).includes(curBarName.value)
+  if(userBool.value){
+    menuRouterList.value = userArr
+  }
 })
 
 watch(() => router.currentRoute.value,
