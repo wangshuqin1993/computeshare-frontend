@@ -2,6 +2,7 @@ import httpRequest from "@/request";
 
 interface networkMap {
   name: string,
+  protocol: string,
   computerId: string,
   computerPort: number,
 }

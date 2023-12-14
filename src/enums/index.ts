@@ -6,17 +6,24 @@ export enum sidebarName {
   'Developer' = '开发者选项',
 }
 export enum resourceStatus {
-  '启动中' = 0,
-  '运行中' = 1,
-  '已停止' = 2,
-  '已过期' = 3,
+  '创建中' = 0,
+  '启动中' = 1,
+  '运行中' = 2,
+  '关闭中' = 3,
+  '已关闭' = 4,
+  '已过期' = 5,
+  '重启中' = 6,
+  '删除中' = 7,
 }
 export enum resourceStatusColor {
-  // 'bg-[#6A9DCB]' = 1,
-  'bg-[#008FFF]' = 0,
-  'bg-[#02C900]' = 1,
-  'bg-[#FF0019]' = 2,
-  'bg-[#AEAEAE]' = 3,
+  'bg-[#8FD88E]' = 0,
+  'bg-[#008FFF]' = 1,
+  'bg-[#02C900]' = 2,
+  'bg-[#FFB794]' = 3,
+  'bg-[#FF5300]' = 4,
+  'bg-[#AAAAAA]' = 5,
+  'bg-[#8BCBFE]' = 6,
+  'bg-[#FB9898]' = 7,
 }
 export enum executeStatus {
   '待执行' = 1,

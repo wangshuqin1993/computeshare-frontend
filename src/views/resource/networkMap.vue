@@ -24,7 +24,7 @@
       </a-table>
     </div>
   </div>
-  <MapModal :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
+  <MapModal v-if="mapValue" :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
   <DomainModal v-if="showDomainCon" :showDomainCon="showDomainCon" :networkMappingId="networkMappingId"  @closeModal="closeDomainModal"></DomainModal>
 </template>
 
@@ -48,8 +48,8 @@ const columns = [
   },
   {
     title: '协议',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'protocol',
+    key: 'protocol',
   },
   {
     title: '私网端口',
@@ -67,6 +67,11 @@ const columns = [
     key: 'gatewayPort',
     dataIndex: 'gatewayPort',
     align:'center'
+  },
+  {
+    title: '描述',
+    key: 'name',
+    dataIndex: 'name',
   },
   {
     title: '绑定域名',
