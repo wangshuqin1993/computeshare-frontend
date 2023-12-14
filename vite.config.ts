@@ -18,7 +18,7 @@ export default defineConfig({
     open: false, //启动后是否自动打开浏览器
     proxy: {
       "/api": {
-        target: "https://computeshare.hamster.newtouch.com/",
+        target: "https://api.computeshare.newtouch.com/",
         // target: "http://127.0.0.1:8000/",
         changeOrigin: true, //是否跨域
         ws: true,

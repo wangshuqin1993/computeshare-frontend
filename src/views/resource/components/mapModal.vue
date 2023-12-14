@@ -4,6 +4,11 @@
       <div class="mt-[32px]">
         <a-form :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" autocomplete="off"
            ref="formRef">
+          <a-form-item label="映射描述" name="des"
+            :rules="[{ required: true, message: '请输入映射描述' }]">
+            <a-input v-model:value="formState.des" placeholder="请输入映射描述" />
+          </a-form-item>
+
           <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: '请选择支持协议' }]">
             <a-select v-model:value="formState.name" placeholder="请选择支持协议">
               <a-select-option value="TCP">TCP</a-select-option>
@@ -67,6 +72,7 @@ interface FormState {
   instancePort: string, //私网端口
   gatewayPort: number | string, //公网端口
   gatewayIp: string, //公网IP
+  des: string,//映射描述
 }
 
 const formState = ref<FormState>({
@@ -75,6 +81,7 @@ const formState = ref<FormState>({
   instancePort: '',
   gatewayPort: 0,
   gatewayIp: '',
+  des: ''
 });
 
 const getInstanceList = async () => {
@@ -87,9 +94,10 @@ const getInstanceList = async () => {
 const createMap = async () => {
   await formRef.value.validate();
   let param = {
-    name: formState.value.name,
+    name: formState.value.des,
     computerId: formState.value.instanceName,
     computerPort: Number(formState.value.instancePort),
+    protocol: formState.value.name,
   }
   const res = await apiNetworkMap(param);
   if(res.code == 200) {
@@ -115,6 +123,7 @@ watch(
       formState.value.instancePort = value.instancePort;
       formState.value.name = value.name;
       formState.value.gatewayIp = value.gatewayIp;
+      formState.value.des = value.des;
     } else {
       formState.value = {
         name: '',
@@ -122,6 +131,7 @@ watch(
         instancePort: '',
         gatewayPort: '',
         gatewayIp: '',
+        des: '',
       }
     }
     console.log("watch:",value);
