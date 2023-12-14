@@ -18,15 +18,15 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="实例名称：" name="name">
-          <a-input class="modal-input w-[70%]" autocomplete="off" v-model:value="formData.name" placeholder="请输入实例名称"/>
+          <a-input class="modal-input" autocomplete="off" v-model:value="formData.name" placeholder="请输入实例名称"/>
         </a-form-item>
         <a-form-item label="用户名：" name="username">
           <div class="!text-[16px] font-medium">ubuntu</div>
         </a-form-item>
         <a-form-item label="密码：" name="password" class="!mb-[10px]">
-          <a-input class="modal-input w-[70%]" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
+          <a-input class="modal-input" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
-        <div class="ml-[120px] w-[500px] h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
+        <div class="ml-[120px] warn-msg h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
           请妥善保管好密码，如丢失无法找回，可能会造成损失
         </div>
         <div class="text-center mt-[50px]">
@@ -129,5 +129,7 @@ onMounted(() => {
 })
 </script>
 <style scoped lang="less">
-
+.warn-msg{
+  width: calc(100%-120px);
+}
 </style>
