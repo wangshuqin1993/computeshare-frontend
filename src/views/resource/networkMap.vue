@@ -48,8 +48,8 @@ const columns = [
   },
   {
     title: '协议',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'protocol',
+    key: 'protocol',
   },
   {
     title: '私网端口',
@@ -67,6 +67,11 @@ const columns = [
     key: 'gatewayPort',
     dataIndex: 'gatewayPort',
     align:'center'
+  },
+  {
+    title: '描述',
+    key: 'name',
+    dataIndex: 'name',
   },
   {
     title: '绑定域名',
