@@ -23,7 +23,7 @@
         <a-form-item label="用户名：" name="username">
           <div class="!text-[16px] font-medium">ubuntu</div>
         </a-form-item>
-        <a-form-item label="密码：" name="password">
+        <a-form-item label="密码：" name="password" class="!mb-[10px]">
           <a-input class="modal-input w-[70%]" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
         <div class="ml-[120px] w-[500px] h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
