@@ -33,7 +33,7 @@
       <a-form :model="formData" ref="formRef" :rules="formRules" :label-col="labelCol">
         <a-form-item label="用户名：" name="name">
           <a-input class="modal-input" autocomplete="off" v-model:value="formData.name" placeholder="请输入用户名"/>
-          <div class="text-[#8C8C8C] text-[14px] mt-[10px]">用户名只能包含英文、中文、数字、下划线、中划线、大于两个中文或者三个英文字母并小于32个字符</div>
+          <div class="text-[#8C8C8C] text-[14px] mt-[10px]">用户名只能包含小写字母、数字、中划线、大于三个英文字母并小于32个字符</div>
         </a-form-item>
         <div class="text-center mt-[50px]">
           <a-button class="ant-btn-m" type="primary" :loading="loading" @click="handleDone">确认更改</a-button>
@@ -160,8 +160,8 @@ const checkMobile = () => {
   }
 }
 const checkName = () => {
-  //用户名只能包含英文、中文、数字、下划线、中划线、大于两个中文或者三个英文字母并小于32个字符
-  let reg = /^((?=.*[\u4e00-\u9fa5]{2,})|(?=.*[a-zA-Z]{3,}))[\u4E00-\u9FA5A-Za-z0-9_-]{3,32}$/;
+  //用户名只能包含小写字母、数字、中划线、大于三个英文字母并小于32个字符
+  let reg = /^(?=[a-z0-9-]{4,32}$)[a-z0-9]+-?[a-z0-9]+$/;
 
   if (formData.name != '' && formData.name != null && !reg.test(formData.name)) {
     return Promise.reject("请输入合理的用户名");
