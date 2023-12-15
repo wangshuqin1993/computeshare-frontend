@@ -22,7 +22,7 @@ let router = createRouter({
           name: "Script",
           component: () => import('@/views/script/index.vue'),
           meta: {
-            isShow: true,
+            isShow: false,
             sidebarMap: ['Script'],
           }
         },
