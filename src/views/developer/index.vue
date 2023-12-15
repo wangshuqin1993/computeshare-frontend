@@ -1,10 +1,14 @@
 <template>
-    <Header />
-    <div class="m-[20px] scroll-max-h overflow-y-auto">
-        <div class="bg-[#FFFFFF] rounded-[2px] px-[40px] py-[20px]">
-            <a-button @click="checkKey">查看密钥</a-button>
-            <a-button @click="DelelteKey">删除密钥</a-button>
-            <a-button @click="showKeepModalFn">保管密钥</a-button>
+    <Header/>
+    <div class="bg-[#FFFFFF] rounded-[2px] p-[20px] m-[20px]">
+        <!-- 存储信息 -->
+        <div class="p-[20px] border border-solid border-[#E9E9E9] rounded-[4px]">
+            <p class="text-[18px] font-medium">文件存储SDK</p>
+            <p class="text-[14px] text-[#8C8C8C] font-normal">使用访问密钥从SDK以编程方式调用文件存</p>
+        </div>
+        <!-- 密钥信息 -->
+        <div class="p-[20px]">
+
         </div>
     </div>
     <checkOrDelKeyModal v-if="visibleMobile" :visibleMobile="visibleMobile" :title="title" @closeCheckKeyModal="closeCheckKeyModal" @showKeyModalFn="showKeyModalFn" @delKeyFn="delKeyFn"/>
