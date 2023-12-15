@@ -39,6 +39,16 @@ let router = createRouter({
           }
         },
         {
+          path: "/dashboard/storage/detail",
+          name: "StorageDetail",
+          component: () => import('@/views/storage/detail.vue'),
+          meta: {
+            isShow: true,
+            isPersonal: false,
+            sidebarMap: ['Storage'],
+          }
+        },
+        {
           path: "/dashboard/user",
           name: "User",
           component: () => import('@/views/user/index.vue'),

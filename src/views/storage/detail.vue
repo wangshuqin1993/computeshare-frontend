@@ -2,15 +2,22 @@
 <template>
   <Header />
   <div class="m-[20px]">
+    <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
+      <UploadFile :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
+    </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
-      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 400px)' }">
+      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
-            <div class="text-[14px] flex">
-              <a-button type="link" @click="viewStorage(record.id)">查看</a-button>
-              <a-button type="link" @click="clearStorage(record.id)">清空</a-button>
-              <a-button type="link" danger @click="delStorage(record.id)">删除</a-button>
-            </div>
+            <a-tooltip placement="left" color="#FFFFFF">
+              <template #title>
+                <div class="text-[14px]">
+                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">下载</div>
+                  <div class="tips-css" @click="delStorage(record.id)">删除</div>
+                </div>
+              </template>
+              <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer" />
+            </a-tooltip>
           </template>
         </template>
       </a-table>
@@ -24,6 +31,7 @@
 
 <script setup lang="ts">
 import { createVNode, onMounted, reactive, ref } from 'vue';
+import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
@@ -39,10 +47,12 @@ const infoVisible = ref(false); //存储桶提示信息
 const clearVisible = ref(false); //清空存储桶
 const delVisible = ref(false); //删除。。。
 const delType = ref('storage'); //删除文件：file，文件夹：folder，存储桶：storage
+const suffixNames = ref(".*");
+const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
 const tableColumns = reactive([
   {
-    title: '存储桶名称',
+    title: '名称',
     dataIndex: 'name',
     key: 'name',
   },
@@ -54,9 +64,18 @@ const tableColumns = reactive([
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
-    title: '操作',
+    title: '文件大小',
+    dataIndex: 'size',
+    key: 'size',
+    width: '15%',
+    align:'center',
+    customRender: ({ text: date }) =>  getfilesize(date),
+  },
+  {
+    title: '',
     dataIndex: 'action',
     key: 'action',
+    width: '5%',
   },
 ])
 const pagination = reactive({
@@ -88,16 +107,19 @@ const getTableData = async () => {
   const res = await apiStorageList(parentId, {page:pagination.current, size:pagination.pageSize});
   if (res.code == 200) {
     // tableData.value = res.data;
-    tableData.value = [{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'}]
+    tableData.value = [{name:'123123'}]
   }else{
     message.error(res.message)
   }
 }
-const viewStorage =  (id: string) => {
-  console.log("viewStorage:",id);
-}
-const clearStorage =  (id: string) => {
-  console.log("clearStorage:",id);
+const downloadStorage = async (id: string, name:string) => {
+  const data = await apiDownloadStorage(id);
+  try {
+    await downloadRequest(data,name)
+    message.success('下载成功')
+  } catch (error:any) {
+    message.error('下载失败')
+  }
 }
 const delStorage = async (id: string) => {
   Modal.confirm({
