@@ -62,9 +62,9 @@
                         <template v-if="column.key === 'action'">
                             <a-tooltip placement="left" color="#FFFFFF">
                                 <template #title>
-                                    <div class="text-[14px] w-[120px] px-[20px]">
-                                        <div @click="checkKey(record)" class="cursor-pointer text-[#000] hover:text-[#484FFF]">查看密钥</div>
-                                        <div @click="DelelteKey(record)" class="cursor-pointer text-[#000] mt-[10px] hover:text-[#484FFF]">删除</div>
+                                    <div class="text-[14px] w-[120px]">
+                                        <div @click="checkKey(record)" class="w-[114px] h-[34px] leading-[34px] pl-[20px] text-[14px] cursor-pointer text-[#000] hover:text-[#484FFF] hover:bg-[#F5F7FA]">查看密钥</div>
+                                        <div @click="DelelteKey(record)" class="w-[114px] h-[34px] leading-[34px] pl-[20px] text-[14px] cursor-pointer text-[#000] hover:text-[#484FFF] hover:bg-[#F5F7FA]">删除</div>
                                     </div>
                                 </template>
                                 <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer" />
