@@ -103,7 +103,8 @@ const operate = (id: string) => {
 
 // 创建实例
 const showCreateModal = () => {
-  headRef.value.showCreateModal();
+  createVisible.value = true
+  // headRef.value.showCreateModal();
 }
 
 //启动实例
