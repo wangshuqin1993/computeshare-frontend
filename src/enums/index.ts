@@ -3,6 +3,7 @@ export enum sidebarName {
   'Script' = '脚本服务',
   'Storage' = '文件存储',
   'User' = '账户设置',
+  'Developer' = '开发者选项',
 }
 export enum resourceStatus {
   '创建中' = 0,

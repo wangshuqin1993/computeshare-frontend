@@ -15,6 +15,7 @@
           <template #title>
             <div class="text-[14px]">
               <div class="tips-css" @click="goUser">账户设置</div>
+              <div class="tips-css" @click="goDeveloper">开发者选项</div>
               <div class="tips-css" @click="logout">退出</div>
             </div>
           </template>
@@ -45,6 +46,10 @@ const showCreateModal = () => {
 
 const goUser = () => {
   window.open("/dashboard/user");
+}
+
+const goDeveloper = ()=>{
+  window.open("/dashboard/developer");
 }
 
 const logout = () => {
