@@ -1,6 +1,10 @@
 <template>
     <a-modal :footer="null" :title="title" width="700px" centered="true" v-model:open="visibleMobile" @cancel="close">
-        <div class="mt-[30px] ">
+        <div class="mt-[10px]">
+            <div class="w-[100%] bg-[#FFFBE6] h-[40px] leading-[40px] mb-[20px] border border-solid border-[#FFE58F] rounded-[2px] pl-[16px]">
+                <img src="@/assets/images/warning.svg" class="w-[14px] inline-block mr-[4px] mb-[2px]" />
+                <span class="text-[12px] text-[#595750]">这是一个{{title=='查看密钥' ? '谨慎':'危险'}}操作，需要进行身份验证</span>
+            </div>
             <a-form :model="formMobileData" ref="formMobileRef" :rules="formMobileRules" :label-col="labelCol">
                 <a-form-item label="手机号：" name="telephoneNumber" >
                     <a-input class="modal-input" prefix="+86" v-model:value="formMobileData.telephoneNumber" placeholder="请输入手机号" autocomplete="off" />
@@ -34,7 +38,7 @@ const props = defineProps({
     }
 })
 const { visibleMobile, title } = toRefs(props);
-const emit = defineEmits(['closeCheckKeyModal','showKeyModal','delKeyFn'])
+const emit = defineEmits(['closeCheckKeyModal','showKeyModalFn','delKeyFn'])
 
 const close = ()=>{
     emit('closeCheckKeyModal')
@@ -86,7 +90,7 @@ const getSmsCode = async()=>{
 const showKey = async() => {
     await formMobileRef.value.validate()
     if(title.value == '查看密钥'){
-        emit('showKeyModal')
+        emit('showKeyModalFn')
     }else{
         // 删除密钥
         emit('delKeyFn')
