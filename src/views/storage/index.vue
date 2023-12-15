@@ -25,6 +25,9 @@
   </div>
   <CreateStorageModal :showVisible="storageVisible" @closeModal="storageVisible=false"></CreateStorageModal>
   <CreateFileModal :showVisible="fileVisible" @closeModal="fileVisible=false"></CreateFileModal>
+  <StorageInfoModal :showVisible="infoVisible" @closeModal="infoVisible=false"></StorageInfoModal>
+  <ClearStorageModal :showVisible="clearVisible" @closeModal="clearVisible=false"></ClearStorageModal>
+  <DeleteModal :showVisible="delVisible" :delType="delType" @closeModal="delVisible=false"></DeleteModal>
 </template>
 
 <script setup lang="ts">
@@ -37,9 +40,16 @@ import { Modal, message } from 'ant-design-vue';
 import { getfilesize, downloadRequest } from '@/utils/index'
 import CreateStorageModal from './components/CreateStorageModal.vue';
 import CreateFileModal from './components/CreateFileModal.vue';
+import StorageInfoModal from './components/StorageInfoModal.vue';
+import ClearStorageModal from './components/ClearStorageModal.vue';
+import DeleteModal from './components/DeleteModal.vue';
 
 const storageVisible = ref(false); // 创建存储桶
 const fileVisible = ref(false); // 创建文件夹
+const infoVisible = ref(false); //存储桶提示信息
+const clearVisible = ref(false); //清空存储桶
+const delVisible = ref(true); //删除。。。
+const delType = ref('storage'); //删除文件：file，文件夹：folder，存储桶：storage
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
