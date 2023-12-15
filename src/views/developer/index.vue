@@ -1,7 +1,11 @@
 <template>
     <Header />
-    <a-button @click="checkKey">查看密钥</a-button>
-    <a-button @click="DelelteKey">删除密钥</a-button>
+    <div class="m-[20px] scroll-max-h overflow-y-auto">
+        <div class="bg-[#FFFFFF] rounded-[2px] px-[40px] py-[20px]">
+            <a-button @click="checkKey">查看密钥</a-button>
+            <a-button @click="DelelteKey">删除密钥</a-button>
+        </div>
+    </div>
     <checkOrDelKeyModal :visibleMobile="visibleMobile" :title="title" @closeCheckKeyModal="closeCheckKeyModal" @showKeyModal="showKeyModal" @delKeyFn="delKeyFn"/>
 </template>
 <script setup lang="ts">
