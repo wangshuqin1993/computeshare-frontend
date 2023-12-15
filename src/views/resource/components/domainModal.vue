@@ -91,17 +91,19 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     // width: '50%'
+    align: 'center',
   },
   {
     title: '',
     dataIndex: 'statu',
     key: 'statu',
-    align: 'left',
-    // width: '20%'
+    align: 'center',
+    width: '30%'
   },
   {
     title: '操作',
     key: 'action',
+    align:'center'
     // width: '30%'
   },
 ]
