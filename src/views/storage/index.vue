@@ -23,6 +23,8 @@
       </a-table>
     </div>
   </div>
+  <CreateStorageModal :showVisible="storageVisible" @closeModal="storageVisible=false"></CreateStorageModal>
+  <CreateFileModal :showVisible="fileVisible" @closeModal="fileVisible=false"></CreateFileModal>
 </template>
 
 <script setup lang="ts">
@@ -33,7 +35,11 @@ import { transTimestamp } from '@/utils/dateUtil';
 import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
 import { Modal, message } from 'ant-design-vue';
 import { getfilesize, downloadRequest } from '@/utils/index'
+import CreateStorageModal from './components/CreateStorageModal.vue';
+import CreateFileModal from './components/CreateFileModal.vue';
 
+const storageVisible = ref(false); // 创建存储桶
+const fileVisible = ref(false); // 创建文件夹
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])

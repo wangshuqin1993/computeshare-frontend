@@ -176,13 +176,13 @@ const getInstanceList = async () => {
       return { cpuArr, memoryArr, ...item }
     })
     // 判定循环终止
-    const isStop = instanceList.value.filter((item: any) => {
-      return item.status == 0
-    }).length
-    console.log('判定循环终止', isStop)
-    if (isStop == 0) {
-      clearInterval(isLoop.value)
-    }
+    // const isStop = instanceList.value.filter((item: any) => {
+    //   return item.status == 0
+    // }).length
+    // console.log('判定循环终止', isStop)
+    // if (isStop == 0) {
+    //   clearInterval(isLoop.value)
+    // }
   } else {
     message.error(res.message)
   }
@@ -192,14 +192,13 @@ const getInstanceList = async () => {
 const handleDone = () => {
   createVisible.value = false;
   getInstanceList()
-  // 开启循环去实时调实例的状态
-  isLoop.value = setInterval(() => {
-    getInstanceList()
-  }, 1000);
 }
 
 onMounted(() => {
-  getInstanceList();
+  // 开启循环去实时调实例的状态
+  isLoop.value = setInterval(() => {
+    getInstanceList()
+  }, 3000);
 
   setTimeout(() => {
     if (instanceList.value.length > 0) {
