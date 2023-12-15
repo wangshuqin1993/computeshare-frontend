@@ -45,11 +45,13 @@ const columns = [
     title: '实例',
     dataIndex: 'instanceName',
     key: 'instanceName',
+    align:'center'
   },
   {
     title: '协议',
     dataIndex: 'protocol',
     key: 'protocol',
+    align:'center'
   },
   {
     title: '私网端口',
@@ -61,6 +63,7 @@ const columns = [
     title: '公网IP',
     key: 'gatewayIp',
     dataIndex: 'gatewayIp',
+    align:'center'
   },
   {
     title: '公网端口',
@@ -72,15 +75,18 @@ const columns = [
     title: '描述',
     key: 'name',
     dataIndex: 'name',
+    align:'center'
   },
   {
     title: '绑定域名',
     key: 'domains',
     dataIndex: 'domains',
+    align:'center'
   },
   {
     title: '操作',
     key: 'action',
+    align:'center'
   },
 ];
 
@@ -120,9 +126,6 @@ const createMap = async () => {
 
 const editMap = (record: any) => {
   return
-  console.log("editMap:",record);
-  formStateData.value = record;
-  mapValue.value = true;
 }
 
 const delNetwork = async(record: any) => {
@@ -170,8 +173,8 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-:deep(.css-dev-only-do-not-override-kqecok.ant-table-wrapper .ant-table-pagination-right) {
-  justify-content: center;
+:deep(:where(.css-dev-only-do-not-override-1qb1s0s).ant-table-wrapper .ant-table-pagination-right) {
+  justify-content: center !important;
 }
 
 .menu-title {
