@@ -17,8 +17,12 @@
         <label v-if="curBarName == 'Storage'">存储桶
           <div class="mt-[10px] text-[16px] text-[#8C8C8C]">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
         </label>
+        <label v-else-if="curBarName == 'StorageDetail'">
+          <div class="text-[14px] text-[#4D4D4D]">S3存储桶/{{ getPonitStr('13700000000-hamster-deployments', 10 , 10) }}</div>
+          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">13700000000-hamster-deployments</div>
+        </label>
         <label v-else>{{ sidebarName[curBarName] }}</label>
-      </div>
+      </div> 
       <a-button v-if="curBarName === 'Resource'" type="primary" class="ant-btn-s" @click="createVisible = true;">创建实例</a-button>
       <a-button v-else-if="curBarName === 'Storage'" type="primary" class="ant-btn-s" @click="storageVisible = true;">创建存储桶</a-button>
     </div>
@@ -30,6 +34,7 @@
 import { watch, ref } from 'vue';
 import { useRouter } from "vue-router";
 import { sidebarName } from '@/enums/index';
+import { getPonitStr } from '@/utils/index';
 import CreateModal from "@/views/resource/create.vue";
 import CreateStorageModal from '@/views/storage/components/CreateStorageModal.vue';
 

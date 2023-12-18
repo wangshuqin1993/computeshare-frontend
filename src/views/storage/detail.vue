@@ -6,14 +6,27 @@
       <UploadFile :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
+      <div class="flex justify-end">
+        <a-input v-model:value="searchVal" placeholder="按名称查找" class="mb-[20px] w-[40%]">
+          <template #suffix>
+            <a-tooltip title="Search">
+              <img src="@/assets/icons/search.svg" class="w-[28px]" />
+            </a-tooltip>
+          </template>
+        </a-input>
+        <a-button type="primary" class="ant-btn-s ml-[20px]" @click="fileVisible = true;">创建文件夹</a-button>
+      </div>
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">下载</div>
-                  <div class="tips-css" @click="delStorage(record.id)">删除</div>
+                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">查看</div>
+                  <div class="tips-css" @click="copyStorage(record, 'S3 URL')">复制 S3 URL</div>
+                  <div class="tips-css" @click="copyStorage(record, 'URL')">复制 URL</div>
+                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">下载文件</div>
+                  <div class="tips-css" @click="delStorage(record)">删除</div>
                 </div>
               </template>
               <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer" />
@@ -24,29 +37,24 @@
     </div>
   </div>
   <CreateFileModal :showVisible="fileVisible" @closeModal="fileVisible=false"></CreateFileModal>
-  <StorageInfoModal :showVisible="infoVisible" @closeModal="infoVisible=false"></StorageInfoModal>
-  <ClearStorageModal :showVisible="clearVisible" @closeModal="clearVisible=false"></ClearStorageModal>
   <DeleteModal :showVisible="delVisible" :delType="delType" @closeModal="delVisible=false"></DeleteModal>
 </template>
 
 <script setup lang="ts">
-import { createVNode, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
-import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
-import { Modal, message } from 'ant-design-vue';
+import { apiStorageList, apiDownloadStorage } from '@/apis/storage';
+import { message } from 'ant-design-vue';
 import { getfilesize, downloadRequest } from '@/utils/index'
 import CreateFileModal from './components/CreateFileModal.vue';
-import StorageInfoModal from './components/StorageInfoModal.vue';
-import ClearStorageModal from './components/ClearStorageModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
 
+const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
-const infoVisible = ref(false); //存储桶提示信息
-const clearVisible = ref(false); //清空存储桶
 const delVisible = ref(false); //删除。。。
-const delType = ref('storage'); //删除文件：file，文件夹：folder，存储桶：storage
+const delType = ref('folder'); //删除文件：file，文件夹：folder，存储桶：storage
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
@@ -112,6 +120,10 @@ const getTableData = async () => {
     message.error(res.message)
   }
 }
+const copyStorage = (item: any, copyType: string) => {
+  message.success("已复制 " + copyType);
+  console.log("copyStorage:",item, copyType);
+}
 const downloadStorage = async (id: string, name:string) => {
   const data = await apiDownloadStorage(id);
   try {
@@ -121,25 +133,10 @@ const downloadStorage = async (id: string, name:string) => {
     message.error('下载失败')
   }
 }
-const delStorage = async (id: string) => {
-  Modal.confirm({
-    title: () => "删除",
-    content: () => createVNode('div', { style: 'color:rgba(0, 0, 0, 0.8);' }, "确认删除该数据吗?"),
-    okText: '确定',
-    cancelText: '取消',
-    async onOk() {
-      const res = await apiDelStorage([id]);
-      if (res.code == 200) {
-        message.success(res.message)
-        getTableData();
-      }else{
-        message.error(res.message)
-      }
-    },
-    onCancel() {
-
-    },
-  });
+const delStorage = async (item: any) => {
+  delVisible.value = true;
+  delType.value = 'folder'; //删除文件：file，文件夹：folder
+  console.log("delStorage:",item);
 
 }
 onMounted(() => {
