@@ -1,8 +1,8 @@
 <template>
   <div class="text-[#121211] text-[24px]">
     <span @click="backRoute($event)" class="backInfo cursor-pointer">
-      <img src="@/assets/icons/back-white.svg" class="w-[24px] mr-[8px] inline-block" />
-      <!-- <svg-icon name="back-white" size="24" class="mr-[8px]" /> -->
+      <img src="@/assets/icons/back(B).svg" class="w-[24px] inline-block" />
+      <!-- <svg-icon name="back(B)" size="24" class="mr-[8px]" /> -->
       <span class="font-bold align-middle">返回</span>
     </span>
     <span class="font-bold align-middle">
