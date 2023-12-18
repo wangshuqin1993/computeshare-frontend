@@ -53,7 +53,6 @@
                 <a-table :columns="secretKeyColumns" :data-source="secretKeyList">
                     <template #bodyCell="{ column, text, record }">
                         <template v-if="column.key === 'access_key'">
-                            <!-- {{text[0]}} -->
                             <span>{{ getPonitStr(text,2,2) }}</span>
                         </template>
                         <template v-if="column.key === 'secret_key'">
