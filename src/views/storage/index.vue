@@ -3,13 +3,22 @@
   <Header />
   <div class="m-[20px]">
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
+      <div class="flex justify-end">
+        <a-input v-model:value="searchVal" placeholder="按名称查找存储桶" class="mb-[20px] w-[40%]">
+          <template #suffix>
+            <a-tooltip title="Search">
+              <img src="@/assets/icons/search.svg" class="w-[28px]" />
+            </a-tooltip>
+          </template>
+        </a-input>
+      </div>
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 400px)' }">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="text-[14px] flex">
-              <a-button type="link" @click="viewStorage(record.id)">查看</a-button>
-              <a-button type="link" @click="clearStorage(record.id)">清空</a-button>
-              <a-button type="link" danger @click="delStorage(record.id)">删除</a-button>
+              <a-button type="link" @click="viewStorage(record)">查看</a-button>
+              <a-button type="link" @click="clearStorage(record)">清空</a-button>
+              <a-button type="link" danger @click="delStorage(record)">删除</a-button>
             </div>
           </template>
         </template>
@@ -23,19 +32,21 @@
 </template>
 
 <script setup lang="ts">
-import { createVNode, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
-import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
-import { Modal, message } from 'ant-design-vue';
-import { getfilesize, downloadRequest } from '@/utils/index'
+import { apiStorageList } from '@/apis/storage';
+import { message } from 'ant-design-vue';
+import { useRouter } from "vue-router";
 import CreateFileModal from './components/CreateFileModal.vue';
 import StorageInfoModal from './components/StorageInfoModal.vue';
 import ClearStorageModal from './components/ClearStorageModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
 
+const router = useRouter();
+const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
-const infoVisible = ref(false); //存储桶提示信息
+const infoVisible = ref(false); //存储桶提示信息,此存储桶不为空
 const clearVisible = ref(false); //清空存储桶
 const delVisible = ref(false); //删除。。。
 const delType = ref('storage'); //删除文件：file，文件夹：folder，存储桶：storage
@@ -93,31 +104,20 @@ const getTableData = async () => {
     message.error(res.message)
   }
 }
-const viewStorage =  (id: string) => {
-  console.log("viewStorage:",id);
+// 查看
+const viewStorage = (item: any) => {
+  router.push("/dashboard/storage/detail?id=" + item.id);
+  console.log("viewStorage:",item);
 }
-const clearStorage =  (id: string) => {
-  console.log("clearStorage:",id);
+// 清空
+const clearStorage = (item: any) => {
+  clearVisible.value = true;
+  console.log("clearStorage:",item);
 }
-const delStorage = async (id: string) => {
-  Modal.confirm({
-    title: () => "删除",
-    content: () => createVNode('div', { style: 'color:rgba(0, 0, 0, 0.8);' }, "确认删除该数据吗?"),
-    okText: '确定',
-    cancelText: '取消',
-    async onOk() {
-      const res = await apiDelStorage([id]);
-      if (res.code == 200) {
-        message.success(res.message)
-        getTableData();
-      }else{
-        message.error(res.message)
-      }
-    },
-    onCancel() {
-
-    },
-  });
+// 删除
+const delStorage = async (item: any) => {
+  delVisible.value = true;
+  console.log("delStorage:",item);
 
 }
 onMounted(() => {
