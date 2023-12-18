@@ -38,7 +38,7 @@ let router = createRouter({
           }
         },
         {
-          path: "/dashboard/storage/detail",
+          path: "/dashboard/storageDetail",
           name: "StorageDetail",
           component: () => import('@/views/storage/detail.vue'),
           meta: {
