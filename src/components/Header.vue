@@ -13,10 +13,17 @@
       </a-tooltip>
     </div>
     <div class="h-[130px] px-[40px] flex justify-between items-center">
-      <div class="menu-title">{{ sidebarName[curBarName] }}</div>
+      <div class="menu-title">
+        <label v-if="curBarName == 'Storage'">存储桶
+          <div class="mt-[10px] text-[16px] text-[#8C8C8C]">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
+        </label>
+        <label v-else>{{ sidebarName[curBarName] }}</label>
+      </div>
       <a-button v-if="curBarName === 'Resource'" type="primary" class="ant-btn-s" @click="createVisible = true;">创建实例</a-button>
+      <a-button v-else-if="curBarName === 'Storage'" type="primary" class="ant-btn-s" @click="storageVisible = true;">创建存储桶</a-button>
     </div>
   </div>
+  <CreateStorageModal :showVisible="storageVisible" @closeModal="storageVisible=false"></CreateStorageModal>
   <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible" @handleCancelCreate="createVisible=false;" @handleDone="handleDone"></CreateModal>
 </template>
 <script setup lang="ts">
@@ -24,10 +31,12 @@ import { watch, ref } from 'vue';
 import { useRouter } from "vue-router";
 import { sidebarName } from '@/enums/index';
 import CreateModal from "@/views/resource/create.vue";
+import CreateStorageModal from '@/views/storage/components/CreateStorageModal.vue';
 
 const router = useRouter();
 const curBarName = ref(router.currentRoute.value.name);
 const createVisible = ref(false);
+const storageVisible = ref(false); // 创建存储桶
 const emit = defineEmits(["handleDone"])
 
 const handleDone = ()=>{
