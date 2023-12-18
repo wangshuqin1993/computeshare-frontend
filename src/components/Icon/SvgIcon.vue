@@ -1,6 +1,6 @@
 <template>
   <!-- @mouseenter="color = hover" -->
-  <svg aria-hidden="true" :class="[$attrs.class, 'svg-icon']" :style="getStyle" @mouseenter="color = hover">
+  <svg :class="[$attrs.class, 'svg-icon']" :style="getStyle" @mouseenter="color = hover">
     <use :xlink:href="symbolId" :fill="color" />
   </svg>
 </template>
