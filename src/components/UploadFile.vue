@@ -13,13 +13,19 @@
     <p class="ant-upload-drag-icon flex justify-center">
       <img src="@/assets/images/upload.png" class="h-[36px]">
     </p>
-    <p class="ant-upload-text">可将脚本文件拖至此处上传</p>
-    <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
+    <div v-if="curBarName == 'StorageDetail'">
+      <p class="ant-upload-text">可将文件拖至此处上传</p>
+      <p class="ant-upload-hint">您可以将任何文件类型（图像、备份、数据、电影等）上传到S3存储桶<br>上传的文件的最大大小为3GB</p>
+    </div>
+    <div v-else>
+      <p class="ant-upload-text">可将脚本文件拖至此处上传</p>
+      <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
+    </div>
   </a-upload-dragger>
 </template>
 
 <script setup lang="ts">
-import { ref ,toRefs} from "vue";
+import { ref ,toRefs, watch} from "vue";
 import { message, type UploadChangeParam } from 'ant-design-vue';
 import { useRouter } from "vue-router";
 import { apiUploadScript } from '@/apis/script';
@@ -90,6 +96,11 @@ const handleFileChange = async(info: UploadChangeParam)=>{
 
   }
 }
+watch(() => router.currentRoute.value,
+  (value) => {
+    curBarName.value = value.name;
+  }, { deep: true, immediate: true }
+)
 
 defineExpose({
   handleUploadAttachement,
