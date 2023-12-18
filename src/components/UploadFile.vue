@@ -22,6 +22,35 @@
       <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
     </div>
   </a-upload-dragger>
+  <div v-if="curBarName == 'StorageDetail'" class="mt-[20px] flex justify-center">
+    <a-upload class="mr-[20px]"
+        v-model:file-list="fileList"
+        name="file"
+        :showUploadList="false"
+        :before-upload="beforeUpload"
+        :customRequest="handleUploadAttachement"
+        :accept="suffixNames"
+      >
+      <a-button type="primary" ghost class="flex">
+        <img src="@/assets/images/update-file.png" class="h-[20px] mr-[8px]">
+        上传文件
+      </a-button>
+    </a-upload>
+    <a-upload
+      v-model:file-list="fileList"
+      name="file"
+      :showUploadList="false"
+      :before-upload="beforeUpload"
+      :customRequest="handleUploadAttachement"
+      :accept="suffixNames"
+      directory>
+      <a-button type="primary" ghost class="flex">
+        <img src="@/assets/images/update-folder.png" class="h-[20px] mr-[8px]">
+        上传文件夹
+      </a-button>
+    </a-upload>
+  </div>
+
 </template>
 
 <script setup lang="ts">
