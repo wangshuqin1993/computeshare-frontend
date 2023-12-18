@@ -18,7 +18,8 @@
           <div class="mt-[10px] text-[16px] text-[#8C8C8C]">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
         </label>
         <label v-else-if="curBarName == 'StorageDetail'">
-          <div class="text-[14px] text-[#4D4D4D]">S3存储桶/{{ getPonitStr('13700000000-hamster-deployments', 10 , 10) }}</div>
+          <bread-crumb :routes="breadCrumbInfo"/>
+          <BreadCrumbBack :currentName="curBarName" />
           <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">13700000000-hamster-deployments</div>
         </label>
         <label v-else>{{ sidebarName[curBarName] }}</label>
@@ -31,14 +32,17 @@
   <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible" @handleCancelCreate="createVisible=false;" @handleDone="handleDone"></CreateModal>
 </template>
 <script setup lang="ts">
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import { sidebarName } from '@/enums/index';
 import { getPonitStr } from '@/utils/index';
+import BreadCrumb from "@/components/BreadCrumb.vue";
+import BreadCrumbBack from "@/components/BreadCrumbBack.vue";
 import CreateModal from "@/views/resource/create.vue";
 import CreateStorageModal from '@/views/storage/components/CreateStorageModal.vue';
 
 const router = useRouter();
+const breadCrumbInfo = ref<any>([])
 const curBarName = ref(router.currentRoute.value.name);
 const createVisible = ref(false);
 const storageVisible = ref(false); // 创建存储桶
@@ -71,6 +75,19 @@ watch(() => router.currentRoute.value,
     curBarName.value = value.name;
   }, { deep: true, immediate: true }
 )
+
+onMounted(async() => {
+  breadCrumbInfo.value = [
+    {
+      breadcrumbName:'S3存储桶',
+      path:'/dashboard/storage'
+    },
+    {
+      breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
+      path:''
+    },
+  ]
+})
 
 defineExpose({
   showCreateModal
