@@ -52,7 +52,7 @@ export const cookieUtil = {
   /*设置cookie*/
   set:function(name, value, expires, domain){
     let cookie = name + "=" + value;
-    var expiresDate = new Date();
+    let expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + expires);
     cookie += "; expires=" + expiresDate.toUTCString();
     if(domain){
