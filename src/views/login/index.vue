@@ -120,7 +120,7 @@ const passBySmsCode = async () => {
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
     const domain = '.' + window.location.hostname
-    cookieUtil.set('token', res.data.token, 3600*24, domain)
+    cookieUtil.set('token', res.data.token, 1, domain)
     router.push('/')
   }else{
     message.error(res.message)
@@ -136,7 +136,7 @@ const loginByPwd = async () => {
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
     const domain = '.' + window.location.hostname
-    cookieUtil.set('token', res.data.token, 3600*24, domain)
+    cookieUtil.set('token', res.data.token, 1, domain)
     router.push('/')
   }else{
     message.error(res.message)
