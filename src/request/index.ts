@@ -16,6 +16,7 @@ const service = axios.create({
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
   },
+  withCredentials: true, // 允许发送请求时携带跨域 cookie
 });
 
 // 添加请求拦截器

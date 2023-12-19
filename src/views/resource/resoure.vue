@@ -21,7 +21,7 @@
                 <div class="text-[14px]">
                   <!-- 运行中 -->
                   <div v-if="item.status === 1">
-                    <div class="tips-css" @click="operate(item.id)">访问实例</div>
+                    <!-- <div class="tips-css" @click="operate(item.id)">访问实例</div> -->
                     <div class="tips-css" @click="reStart(item.id)">重启实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                     <div class="tips-css" @click="configurationMapping(item.id)">配置映射</div>

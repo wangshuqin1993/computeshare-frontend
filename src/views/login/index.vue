@@ -11,7 +11,7 @@
             <a-tab-pane key="1" :tab="[isLogin?'短信登录':'短信注册']">
               <a-form :model="formNoteData" layout="vertical" ref="formNoteRef" :rules="formNoteRules">
                 <a-form-item name="telephoneNumber" >
-                  <a-input prefix="+86" v-model:value="formNoteData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                  <a-input prefix="+86" id="phone-register" v-model:value="formNoteData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="validateCode" >
                   <div class="flex">
@@ -24,7 +24,7 @@
             <a-tab-pane key="2" :tab="[isLogin?'密码登录':'账号注册']">
               <a-form :model="formPwdData" layout="vertical" ref="formPwdRef" :rules="formPwdRules">
                 <a-form-item name="telephoneNumber" >
-                  <a-input prefix="+86" @change="resetSlider" v-model:value="formPwdData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                  <a-input prefix="+86" id="phone-login" @change="resetSlider" v-model:value="formPwdData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="password" >
                   <a-input-password @change="resetSlider" v-model:value="formPwdData.password" placeholder="请输入密码" allow-clear autocomplete="off" />
@@ -57,6 +57,7 @@ import { useRouter } from 'vue-router';
 import dragVerify from '@/components/demo.vue'
 import { message } from 'ant-design-vue';
 import { apiSMS, apiSMSLogin, apiPwdLogin } from '@/apis/index'
+import { cookieUtil } from '@/utils/index'
 
 const router = useRouter();
 
@@ -118,6 +119,8 @@ const passBySmsCode = async () => {
   if(res.code==200){
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
+    const domain = '.' + window.location.hostname
+    cookieUtil.set('token', res.data.token, 3600*24, domain)
     router.push('/')
   }else{
     message.error(res.message)
@@ -132,6 +135,8 @@ const loginByPwd = async () => {
   if(res.code==200){
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
+    const domain = '.' + window.location.hostname
+    cookieUtil.set('token', res.data.token, 3600*24, domain)
     router.push('/')
   }else{
     message.error(res.message)
