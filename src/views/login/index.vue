@@ -57,6 +57,7 @@ import { useRouter } from 'vue-router';
 import dragVerify from '@/components/demo.vue'
 import { message } from 'ant-design-vue';
 import { apiSMS, apiSMSLogin, apiPwdLogin } from '@/apis/index'
+import { cookieUtil } from '@/utils/index'
 
 const router = useRouter();
 
@@ -118,6 +119,8 @@ const passBySmsCode = async () => {
   if(res.code==200){
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
+    const domain = '.' + window.location.hostname
+    cookieUtil.set('token', res.data.token, 3600*24, domain)
     router.push('/')
   }else{
     message.error(res.message)
@@ -132,6 +135,8 @@ const loginByPwd = async () => {
   if(res.code==200){
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
+    const domain = '.' + window.location.hostname
+    cookieUtil.set('token', res.data.token, 3600*24, domain)
     router.push('/')
   }else{
     message.error(res.message)
