@@ -19,7 +19,7 @@
         </label>
         <label v-else-if="curBarName == 'StorageDetail'">
           <bread-crumb :routes="breadCrumbInfo"/>
-          <BreadCrumbBack :currentName="curBarName" />
+          <BreadCrumbBack currentName="" />
           <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">13700000000-hamster-deployments</div>
         </label>
         <label v-else>{{ sidebarName[curBarName] }}</label>
