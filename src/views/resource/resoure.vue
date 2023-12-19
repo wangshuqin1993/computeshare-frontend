@@ -21,7 +21,7 @@
                 <div class="text-[14px]">
                   <!-- 运行中 -->
                   <div v-if="item.status === 1">
-                    <!-- <div class="tips-css" @click="operate(item.id)">访问实例</div> -->
+                     <div class="tips-css" @click="operate(item.id)">访问实例</div>
                     <div class="tips-css" @click="reStart(item.id)">重启实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                     <div class="tips-css" @click="configurationMapping(item.id)">配置映射</div>
@@ -85,7 +85,14 @@ import { transTimestamp } from '@/utils/dateUtil';
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
 import Echarts from "@/components/Echarts.vue";
-import { apiGetInstanceList, apiInstanceStart, apiInstanceStop, apiInstanceDelete, apiInstanceRestart } from '@/apis/compute';
+import {
+    apiGetInstanceList,
+    apiInstanceStart,
+    apiInstanceStop,
+    apiInstanceDelete,
+    apiInstanceRestart,
+    apiInstanceVncURL
+} from '@/apis/compute';
 
 import CreateModal from "@/views/resource/create.vue";
 const instanceList = ref([]);
@@ -98,7 +105,13 @@ const emit = defineEmits(['changeTabKey'])
 
 const operate = (id: string) => {
   // 访问实例是跳走，需要带走实例id
-  window.open(`/system?instanceId=${id}`)
+    apiInstanceVncURL(id).then(res => {
+        console.log(res)
+        if(res.code == 200) {
+            window.open(res.data)
+        }
+    })
+
 }
 
 // 创建实例
