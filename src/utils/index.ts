@@ -59,7 +59,7 @@ export const cookieUtil = {
         cookie += "; domain=" + domain;
     }
     document.cookie = cookie;
-    debugger
+    // debugger
   },
 
   /*获取cookie*/
