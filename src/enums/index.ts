@@ -12,7 +12,7 @@ export enum resourceStatus {
   '已关闭' = 4,
   '重启中' = 5,
   '删除中' = 6,
-  '已过期' = 7,
+  '已过期' = 8,
 }
 export enum resourceStatusColor {
   'bg-[#8FD88E]' = 0,
@@ -22,7 +22,7 @@ export enum resourceStatusColor {
   'bg-[#FF5300]' = 4,
   'bg-[#8BCBFE]' = 5,
   'bg-[#FB9898]' = 6,
-  'bg-[#AAAAAA]' = 7,
+  'bg-[#AAAAAA]' = 8,
 }
 export enum executeStatus {
   '待执行' = 1,
