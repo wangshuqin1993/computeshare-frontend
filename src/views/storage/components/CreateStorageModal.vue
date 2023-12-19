@@ -4,7 +4,7 @@
       <div class="mt-[32px]">
         <a-form ref="formRef" :rules="formRules" :model="formData">
           <a-form-item label="存储桶名：" name="name">
-            <a-input class="modal-input" v-model:value="formData.name"  prefix="13700000000-" placeholder="请输入用户名" allow-clear />
+            <a-input class="modal-input" v-model:value="formData.name"  :prefix="userInfo.name || userInfo.telephoneNumber + '-'" placeholder="请输入用户名" allow-clear />
             <div class="text-[#8C8C8C] mt-[10px]">
               存储桶格式为“用户名-自定义名称”。<br>
               整个存储桶名称的长度必须介于 3（最小）到 63（最大）个字符之间。<br>
@@ -25,6 +25,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, computed } from "vue";
+import { apiGetUser } from '@/apis/user';
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   showVisible: {
@@ -35,18 +37,42 @@ const props = defineProps({
 const { showVisible } = toRefs(props);
 const emit = defineEmits(['closeModal']);
 
+const userInfo = ref();
 const formRef = ref();
 const formData = reactive({
   name: '',
 });
 
+const checkName = () => {
+
+  let reg = /^[a-z0-9][a-z0-9\.-]{1,61}[a-z0-9]$/
+  //IP正则表达式
+  let reg3 = /^(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$/;
+  //两个相邻的句点
+  let reg4 = /^.*\.{2}.*$/
+
+  if (formData.name != '' && formData.name != null && reg.test(formData.name) && !reg3.test(formData.name) && !reg4.test(formData.name)) {
+    return Promise.resolve()
+  } else {
+    return Promise.reject("请输入正确的名称");
+  }
+}
 const formRules = computed(() => {
     const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
     return {
-        name: [requiredRule('')],
+        name: [requiredRule(''), { validator: checkName, trigger: "change" }],
     };
 });
 
+//获取用户信息
+const getUserInfo = async () => {
+  const res = await apiGetUser();
+  if (res.code == 200) {
+    userInfo.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
 const handleOk = async () => {
   await formRef.value.validate();
   closeModal()
@@ -57,7 +83,7 @@ const closeModal = () => {
 }
 
 onMounted(()=>{
-  
+  getUserInfo();
 })
 </script>
 

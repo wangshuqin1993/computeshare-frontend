@@ -47,6 +47,7 @@ const backRoute = (e: Event) => {
     height: 16px;
     background-color: #000000;
     border-radius: 1px;
+    display: none;
   }
 }
 
