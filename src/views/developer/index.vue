@@ -22,7 +22,7 @@
                 </div>
                 <div class="w-[100%] my-[18px] line"></div>
                 <p class="text-[16px] font-medium text-[#595959] mb-[10px]">配置凭证</p>
-                <p class="text-[14px] font-medium">您可以使用任何文本编辑器在您的主目录中创建一个。将以下内容添加到您的凭据文件中，并将 YOUR_ACCESS_KEY 和替换 YOUR_SECRET_KEY 为您的凭据。</p>
+                <p class="text-[14px] font-medium">您可以使用任何文本编辑器在您的主目录中创建一个。将以下内容添加到您的凭据文件中，并将 &lt;YOUR_ACCESS_KEY&gt; 和替换 &lt;YOUR_SECRET_KEY&gt; 为您的凭据。</p>
                 <div class="rounded-[4px] bg-[#FAFBFF] p-[20px] mt-[14px] mb-[20px] text-[14px]">
                     <p>
                         <span class="text-[#C8AD26]">host_base = </span>
@@ -30,11 +30,11 @@
                     </p>
                     <p class="py-[10px]">
                         <span class="text-[#C8AD26]">access_key = </span>
-                        <span class="text-[#60A210]">YOUR_ACCESS_KEY</span>
+                        <span class="text-[#60A210]">&lt;YOUR_ACCESS_KEY&gt;</span>
                     </p>
                     <p>
                         <span class="text-[#C8AD26]">secret_key = </span>
-                        <span class="text-[#60A210]">YOUR_SECRET_KEY</span>
+                        <span class="text-[#60A210]">&lt;YOUR_SECRET_KEY&gt;</span>
                     </p>
                 </div>
             </div>
