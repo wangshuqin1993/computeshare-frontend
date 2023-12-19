@@ -51,7 +51,7 @@
         <a-form-item label="验证码：" name="validateCode" >
           <div class="flex">
             <a-input class="w-[302px] mr-[10px] modal-input" v-model:value="formMobileData.validateCode" placeholder="请输入验证码" autocomplete="off" />
-            <a-button type="primary" class="ant-btn-m" @click="getSmsCode">获取验证码</a-button>
+            <a-button type="primary" class="ant-btn-m" @click="getSmsCode" :disabled="timerValue"><label v-if="timerValue">( {{ timerValue }} ) </label>获取验证码</a-button>
           </div>
         </a-form-item>
         <div class="text-center mt-[50px]">
@@ -83,11 +83,13 @@
 </template>
 <script setup lang="ts">
 import Header from "@/components/Header.vue";
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { apiSMS } from '@/apis/index'
 import { apiGetUser, apiUpdateUser, apiUpdatePassword, apiUpdatePhone } from '@/apis/user';
 
+const timer = ref();
+const timerValue = ref(0);
 const labelCol = { style: { width: '120px' } };
 const isPwd = ref(false);
 const visibleName = ref(false);
@@ -196,6 +198,8 @@ const handleDone = async () => {
 }
 // 获取验证码
 const getSmsCode = async()=>{
+  timerValue.value = 60;
+  setTimer();
   const params = {
     countryCallCoding: formMobileData.countryCallCoding,
     telephoneNumber: formMobileData.telephoneNumber
@@ -245,6 +249,17 @@ const handlePwdDone = async () => {
     message.error("当前密码输入错误！")
   }
 }
+const setTimer = () => {
+  timer.value = window.setInterval(() => {
+    timerValue.value--;
+    if (timerValue.value <= 0) {
+      window.clearInterval(timer.value);
+    }
+  }, 1000);
+}
+onBeforeUnmount(()=>{ //离开当前组件的生命周期执行的方法
+  window.clearInterval(timer.value);
+})
 onMounted(() => {
   getUserInfo();
 })
