@@ -46,19 +46,19 @@ export function getfilesize(size) {//把字节转换成正常文件大小
 }
 
 // 复制文本
-export const copyToClipboard = (text:string) => {
+export const copyToClipboard = (text: string) => {
   if (!navigator.clipboard) {
     fallbackCopyTextToClipboard(text);
     return;
   }
-  navigator.clipboard.writeText(text).then(function() {
+  navigator.clipboard.writeText(text).then(function () {
     message.success("copy success");
-  }, function(err) {
+  }, function (err) {
     message.error("copy failed");
   });
 }
 
-export const fallbackCopyTextToClipboard = async(_items:string) => {
+export const fallbackCopyTextToClipboard = async (_items: string) => {
   // 存储传递过来的数据
   let OrderNumber = _items;
   // 创建一个input 元素
@@ -87,11 +87,11 @@ export const fallbackCopyTextToClipboard = async(_items:string) => {
 // str:传入的字符串
 // start：取前几个字符
 // end: 取后几个字符
-export const getPonitStr = (str:string, start:number, end:number)=>{
+export const getPonitStr = (str: string, start: number, end: number) => {
   const len = start + end
-  if(str.length > len){
-    return str.slice(0,start)+"..."+str.slice(-end)
-  }else{
+  if (str.length > len) {
+    return str.slice(0, start) + "..." + str.slice(-end)
+  } else {
     return str
   }
 }
