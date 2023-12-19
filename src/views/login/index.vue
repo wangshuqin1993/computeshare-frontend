@@ -175,6 +175,7 @@ const resetSlider = () => {
 
 // 获取验证码
 const getSmsCode = async () => {
+  if(!formNoteData.telephoneNumber.trim()) return
   timerValue.value = 60;
   setTimer();
   const params = {
