@@ -25,6 +25,8 @@
 
 <script setup lang="ts">
 import { toRefs, onMounted } from "vue";
+import { apiDeleteBucket, apiDeleteFileFromS3 } from '@/apis/s3_storage';
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   showVisible: {
@@ -34,14 +36,36 @@ const props = defineProps({
   delType: {
     type: String,
     default: ''
+  },
+  bucketName: {
+    type: String,
+    default: ''
+  },
+  bucketKey: {
+    type: String,
+    default: ''
   }
 });
-const { showVisible, delType } = toRefs(props);
-const emit = defineEmits(['closeModal']);
+const { showVisible, delType, bucketName, bucketKey } = toRefs(props);
+const emit = defineEmits(['closeModal','loadTable']);
 
 
 const handleOk = async () => {
-  closeModal()
+  let res: any = '';
+  if (delType.value == 'storage') { //存储桶
+    res = await apiDeleteBucket(bucketName.value);
+  } else if (delType.value == 'folder') { //文件夹
+    // res = await apiDeleteFolderFromS3(bucketName.value, bucketKey.value);
+  } else if (delType.value == 'file') { //文件
+    res = await apiDeleteFileFromS3(bucketName.value, bucketKey.value);
+  }
+  if (res.code == 200) {
+    message.success(res.message)
+    closeModal();
+    emit('loadTable');
+  }else{
+    message.error(res.message)
+  }
 }
 
 const closeModal = () => {

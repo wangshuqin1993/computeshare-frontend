@@ -22,10 +22,10 @@
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">查看</div>
+                  <div class="tips-css" @click="viewStorage(record)">查看</div>
                   <div class="tips-css" @click="copyStorage(record, 'S3 URL')">复制 S3 URL</div>
                   <div class="tips-css" @click="copyStorage(record, 'URL')">复制 URL</div>
-                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">下载文件</div>
+                  <div class="tips-css" @click="downloadStorage(record)">下载文件</div>
                   <div class="tips-css" @click="delStorage(record)">删除</div>
                 </div>
               </template>
@@ -36,7 +36,7 @@
       </a-table>
     </div>
   </div>
-  <CreateFileModal :showVisible="fileVisible" @closeModal="fileVisible=false"></CreateFileModal>
+  <CreateFileModal :showVisible="fileVisible" :bucketName="tempBucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
   <DeleteModal :showVisible="delVisible" :delType="delType" @closeModal="delVisible=false"></DeleteModal>
 </template>
 
@@ -44,17 +44,23 @@
 import { onMounted, reactive, ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
+import { useRouter, useRoute } from "vue-router";
 import { transTimestamp } from '@/utils/dateUtil';
-import { apiStorageList, apiDownloadStorage } from '@/apis/storage';
+import { apiGetBucketList, apiDownloadFileFromS3 } from '@/apis/s3_storage';
 import { message } from 'ant-design-vue';
 import { getfilesize, downloadRequest } from '@/utils/index'
 import CreateFileModal from './components/CreateFileModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
+import { it } from 'date-fns/locale';
 
+const router = useRouter();
+const route = useRoute();
+const bucketName = (route.query.bucket || '').toString();
 const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
 const delVisible = ref(false); //删除。。。
 const delType = ref('folder'); //删除文件：file，文件夹：folder，存储桶：storage
+const tempBucketName = ref('');
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
@@ -111,11 +117,9 @@ const pagination = reactive({
 });
 
 const getTableData = async () => {
-  const parentId = '';
-  const res = await apiStorageList(parentId, {page:pagination.current, size:pagination.pageSize});
+  const res = await apiGetBucketList(bucketName, '');
   if (res.code == 200) {
-    // tableData.value = res.data;
-    tableData.value = [{name:'123123'}]
+    tableData.value = res.data;
   }else{
     message.error(res.message)
   }
@@ -124,19 +128,25 @@ const copyStorage = (item: any, copyType: string) => {
   message.success("已复制 " + copyType);
   console.log("copyStorage:",item, copyType);
 }
-const downloadStorage = async (id: string, name:string) => {
-  const data = await apiDownloadStorage(id);
+// 查看
+const viewStorage = async (item: any) => {
+  router.push("/dashboard/storageDetail?bucket=" + item.bucket);
+}
+// 下载
+const downloadStorage = async (item:any) => {
+  const data = await apiDownloadFileFromS3(item.bucket, item.id);
   try {
-    await downloadRequest(data,name)
+    await downloadRequest(data,item.bucket)
     message.success('下载成功')
   } catch (error:any) {
     message.error('下载失败')
   }
 }
 const delStorage = async (item: any) => {
+  tempBucketName.value = item.bucket;
   delVisible.value = true;
   delType.value = 'folder'; //删除文件：file，文件夹：folder
-  console.log("delStorage:",item);
+  console.log("delStorage:", item);
 
 }
 onMounted(() => {

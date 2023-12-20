@@ -23,19 +23,31 @@
 
 <script setup lang="ts">
 import { toRefs, onMounted } from "vue";
+import { apiClearBucket } from '@/apis/s3_storage'
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   showVisible: {
     type: Boolean,
     default: false,
   },
+  bucketName: {
+    type: String,
+    default: ''
+  }
 });
-const { showVisible } = toRefs(props);
+const { showVisible, bucketName } = toRefs(props);
 const emit = defineEmits(['closeModal']);
 
 
 const handleOk = async () => {
-  closeModal()
+  const res = await apiClearBucket(bucketName.value);
+  if (res.code == 200) {
+    message.success(res.message)
+    closeModal();
+  }else{
+    message.error(res.message)
+  }
 }
 
 const closeModal = () => {
