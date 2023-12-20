@@ -25,42 +25,40 @@
       </a-table>
     </div>
   </div>
-  <CreateFileModal :showVisible="fileVisible" @closeModal="fileVisible=false"></CreateFileModal>
   <StorageInfoModal :showVisible="infoVisible" @closeModal="infoVisible=false"></StorageInfoModal>
-  <ClearStorageModal :showVisible="clearVisible" @closeModal="clearVisible=false"></ClearStorageModal>
-  <DeleteModal :showVisible="delVisible" :delType="delType" @closeModal="delVisible=false"></DeleteModal>
+  <ClearStorageModal :showVisible="clearVisible" :bucketName="tempBucketName" @closeModal="clearVisible=false"></ClearStorageModal>
+  <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="tempBucketName" @loadTable="getTableData" @closeModal="delVisible=false"></DeleteModal>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
-import { apiStorageList } from '@/apis/storage';
+import { apiBucketList, apiGetBucketList } from '@/apis/s3_storage';
 import { message } from 'ant-design-vue';
 import { useRouter } from "vue-router";
-import CreateFileModal from './components/CreateFileModal.vue';
 import StorageInfoModal from './components/StorageInfoModal.vue';
 import ClearStorageModal from './components/ClearStorageModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
 
 const router = useRouter();
 const searchVal = ref('');
-const fileVisible = ref(false); // 创建文件夹
 const infoVisible = ref(false); //存储桶提示信息,此存储桶不为空
 const clearVisible = ref(false); //清空存储桶
 const delVisible = ref(false); //删除。。。
 const delType = ref('storage'); //删除文件：file，文件夹：folder，存储桶：storage
+const tempBucketName = ref('');
 const tableData = ref([])
 const tableColumns = reactive([
   {
     title: '存储桶名称',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'bucket',
+    key: 'bucket',
   },
   {
     title: '修改时间',
-    dataIndex: 'lastModify',
-    key: 'lastModify',
+    dataIndex: 'createdTime',
+    key: 'createdTime',
     width: '30%',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
@@ -95,30 +93,36 @@ const pagination = reactive({
 });
 
 const getTableData = async () => {
-  const parentId = '';
-  const res = await apiStorageList(parentId, {page:pagination.current, size:pagination.pageSize});
+  const res = await apiBucketList();
   if (res.code == 200) {
-    // tableData.value = res.data;
-    tableData.value = [{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'},{name:'123123'}]
+    tableData.value = res.data;
   }else{
     message.error(res.message)
   }
 }
 // 查看
 const viewStorage = (item: any) => {
-  router.push("/dashboard/storageDetail?id=" + item.id);
+  router.push("/dashboard/storageDetail?bucket=" + item.bucket);
   console.log("viewStorage:",item);
 }
 // 清空
 const clearStorage = (item: any) => {
+  tempBucketName.value = item.bucket;
   clearVisible.value = true;
-  console.log("clearStorage:",item);
 }
 // 删除
 const delStorage = async (item: any) => {
-  delVisible.value = true;
-  console.log("delStorage:",item);
-
+  tempBucketName.value = item.bucket;
+  const res = await apiGetBucketList(tempBucketName.value, '');
+  if (res.code == 200) {
+    if (res.data.length > 0) {
+      infoVisible.value = true; //存储桶不为空
+    } else {
+      delVisible.value = true; //删除存储桶
+    }
+  }else{
+    message.error(res.message)
+  }
 }
 onMounted(() => {
   getTableData();

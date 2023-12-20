@@ -17,15 +17,21 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, computed } from "vue";
+import { apiS3CreateFolder } from '@/apis/s3_storage'
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   showVisible: {
     type: Boolean,
     default: false,
   },
+  bucketName: {
+    type: String,
+    default: ''
+  },
 });
-const { showVisible } = toRefs(props);
-const emit = defineEmits(['closeModal']);
+const { showVisible, bucketName } = toRefs(props);
+const emit = defineEmits(['closeModal','loadTable']);
 
 const formRef = ref();
 const formData = reactive({
@@ -41,7 +47,17 @@ const formRules = computed(() => {
 
 const handleOk = async () => {
   await formRef.value.validate();
-  closeModal()
+  let param = {
+    dirName: formData.name
+  }
+  const res = await apiS3CreateFolder(bucketName.value, param);
+  if (res.code == 200) {
+    message.success(res.message)
+    closeModal()
+    emit('loadTable');
+  }else{
+    message.error(res.message)
+  }
 }
 
 const closeModal = () => {
