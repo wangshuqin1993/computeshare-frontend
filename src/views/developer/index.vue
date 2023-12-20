@@ -83,6 +83,8 @@ import Header from "@/components/Header.vue";
 import checkOrDelKeyModal from './components/checkOrDelKeyModal.vue';
 import showKeyModal from './components/showKeyModal.vue';
 import { getPonitStr } from '@/utils/index'
+import { apiCreateKey, apiS3User } from '@/apis/developer'
+import { message } from 'ant-design-vue';
 
 const visibleMobile = ref(false)
 const showKeepKeyVisible = ref(false)
@@ -158,9 +160,27 @@ const closeKeyModal = ()=>{
 }
 
 // 创建密钥
-const createNewKey = ()=>{
-
+const createNewKey = async()=>{
+    const res = await apiCreateKey()
+    if(res.code===200){
+        getKeyList()
+    }else{
+        message.error(res.message)
+    }
 }
+
+const getKeyList = async()=>{
+    const res = await apiS3User()
+    if(res.code===200){
+        secretKeyList.value = res.data
+    }else{
+        message.error(res.message)
+    }
+}
+
+onMounted(()=>{
+    getKeyList()
+})
 
 </script>
 <style lang="less" scoped>
