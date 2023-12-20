@@ -1,7 +1,7 @@
 <!-- 文件存储 -->
 <template>
   <Header />
-  <div class="m-[20px]">
+  <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
       <UploadFile :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
     </div>

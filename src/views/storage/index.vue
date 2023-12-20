@@ -1,7 +1,7 @@
 <!-- 文件存储 -->
 <template>
   <Header />
-  <div class="m-[20px]">
+  <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <div class="flex justify-end">
         <a-input v-model:value="searchVal" placeholder="按名称查找存储桶" class="mb-[20px] w-[40%]">

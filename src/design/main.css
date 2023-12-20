@@ -27,3 +27,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.scroll-contain-h{
+  height: calc(100vh - 205px);
+  overflow-y: auto;
+}

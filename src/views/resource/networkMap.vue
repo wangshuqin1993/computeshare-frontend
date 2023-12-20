@@ -4,24 +4,26 @@
       <div class="menu-title">网络映射</div>
       <a-button type="primary" class="ant-btn-s" @click="createMap">创建映射</a-button>
     </div>
-    <div class="m-[20px] bg-[#ffffff] p-[20px] rounded-[2px]">
-      <a-table :columns="columns" :data-source="networkMapList" :rowClassName="setRowClassName">
-        <template #bodyCell="{ column, text, record }">
-          <template v-if="column.key === 'domains'">
-            <div>{{ text[0]?.name }}</div>
-            <div class="text-[#484FFF] underline underline-offset-1 cursor-pointer" v-if="text?.length > 1" @click="configurationDomain(record)">{{ `等${text.length}个域名` }}</div>
+    <div class="p-[20px] scroll-contain-h">
+      <div class=" bg-[#ffffff] p-[20px] rounded-[2px]">
+        <a-table :columns="columns" :data-source="networkMapList" :rowClassName="setRowClassName">
+          <template #bodyCell="{ column, text, record }">
+            <template v-if="column.key === 'domains'">
+              <div>{{ text[0]?.name }}</div>
+              <div class="text-[#484FFF] underline underline-offset-1 cursor-pointer" v-if="text?.length > 1" @click="configurationDomain(record)">{{ `等${text.length}个域名` }}</div>
+            </template>
+            <template v-if="column.key === 'action'">
+              <span class="text-[16px]">
+                <span @click="editMap(record)" class="text-[#484FFF]">编辑</span>
+                <span @click="configurationDomain(record)" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
+                <a-popconfirm title="确定删除吗?" ok-text="确认" cancel-text="取消" @confirm="delNetwork(record)">
+                  <span class="cursor-pointer text-[#F52222]">删除</span>
+                </a-popconfirm>
+              </span>
+            </template>
           </template>
-          <template v-if="column.key === 'action'">
-            <span class="text-[16px]">
-              <span @click="editMap(record)" class="text-[#484FFF]">编辑</span>
-              <span @click="configurationDomain(record)" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
-              <a-popconfirm title="确定删除吗?" ok-text="确认" cancel-text="取消" @confirm="delNetwork(record)">
-                <span class="cursor-pointer text-[#F52222]">删除</span>
-              </a-popconfirm>
-            </span>
-          </template>
-        </template>
-      </a-table>
+        </a-table>
+      </div>
     </div>
   </div>
   <MapModal v-if="mapValue" :mapValue="mapValue" :formStateData="formStateData" @closeModal="mapValue = false" @createSuccess="createSuccess"></MapModal>
