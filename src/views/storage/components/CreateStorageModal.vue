@@ -4,7 +4,7 @@
       <div class="mt-[32px]">
         <a-form ref="formRef" :rules="formRules" :model="formData">
           <a-form-item label="存储桶名：" name="name">
-            <a-input class="modal-input" v-model:value="formData.name"  :prefix="userInfo.name || userInfo.telephoneNumber + '-'" placeholder="请输入用户名" allow-clear />
+            <a-input class="modal-input" v-model:value="formData.name"  :prefix="prefixValue" placeholder="请输入用户名" allow-clear />
             <div class="text-[#8C8C8C] mt-[10px]">
               存储桶格式为“用户名-自定义名称”。<br>
               整个存储桶名称的长度必须介于 3（最小）到 63（最大）个字符之间。<br>
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, computed } from "vue";
 import { apiGetUser } from '@/apis/user';
+import { apiCreateBucket } from '@/apis/s3_storage';
 import { message } from "ant-design-vue";
 
 const props = defineProps({
@@ -38,6 +39,7 @@ const { showVisible } = toRefs(props);
 const emit = defineEmits(['closeModal']);
 
 const userInfo = ref();
+const prefixValue = ref('');
 const formRef = ref();
 const formData = reactive({
   name: '',
@@ -68,13 +70,24 @@ const formRules = computed(() => {
 const getUserInfo = async () => {
   const res = await apiGetUser();
   if (res.code == 200) {
-    userInfo.value = res.data;
+    // userInfo.value = res.data;
+    prefixValue.value = res.data.name || res.data.telephoneNumber + '-'
   }else{
     message.error(res.message)
   }
 }
 const handleOk = async () => {
   await formRef.value.validate();
+  let param = {
+    bucket: prefixValue.value + formData.name
+  }
+  const res = await apiCreateBucket(param);
+  console.log("res:",res);
+  if (res.code == 200) {
+    // userInfo.value = res.data;
+  }else{
+    message.error(res.message)
+  }
   closeModal()
 }
 
