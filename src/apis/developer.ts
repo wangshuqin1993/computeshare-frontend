@@ -7,3 +7,11 @@ export function apiS3User() {
     method: "get"
   });
 }
+
+// 创建S3密钥
+export function apiCreateKey() {
+    return httpRequest({
+      url: `/v1/s3user/create/key`,
+      method: "post"
+    });
+  }
