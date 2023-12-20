@@ -86,6 +86,7 @@ const getSmsCode = async()=>{
     const res = await apiSMS(params)
     if(res.code==200){
         // formMobileData.validateCode = '000000'
+        message.success('请查收短信验证码')
     }else{
         message.error(res.message)
     }
