@@ -4,7 +4,7 @@
     <div class="menu-title">云服务器</div>
     <a-button type="primary" class="ant-btn-s" @click="createVisible = true;">创建实例</a-button>
   </div>
-  <div class="m-[20px]">
+  <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] scroll-max-h rounded-[2px] p-[20px] overflow-y-auto">
       <div v-if="!instanceList.length"
         class="bg-[#FAFBFF] border border-dashed border-[#A6A6A6] rounded-[8px] py-[100px] px-[120px]">
@@ -228,7 +228,7 @@ onUnmounted(() => {
 
 <style scoped lang="less">
 .scroll-max-h {
-  max-height: calc(100vh - 515px);
+  // max-height: calc(100vh - 515px);
 }
 
 .card-div {
