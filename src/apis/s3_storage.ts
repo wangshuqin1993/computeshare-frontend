@@ -63,6 +63,14 @@ export function apiDeleteFileFromS3(bucketName:string, key:string) {
     });
 }
 
+// 清除桶
+// export function apiClearBucket(bucketName:string) {
+//     return httpRequest({
+//         url: `/v1/s3bucket/${bucketName}`,
+//         method: "delete",
+//     });
+// }
+
 // 删除桶
 export function apiDeleteBucket(bucketName:string) {
     return httpRequest({

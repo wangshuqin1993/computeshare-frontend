@@ -85,7 +85,7 @@ const getSmsCode = async()=>{
     }
     const res = await apiSMS(params)
     if(res.code==200){
-        formMobileData.validateCode = '000000'
+        // formMobileData.validateCode = '000000'
     }else{
         message.error(res.message)
     }
