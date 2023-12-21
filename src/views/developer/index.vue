@@ -52,12 +52,12 @@
                 </div>
                 <a-table :columns="secretKeyColumns" :data-source="secretKeyList">
                     <template #bodyCell="{ column, text, record }">
-                        <template v-if="column.key === 'accessKey'">
+                        <!-- <template v-if="column.key === 'accessKey'">
                             <span>{{ getPonitStr(text,2,2) }}</span>
                         </template>
                         <template v-if="column.key === 'secretKey'">
                             <span>{{ getPonitStr(text,2,2) }}</span>
-                        </template>
+                        </template> -->
                         <template v-if="column.key === 'action'">
                             <a-tooltip placement="left" color="#FFFFFF">
                                 <template #title>
@@ -100,11 +100,13 @@ const secretKeyColumns = [
     title: 'access_key',
     dataIndex: 'accessKey',
     key: 'accessKey',
+    customRender: ({ text }) =>  getPonitStr(text,2,2),
   },
   {
     title: 'secret_key',
     dataIndex: 'secretKey',
     key: 'secretKey',
+    customRender: ({ text }) =>  getPonitStr(text,2,2),
   },
   {
     title: '创建时间',
