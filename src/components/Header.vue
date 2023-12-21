@@ -25,10 +25,10 @@
         <label v-else>{{ sidebarName[curBarName] }}</label>
       </div> 
       <a-button v-if="curBarName === 'Resource'" type="primary" class="ant-btn-s" @click="createVisible = true;">创建实例</a-button>
-      <a-button v-else-if="curBarName === 'Storage'" type="primary" class="ant-btn-s" @click="storageVisible = true;">创建存储桶</a-button>
+      <a-button v-else-if="curBarName === 'Storage'" type="primary" class="ant-btn-s" @click="storageShowModal">创建存储桶</a-button>
     </div>
   </div>
-  <CreateStorageModal :showVisible="storageVisible" @closeModal="storageVisible=false"></CreateStorageModal>
+  <CreateStorageModal ref="storageRef" :showVisible="storageVisible" @closeModal="storageCloseModal"></CreateStorageModal>
   <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible" @handleCancelCreate="createVisible=false;" @handleDone="handleDone"></CreateModal>
 </template>
 <script setup lang="ts">
@@ -46,8 +46,17 @@ const breadCrumbInfo = ref<any>([])
 const curBarName = ref(router.currentRoute.value.name);
 const createVisible = ref(false);
 const storageVisible = ref(false); // 创建存储桶
+const storageRef = ref();
 const emit = defineEmits(["handleDone"])
 
+const storageShowModal = () => {
+  storageVisible.value = true;
+  storageRef.value.formData.name = ''; //清空字段
+}
+const storageCloseModal = () => {
+  storageVisible.value = false;
+  emit('handleDone')
+}
 const handleDone = ()=>{
   createVisible.value = false
   emit('handleDone')

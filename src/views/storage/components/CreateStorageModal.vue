@@ -38,7 +38,6 @@ const props = defineProps({
 const { showVisible } = toRefs(props);
 const emit = defineEmits(['closeModal']);
 
-const userInfo = ref();
 const prefixValue = ref('');
 const formRef = ref();
 const formData = reactive({
@@ -82,13 +81,12 @@ const handleOk = async () => {
     bucket: prefixValue.value + formData.name
   }
   const res = await apiCreateBucket(param);
-  console.log("res:",res);
   if (res.code == 200) {
-    // userInfo.value = res.data;
+    message.success(res.message)
+    closeModal()
   }else{
     message.error(res.message)
   }
-  closeModal()
 }
 
 const closeModal = () => {
@@ -97,6 +95,10 @@ const closeModal = () => {
 
 onMounted(()=>{
   getUserInfo();
+})
+
+defineExpose({
+  formData, //抛出form的ref值
 })
 </script>
 

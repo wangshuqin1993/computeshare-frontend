@@ -7,10 +7,10 @@
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <div class="flex justify-end">
-        <a-input v-model:value="searchVal" placeholder="按名称查找" class="mb-[20px] w-[40%]">
+        <a-input v-model:value="searchVal" @keyup.enter="getTableData" allow-clear placeholder="按名称查找" class="mb-[20px] w-[40%]">
           <template #suffix>
-            <a-tooltip title="Search">
-              <img src="@/assets/icons/search.svg" class="w-[28px]" />
+            <a-tooltip title="Search" @click="getTableData">
+              <img src="@/assets/icons/search.svg" class="w-[28px] cursor-pointer" />
             </a-tooltip>
           </template>
         </a-input>
@@ -36,8 +36,8 @@
       </a-table>
     </div>
   </div>
-  <CreateFileModal :showVisible="fileVisible" :bucketName="tempBucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
-  <DeleteModal :showVisible="delVisible" :delType="delType" @closeModal="delVisible=false"></DeleteModal>
+  <CreateFileModal :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
+  <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="bucketName" @closeModal="delVisible=false" @loadTable="getTableData"></DeleteModal>
 </template>
 
 <script setup lang="ts">
@@ -51,7 +51,6 @@ import { message } from 'ant-design-vue';
 import { getfilesize, downloadRequest } from '@/utils/index'
 import CreateFileModal from './components/CreateFileModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
-import { it } from 'date-fns/locale';
 
 const router = useRouter();
 const route = useRoute();
@@ -60,7 +59,6 @@ const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
 const delVisible = ref(false); //删除。。。
 const delType = ref('folder'); //删除文件：file，文件夹：folder，存储桶：storage
-const tempBucketName = ref('');
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
@@ -143,7 +141,6 @@ const downloadStorage = async (item:any) => {
   }
 }
 const delStorage = async (item: any) => {
-  tempBucketName.value = item.bucket;
   delVisible.value = true;
   delType.value = 'folder'; //删除文件：file，文件夹：folder
   console.log("delStorage:", item);

@@ -1,18 +1,19 @@
 <!-- 文件存储 -->
 <template>
-  <Header />
+  <Header @handleDone="getTableData" />
   <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <div class="flex justify-end">
-        <a-input v-model:value="searchVal" placeholder="按名称查找存储桶" class="mb-[20px] w-[40%]">
+        <a-input v-model:value="searchVal" @keyup.enter="getTableData" allow-clear placeholder="按名称查找存储桶" class="mb-[20px] w-[40%]">
           <template #suffix>
-            <a-tooltip title="Search">
-              <img src="@/assets/icons/search.svg" class="w-[28px]" />
+            <a-tooltip title="Search" @click="getTableData">
+              <img src="@/assets/icons/search.svg" class="w-[28px] cursor-pointer" />
             </a-tooltip>
           </template>
         </a-input>
       </div>
-      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 400px)' }">
+      <!-- :scroll="{x: false, y: 'calc(100vh - 400px)' }" -->
+      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="text-[14px] flex">
@@ -134,7 +135,7 @@ onMounted(() => {
   max-height: calc(100vh - 691px);
 }
 :deep(.ant-table-tbody){
-  max-height: calc(100vh - 691px);
-  overflow-y: auto;
+  // max-height: calc(100vh - 691px);
+  // overflow-y: auto;
 }
 </style>
