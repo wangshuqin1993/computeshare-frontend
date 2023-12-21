@@ -12,6 +12,7 @@ export function apiS3User() {
 export function apiCreateKey() {
     return httpRequest({
       url: `/v1/s3user/create/key`,
-      method: "post"
+      method: "post",
+      data:{}
     });
   }

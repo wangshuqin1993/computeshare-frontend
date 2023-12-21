@@ -88,6 +88,7 @@ export const fallbackCopyTextToClipboard = async (_items: string) => {
 // start：取前几个字符
 // end: 取后几个字符
 export const getPonitStr = (str: string, start: number, end: number) => {
+  if(!str) return
   const len = start + end
   if (str.length > len) {
     return str.slice(0, start) + "..." + str.slice(-end)

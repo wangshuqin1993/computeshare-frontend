@@ -52,10 +52,10 @@
                 </div>
                 <a-table :columns="secretKeyColumns" :data-source="secretKeyList">
                     <template #bodyCell="{ column, text, record }">
-                        <template v-if="column.key === 'access_key'">
+                        <template v-if="column.key === 'accessKey'">
                             <span>{{ getPonitStr(text,2,2) }}</span>
                         </template>
-                        <template v-if="column.key === 'secret_key'">
+                        <template v-if="column.key === 'secretKey'">
                             <span>{{ getPonitStr(text,2,2) }}</span>
                         </template>
                         <template v-if="column.key === 'action'">
@@ -85,6 +85,7 @@ import showKeyModal from './components/showKeyModal.vue';
 import { getPonitStr } from '@/utils/index'
 import { apiCreateKey, apiS3User } from '@/apis/developer'
 import { message } from 'ant-design-vue';
+import { transTimestamp } from '@/utils/dateUtil';
 
 const visibleMobile = ref(false)
 const showKeepKeyVisible = ref(false)
@@ -97,18 +98,19 @@ const keyInfo = ref({
 const secretKeyColumns = [
   {
     title: 'access_key',
-    dataIndex: 'access_key',
-    key: 'access_key',
+    dataIndex: 'accessKey',
+    key: 'accessKey',
   },
   {
     title: 'secret_key',
-    dataIndex: 'secret_key',
-    key: 'secret_key',
+    dataIndex: 'secretKey',
+    key: 'secretKey',
   },
   {
     title: '创建时间',
-    dataIndex: 'time',
-    key: ' time',
+    dataIndex: 'createTime',
+    key: ' createTime',
+    customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
     title: '',
@@ -171,8 +173,9 @@ const createNewKey = async()=>{
 
 const getKeyList = async()=>{
     const res = await apiS3User()
+    // debugger
     if(res.code===200){
-        secretKeyList.value = res.data
+        secretKeyList.value = [res.data]
     }else{
         message.error(res.message)
     }
