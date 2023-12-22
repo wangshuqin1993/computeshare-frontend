@@ -42,8 +42,8 @@ export function apiUploadFileToS3(bucketName: string, params: uploadS3) {
   });
 }
 interface uploadS3 {
-  prefix: string, //prefix：文件夹的名字
-  file: string,
+  prefix?: string, //prefix：文件夹的名字
+  file: any,
 }
 
 // 从s3下载文件

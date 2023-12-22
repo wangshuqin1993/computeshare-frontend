@@ -27,9 +27,7 @@
         v-model:fileList="fileList"
         name="file"
         :showUploadList="false"
-        :before-upload="beforeUpload"
         :customRequest="handleUploadAttachement"
-        :accept="suffixNames"
         @change="handleFileChange"
       >
       <a-button type="primary" ghost class="flex">
@@ -41,7 +39,6 @@
       v-model:fileList="fileList"
       name="folder"
       :showUploadList="false"
-      :before-upload="beforeUpload"
       :customRequest="handleUploadAttachement"
       :multiple="true"
       @change="handleFileChange"
@@ -60,11 +57,13 @@
 <script setup lang="ts">
 import { ref ,toRefs, watch} from "vue";
 import { message, type UploadChangeParam } from 'ant-design-vue';
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { apiUploadScript } from '@/apis/script';
-import { apiUploadStorage } from '@/apis/storage';
+import { apiUploadFileToS3 } from '@/apis/s3_storage';
 
 const router = useRouter();
+const route = useRoute();
+const bucketName = (route.query.bucketName || '').toString();
 const props = defineProps({
   suffixNames:{
     type:String,
@@ -84,12 +83,20 @@ const curBarName = ref(router.currentRoute.value.name);
 
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
+  console.log(222222222222,fileData.file)
+  // debugger
   let formData = new FormData();
-  formData.append('file', fileData.file);
+  await formData.append('file', fileData.file);
+  formData.append('key', 'value');
+  console.log(1111111111,formData)
   let res:any = {};
   //文件存储
   if (curBarName.value === 'StorageDetail') {
-    res = await apiUploadStorage(formData);
+    const params = {
+      prefix: '',
+      file: formData
+    }
+    res = await apiUploadFileToS3(bucketName, params);
   } else {
     res = await apiUploadScript(formData);
     scriptInfo.value = res.data
