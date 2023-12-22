@@ -25,7 +25,6 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, computed } from "vue";
-import { apiGetUser } from '@/apis/user';
 import { apiCreateBucket } from '@/apis/s3_storage';
 import { message } from "ant-design-vue";
 
@@ -34,11 +33,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  prefixValue: {
+    type: String,
+    default: '',
+  }
 });
-const { showVisible } = toRefs(props);
-const emit = defineEmits(['closeModal']);
+const { showVisible, prefixValue } = toRefs(props);
+const emit = defineEmits(['closeModal','loadTable']);
 
-const prefixValue = ref('');
 const formRef = ref();
 const formData = reactive({
   name: '',
@@ -64,17 +66,6 @@ const formRules = computed(() => {
         name: [requiredRule(''), { validator: checkName, trigger: "change" }],
     };
 });
-
-//获取用户信息
-const getUserInfo = async () => {
-  const res = await apiGetUser();
-  if (res.code == 200) {
-    // userInfo.value = res.data;
-    prefixValue.value = res.data.name || res.data.telephoneNumber + '-'
-  }else{
-    message.error(res.message)
-  }
-}
 const handleOk = async () => {
   await formRef.value.validate();
   let param = {
@@ -83,7 +74,8 @@ const handleOk = async () => {
   const res = await apiCreateBucket(param);
   if (res.code == 200) {
     message.success(res.message)
-    closeModal()
+    closeModal();
+    emit('loadTable')
   }else{
     message.error(res.message)
   }
@@ -94,7 +86,6 @@ const closeModal = () => {
 }
 
 onMounted(()=>{
-  getUserInfo();
 })
 
 defineExpose({
