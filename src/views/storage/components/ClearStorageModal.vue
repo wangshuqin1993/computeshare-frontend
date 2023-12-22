@@ -2,7 +2,7 @@
   <div>
     <a-modal v-model:open="showVisible" title="清空存储桶" centered="true" @ok="handleOk" @cancel="closeModal" width="697px" :footer="null">
       <div>
-        <div class="text-[14px] my-[20px]">确认要永久删除存储桶“13700000000-sharecomputer-deployments”中的所有对象？</div>
+        <div class="text-[14px] my-[20px]">确认要永久删除存储桶“{{ bucketName }}”中的所有对象？</div>
         <div class="bg-[#FFFBE6] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
           <div class="pt-[2px]">
             <img src="@/assets/images/IconWarning.png" class="h-[14px] w-[14px] mr-[8px]" />

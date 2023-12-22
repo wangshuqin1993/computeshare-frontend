@@ -3,9 +3,9 @@
     <a-modal v-model:open="showVisible" :title="delType == 'file' ? '删除文件' : delType == 'folder' ? '删除文件夹' :'删除存储桶'" centered="true" @ok="handleOk" @cancel="closeModal" width="697px" :footer="null">
       <div>
         <div class="text-[14px] mt-[20px] text-[#595959]">
-          <label v-if="delType == 'file'">确认要永久删除文件“共享算力.pptx”?</label>
-          <label v-else-if="delType == 'folder'">确认要永久删除文件夹“共享算力文件夹-1”吗？</label>
-          <label v-else>确认要删除存储桶“13700000000-sharecomputer-deployments”？</label>
+          <label v-if="delType == 'file'">确认要永久删除文件“{{ bucketName }}”?</label>
+          <label v-else-if="delType == 'folder'">确认要永久删除文件夹“{{ bucketName }}”吗？</label>
+          <label v-else>确认要删除存储桶“{{ bucketName }}”？</label>
         </div>
         <div if="delType == 'folder'" class="mt-[20px] bg-[#FFFBE6] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
           <div class="pt-[2px]">
