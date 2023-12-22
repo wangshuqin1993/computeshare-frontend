@@ -26,6 +26,7 @@
 import { computed, onBeforeUnmount, reactive, ref, toRefs } from 'vue';
 import { message } from 'ant-design-vue';
 import { apiSMS } from '@/apis/index'
+import { apiVerifySmsCode } from '@/apis/developer'
 
 const props = defineProps({
     visibleMobile:{
@@ -95,12 +96,20 @@ const getSmsCode = async()=>{
 //确认,打开密钥弹框
 const showKey = async() => {
     await formMobileRef.value.validate()
-    if(title.value == '查看密钥'){
-        emit('showKeyModalFn')
+    const res = await apiVerifySmsCode(formMobileData)
+    // 验证码校验通过
+    if(res.code===200){
+        if(title.value == '查看密钥'){
+            emit('showKeyModalFn')
+        }else{
+            // 删除密钥
+            emit('delKeyFn')
+        }
     }else{
-        // 删除密钥
-        emit('delKeyFn')
+        // 不通过
+        message.error(res.message)
     }
+    
 }
 
 const setTimer = () => {

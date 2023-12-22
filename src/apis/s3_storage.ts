@@ -19,7 +19,7 @@ export function apiCreateBucket(params: createBucket) {
   });
 }
 interface createBucket {
-  bucket: string //桶名
+  bucketName: string //桶名
 }
 
 // 获取桶列表

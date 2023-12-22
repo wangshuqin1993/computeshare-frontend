@@ -146,11 +146,13 @@ const DelelteKey = ()=>{
 // 打开密钥弹框
 const showKeyModalFn = ()=>{
     visibleMobile.value = false
+    showKeepKeyVisible.value = true
 }
 
 // 删除密钥
 const delKeyFn = ()=>{
-
+    visibleMobile.value = false
+    getKeyList()
 }
 
 // 保管密钥弹框

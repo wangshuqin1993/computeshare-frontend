@@ -78,7 +78,7 @@ const getUserInfo = async () => {
 const handleOk = async () => {
   await formRef.value.validate();
   let param = {
-    bucket: prefixValue.value + formData.name
+    bucketName: prefixValue.value + formData.name
   }
   const res = await apiCreateBucket(param);
   if (res.code == 200) {
