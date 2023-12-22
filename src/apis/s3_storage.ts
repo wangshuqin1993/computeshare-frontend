@@ -100,13 +100,13 @@ interface s3Folder {
 }
 
 // 删除文件夹
-export function apiDeleteDir(bucketName: string, params:deleteDirParams) {
+export function apiDeleteDir(bucketName: string, params: deleteDirParams) {
   return httpRequest({
     url: `/v1/storage/${bucketName}/mkdir`,
     method: "delete",
     data: params
   });
 }
-interface deleteDirParams{
+interface deleteDirParams {
   dirName: string
 }

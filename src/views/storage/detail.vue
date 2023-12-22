@@ -16,7 +16,8 @@
         </a-input>
         <a-button type="primary" class="ant-btn-s ml-[20px]" @click="fileVisible = true;">创建文件夹</a-button>
       </div>
-      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
+      <!-- :scroll="{x: false, y: 'calc(100vh - 691px)' }" -->
+      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <a-tooltip placement="left" color="#FFFFFF">
@@ -37,7 +38,7 @@
     </div>
   </div>
   <CreateFileModal :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
-  <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="bucketName" @closeModal="delVisible=false" @loadTable="getTableData"></DeleteModal>
+  <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="bucketName" :bucketKey="bucketKey" @closeModal="delVisible=false" @loadTable="getTableData"></DeleteModal>
 </template>
 
 <script setup lang="ts">
@@ -55,6 +56,8 @@ import DeleteModal from './components/DeleteModal.vue';
 const router = useRouter();
 const route = useRoute();
 const bucketName = (route.query.bucketName || '').toString();
+const prefixName = (route.query.prefixName || '').toString(); 
+const bucketKey = ref('');
 const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
 const delVisible = ref(false); //删除。。。
@@ -115,7 +118,7 @@ const pagination = reactive({
 });
 
 const getTableData = async () => {
-  const res = await apiGetBucketList(bucketName, '');
+  const res = await apiGetBucketList(bucketName, prefixName);
   if (res.code == 200) {
     tableData.value = res.data;
   }else{
@@ -128,7 +131,8 @@ const copyStorage = (item: any, copyType: string) => {
 }
 // 查看
 const viewStorage = async (item: any) => {
-  router.push("/dashboard/storageDetail?bucketName=" + item.bucket);
+  // router.push("/dashboard/storageDetail?bucketName=" + item.name);
+  window.open("/dashboard/storageDetail?bucketName=" + bucketName + "&prefixName=" + encodeURIComponent(item.name));
 }
 // 下载
 const downloadStorage = async (item:any) => {
@@ -142,7 +146,9 @@ const downloadStorage = async (item:any) => {
 }
 const delStorage = async (item: any) => {
   delVisible.value = true;
+  bucketKey.value = item.name;
   delType.value = 'folder'; //删除文件：file，文件夹：folder
+  // 根据后缀判断是文件还是文件夹
   console.log("delStorage:", item);
 
 }
@@ -156,7 +162,7 @@ onMounted(() => {
   max-height: calc(100vh - 691px);
 }
 :deep(.ant-table-tbody){
-  max-height: calc(100vh - 691px);
-  overflow-y: auto;
+  // max-height: calc(100vh - 691px);
+  // overflow-y: auto;
 }
 </style>
