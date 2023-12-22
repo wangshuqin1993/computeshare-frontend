@@ -87,14 +87,13 @@ const handleUploadAttachement = async (fileData) => {
   // debugger
   let formData = new FormData();
   await formData.append('file', fileData.file);
-  formData.append('key', 'value');
-  console.log(1111111111,formData)
+  console.log(1111111111,formData.get('file'))
   let res:any = {};
   //文件存储
   if (curBarName.value === 'StorageDetail') {
     const params = {
       prefix: '',
-      file: formData
+      file: formData.get('file')
     }
     res = await apiUploadFileToS3(bucketName, params);
   } else {
