@@ -54,7 +54,7 @@ import DeleteModal from './components/DeleteModal.vue';
 
 const router = useRouter();
 const route = useRoute();
-const bucketName = (route.query.bucket || '').toString();
+const bucketName = (route.query.bucketName || '').toString();
 const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
 const delVisible = ref(false); //删除。。。
@@ -128,7 +128,7 @@ const copyStorage = (item: any, copyType: string) => {
 }
 // 查看
 const viewStorage = async (item: any) => {
-  router.push("/dashboard/storageDetail?bucket=" + item.bucket);
+  router.push("/dashboard/storageDetail?bucketName=" + item.bucket);
 }
 // 下载
 const downloadStorage = async (item:any) => {

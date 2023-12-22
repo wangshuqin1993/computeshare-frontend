@@ -103,7 +103,7 @@ const getTableData = async () => {
 }
 // 查看
 const viewStorage = (item: any) => {
-  router.push("/dashboard/storageDetail?bucket=" + item.bucket);
+  router.push("/dashboard/storageDetail?bucketName=" + item.bucket);
   console.log("viewStorage:",item);
 }
 // 清空
