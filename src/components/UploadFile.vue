@@ -31,7 +31,6 @@
         :customRequest="handleUploadAttachement"
         :accept="suffixNames"
         @change="handleFileChange"
-        :directory="true"
       >
       <a-button type="primary" ghost class="flex">
         <img src="@/assets/images/update-file.png" class="h-[20px] mr-[8px]">
