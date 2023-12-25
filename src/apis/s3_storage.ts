@@ -64,12 +64,12 @@ export function apiDeleteFileFromS3(bucketName: string, key: string) {
 }
 
 // 从s3删除文件夹
-// export function apiDeleteFolderFromS3(bucketName:string, key:string) {
-//     return httpRequest({
-//         url: `/v1/storage/${bucketName}/objects/delete?key=${key}`,
-//         method: "delete",
-//     });
-// }
+export function apiDeleteFolderFromS3(bucketName:string, dirName:string) {
+    return httpRequest({
+        url: `/v1/storage/${bucketName}/mkdir?dirName=${dirName}`,
+        method: "delete",
+    });
+}
 
 // 清除桶
 export function apiClearBucket(bucketName: string) {
