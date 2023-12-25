@@ -20,7 +20,7 @@
         <label v-else-if="curBarName == 'StorageDetail'">
           <bread-crumb :routes="breadCrumbInfo"/>
           <BreadCrumbBack currentName="" />
-          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">13700000000-hamster-deployments</div>
+          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ bucketName }}</div>
         </label>
         <label v-else>{{ sidebarName[curBarName] }}</label>
       </div> 
@@ -33,9 +33,9 @@
 </template>
 <script setup lang="ts">
 import { watch, ref, onMounted } from 'vue';
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { sidebarName } from '@/enums/index';
-import { getPonitStr } from '@/utils/index';
+// import { getPonitStr } from '@/utils/index';
 import { apiGetUser } from '@/apis/user';
 import BreadCrumb from "@/components/BreadCrumb.vue";
 import BreadCrumbBack from "@/components/BreadCrumbBack.vue";
@@ -44,8 +44,10 @@ import CreateStorageModal from '@/views/storage/components/CreateStorageModal.vu
 import { message } from 'ant-design-vue';
 
 const router = useRouter();
+const route = useRoute();
 const breadCrumbInfo = ref<any>([])
 const curBarName = ref(router.currentRoute.value.name);
+const bucketName = (route.query.bucketName || '').toString();
 const createVisible = ref(false);
 const storageVisible = ref(false); // 创建存储桶
 const storageRef = ref();
@@ -105,14 +107,14 @@ watch(() => router.currentRoute.value,
 
 onMounted(async() => {
   breadCrumbInfo.value = [
-    {
-      breadcrumbName:'S3存储桶',
-      path:'/dashboard/storage'
-    },
-    {
-      breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
-      path:''
-    },
+    // {
+    //   breadcrumbName:'S3存储桶',
+    //   path:'/dashboard/storage'
+    // },
+    // {
+    //   breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
+    //   path:''
+    // },
   ]
 })
 

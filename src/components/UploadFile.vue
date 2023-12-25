@@ -22,7 +22,7 @@
       <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
     </div>
   </a-upload-dragger>
-  <div v-if="curBarName == 'StorageDetail'" class="mt-[20px] flex justify-center">
+  <div v-if="curBarName == 'StorageDetail' && false" class="mt-[20px] flex justify-center">
     <a-upload class="mr-[20px]"
         v-model:fileList="fileList"
         name="file"

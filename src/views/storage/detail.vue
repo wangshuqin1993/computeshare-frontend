@@ -23,10 +23,10 @@
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div class="tips-css" @click="viewStorage(record)">查看</div>
-                  <div class="tips-css" @click="copyStorage(record, 'S3 URL')">复制 S3 URL</div>
-                  <div class="tips-css" @click="copyStorage(record, 'URL')">复制 URL</div>
-                  <div class="tips-css" @click="downloadStorage(record)">下载文件</div>
+                  <div v-if="!suffixRegex.test(record.name)" class="tips-css" @click="viewStorage(record)">查看</div>
+                  <div class="tips-css" @click="copyToClipboard(record.s3Url)">复制 S3 URL</div>
+                  <div class="tips-css" @click="copyToClipboard(record.url)">复制 URL</div>
+                  <div v-if="suffixRegex.test(record.name)" class="tips-css" @click="downloadStorage(record)">下载文件</div>
                   <div class="tips-css" @click="delStorage(record)">删除</div>
                 </div>
               </template>
@@ -49,7 +49,7 @@ import { useRouter, useRoute } from "vue-router";
 import { transTimestamp } from '@/utils/dateUtil';
 import { apiGetBucketList, apiDownloadFileFromS3 } from '@/apis/s3_storage';
 import { message } from 'ant-design-vue';
-import { getfilesize, downloadRequest } from '@/utils/index'
+import { getfilesize, downloadRequest, copyToClipboard } from '@/utils/index'
 import CreateFileModal from './components/CreateFileModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
 
@@ -65,6 +65,7 @@ const delType = ref('folder'); //删除文件：file，文件夹：folder，存�
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
+const suffixRegex = /\.[A-Za-z]+$/i;
 const tableColumns = reactive([
   {
     title: '名称',
@@ -125,10 +126,6 @@ const getTableData = async () => {
     message.error(res.message)
   }
 }
-const copyStorage = (item: any, copyType: string) => {
-  message.success("已复制 " + copyType);
-  console.log("copyStorage:",item, copyType);
-}
 // 查看
 const viewStorage = async (item: any) => {
   // router.push("/dashboard/storageDetail?bucketName=" + item.name);
@@ -136,9 +133,9 @@ const viewStorage = async (item: any) => {
 }
 // 下载
 const downloadStorage = async (item:any) => {
-  const data = await apiDownloadFileFromS3(item.bucket, item.id);
+  const data = await apiDownloadFileFromS3(bucketName, item.name);
   try {
-    await downloadRequest(data,item.bucket)
+    await downloadRequest(data,item.name)
     message.success('下载成功')
   } catch (error:any) {
     message.error('下载失败')
@@ -147,9 +144,11 @@ const downloadStorage = async (item:any) => {
 const delStorage = async (item: any) => {
   delVisible.value = true;
   bucketKey.value = item.name;
-  delType.value = 'folder'; //删除文件：file，文件夹：folder
-  // 根据后缀判断是文件还是文件夹
-  console.log("delStorage:", item);
+  if (suffixRegex.test(item.name)) {
+    delType.value = 'file'; //删除文件：file，文件夹：folder
+  } else {
+    delType.value = 'folder'; //删除文件：file，文件夹：folder
+  }
 
 }
 onMounted(() => {

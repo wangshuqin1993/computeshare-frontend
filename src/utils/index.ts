@@ -88,7 +88,7 @@ export const fallbackCopyTextToClipboard = async (_items: string) => {
 // start：取前几个字符
 // end: 取后几个字符
 export const getPonitStr = (str: string, start: number, end: number) => {
-  if(!str) return
+  if (!str) return
   const len = start + end
   if (str.length > len) {
     return str.slice(0, start) + "..." + str.slice(-end)
@@ -103,20 +103,20 @@ export const getPonitStr = (str: string, start: number, end: number) => {
 // domain:  . + 当前域名， 比如当前域名为'computeshare.newtouch.com' , 此次domain 配置为： '.computeshare.newtouch.com'
 export const cookieUtil = {
   /*设置cookie*/
-  set:function(name, value, expires, domain){
+  set: function (name, value, expires, domain) {
     let cookie = name + "=" + value;
     let expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + expires);
     cookie += "; expires=" + expiresDate.toUTCString();
-    if(domain){
-        cookie += "; domain=" + domain;
+    if (domain) {
+      cookie += "; domain=" + domain;
     }
     document.cookie = cookie;
     // debugger
   },
 
   /*获取cookie*/
-  get:function(name){
+  get: function (name) {
     var cookieName = encodeURIComponent(name);
     /*正则表达式获取cookie*/
     var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
