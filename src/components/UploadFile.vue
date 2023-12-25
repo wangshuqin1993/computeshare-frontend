@@ -43,6 +43,7 @@
       :multiple="true"
       @change="handleFileChange"
       :directory="true"
+      :before-upload="beforeUpload"
       >
       <a-button type="primary" ghost class="flex">
         <img src="@/assets/images/update-folder.png" class="h-[20px] mr-[8px]">
@@ -83,7 +84,7 @@ const curBarName = ref(router.currentRoute.value.name);
 
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
-  console.log(222222222222,fileData.file)
+  console.log(222222222222,fileData)
   // debugger
   let formData = new FormData();
   await formData.append('file', fileData.file);
@@ -112,6 +113,10 @@ function handleDrop(e: DragEvent) {
 }
 //文件后缀名验证
 const beforeUpload = (file) => {
+  // 在这里处理文件夹名称
+  const folderName = file.webkitRelativePath.split('/'); // 从文件路径中提取文件夹名称
+  console.log('在这里处理文件夹名称',folderName)
+  console.log('hhhhhh',file)
   if(suffixNames.value=='.*'){
     return true
   }

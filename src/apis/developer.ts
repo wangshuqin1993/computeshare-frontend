@@ -30,3 +30,19 @@ export function apiCreateKey() {
       data:{}
     });
   }
+
+// 查看s3密钥
+export function apiGetKey(id:string, params:phoneCodeParams) {
+  return httpRequest({
+    url: `/v1/s3user/${id}?countryCallCoding=${encodeURIComponent(params.countryCallCoding)}&telephoneNumber=${params.telephoneNumber}&validateCode=${params.validateCode}`,
+    method: "get",
+  });
+}
+
+// 删除s3密钥
+export function apiDelKey(id:string, params:phoneCodeParams) {
+  return httpRequest({
+    url: `/v1/s3user/${id}?countryCallCoding=${encodeURIComponent(params.countryCallCoding)}&telephoneNumber=${params.telephoneNumber}&validateCode=${params.validateCode}`,
+    method: "delete",
+  });
+}

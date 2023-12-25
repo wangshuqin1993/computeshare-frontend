@@ -100,10 +100,10 @@ const showKey = async() => {
     // 验证码校验通过
     if(res.code===200){
         if(title.value == '查看密钥'){
-            emit('showKeyModalFn')
+            emit('showKeyModalFn',formMobileData)
         }else{
             // 删除密钥
-            emit('delKeyFn')
+            emit('delKeyFn',formMobileData)
         }
     }else{
         // 不通过

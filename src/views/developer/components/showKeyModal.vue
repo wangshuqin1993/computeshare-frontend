@@ -4,14 +4,14 @@
             <a-form :model="keyInfo" ref="formMobileRef" :label-col="labelCol">
                 <a-form-item label="access_key：">
                     <div class="flex">
-                        <a-input :disabled="true" class="modal-input" v-model:value="keyInfo.access_key" autocomplete="off" />
-                        <img src="@/assets/images/copy.svg" class="w-[28px] inline-block ml-[20px] mb-[2px] cursor-pointer" @click="copyToClipboard(keyInfo.access_key)"/>
+                        <a-input :disabled="true" class="modal-input" v-model:value="keyInfo.accessKey" autocomplete="off" />
+                        <img src="@/assets/images/copy.svg" class="w-[28px] inline-block ml-[20px] mb-[2px] cursor-pointer" @click="copyToClipboard(keyInfo.accessKey)"/>
                     </div>
                 </a-form-item>
                 <a-form-item label="secret_key：">
                     <div class="flex">
-                        <a-input :disabled="true" class="modal-input" v-model:value="keyInfo.secret_key" autocomplete="off" />
-                        <img src="@/assets/images/copy.svg" class="w-[28px] inline-block ml-[20px] mb-[2px] cursor-pointer" @click="copyToClipboard(keyInfo.secret_key)"/>
+                        <a-input :disabled="true" class="modal-input" v-model:value="keyInfo.secretKey" autocomplete="off" />
+                        <img src="@/assets/images/copy.svg" class="w-[28px] inline-block ml-[20px] mb-[2px] cursor-pointer" @click="copyToClipboard(keyInfo.secretKey)"/>
                     </div>
                 </a-form-item>
                 <div class="text-center mt-[50px]">

@@ -78,35 +78,40 @@
     <showKeyModal :showKeepKeyVisible="showKeepKeyVisible" :keyInfo="keyInfo" @closeKeyModal="closeKeyModal"/>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Header from "@/components/Header.vue";
 import checkOrDelKeyModal from './components/checkOrDelKeyModal.vue';
 import showKeyModal from './components/showKeyModal.vue';
-import { getPonitStr } from '@/utils/index'
-import { apiCreateKey, apiS3User } from '@/apis/developer'
+import { apiCreateKey, apiS3User, apiGetKey, apiDelKey } from '@/apis/developer'
 import { message } from 'ant-design-vue';
 import { transTimestamp } from '@/utils/dateUtil';
 
 const visibleMobile = ref(false)
 const showKeepKeyVisible = ref(false)
 const title = ref('')
-const keyInfo = ref({
-    access_key: 'ptif2233yntj8r2ptife',
-    secret_key: 'ptif2233yntj8r2ptife'
-})
+const keyInfo = ref({})
+
+// 密钥 id 
+const id = ref('')
+
+interface phoneCodeParams {
+  countryCallCoding: string,
+  telephoneNumber: string,
+  validateCode: string,
+}
 
 const secretKeyColumns = [
   {
     title: 'access_key',
     dataIndex: 'accessKey',
     key: 'accessKey',
-    customRender: ({ text }) =>  getPonitStr(text,2,2),
+    // customRender: ({ text }) =>  getPonitStr(text,2,2),
   },
   {
     title: 'secret_key',
     dataIndex: 'secretKey',
     key: 'secretKey',
-    customRender: ({ text }) =>  getPonitStr(text,2,2),
+    // customRender: ({ text }) =>  getPonitStr(text,2,2),
   },
   {
     title: '创建时间',
@@ -121,38 +126,47 @@ const secretKeyColumns = [
   },
 ];
 
-const secretKeyList = ref([
-    {
-        access_key: 'mo11111111111111111111111111111111111111ng',
-        secret_key: 'Ab2222222222222222222222222222222222222234',
-        time: '2023.09.08 17:18'
-    }
-])
+const secretKeyList = ref([{}])
 
 const closeCheckKeyModal = ()=>{
     visibleMobile.value = false
 }
 
-const checkKey = ()=>{
+const checkKey = (record:any)=>{
     title.value = "查看密钥"
     visibleMobile.value = true
+    id.value = record.id
 }
 
-const DelelteKey = ()=>{
+const DelelteKey = (record:any)=>{
     title.value = "删除密钥"
     visibleMobile.value = true
+    id.value = record.id
 }
 
 // 打开密钥弹框
-const showKeyModalFn = ()=>{
+const showKeyModalFn = async(formMobileData:phoneCodeParams)=>{
+    console.log(111111111111111,id.value,formMobileData)
     visibleMobile.value = false
-    showKeepKeyVisible.value = true
+    const res = await apiGetKey(id.value, formMobileData)
+    if(res.code===200){
+        keyInfo.value = res.data
+        showKeepKeyVisible.value = true
+    }else{
+        message.error(res.message)
+    }
 }
 
 // 删除密钥
-const delKeyFn = ()=>{
+const delKeyFn = async(formMobileData:phoneCodeParams)=>{
+    console.log(222222222222222,id.value,formMobileData)
     visibleMobile.value = false
-    getKeyList()
+    const res = await apiDelKey(id.value, formMobileData)
+    if(res.code===200){
+        getKeyList()
+    }else{
+        message.error(res.message)
+    }
 }
 
 // 保管密钥弹框
@@ -179,7 +193,7 @@ const getKeyList = async()=>{
     const res = await apiS3User()
     // debugger
     if(res.code===200){
-        secretKeyList.value = [res.data]
+        secretKeyList.value = res.data
     }else{
         message.error(res.message)
     }
