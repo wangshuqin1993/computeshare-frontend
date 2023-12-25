@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="text-center">
-          <a-button type="primary" class="ant-btn-m mt-[50px]" @click="handleOk">清空</a-button>
+          <a-button :loading="clearLoading" type="primary" class="ant-btn-m mt-[50px]" @click="handleOk">清空</a-button>
         </div>
       </div>
     </a-modal>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, onMounted } from "vue";
+import { toRefs, onMounted, ref } from "vue";
 import { apiClearBucket } from '@/apis/s3_storage'
 import { message } from "ant-design-vue";
 
@@ -38,10 +38,12 @@ const props = defineProps({
 });
 const { showVisible, bucketName } = toRefs(props);
 const emit = defineEmits(['closeModal']);
-
+const clearLoading = ref(false)
 
 const handleOk = async () => {
+  clearLoading.value = true
   const res = await apiClearBucket(bucketName.value);
+  clearLoading.value = false
   if (res.code == 200) {
     message.success(res.message)
     closeModal();

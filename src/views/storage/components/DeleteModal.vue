@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="text-center">
-          <a-button type="primary" class="ant-btn-m mt-[50px]" @click="handleOk">删除</a-button>
+          <a-button :loading="delLoading" type="primary" class="ant-btn-m mt-[50px]" @click="handleOk">删除</a-button>
         </div>
       </div>
     </a-modal>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, onMounted } from "vue";
+import { toRefs, onMounted, ref } from "vue";
 import { apiDeleteBucket, apiDeleteFileFromS3 } from '@/apis/s3_storage';
 import { message } from "ant-design-vue";
 
@@ -49,8 +49,11 @@ const props = defineProps({
 const { showVisible, delType, bucketName, bucketKey } = toRefs(props);
 const emit = defineEmits(['closeModal','loadTable']);
 
+// 删除loading
+const delLoading = ref(false)
 
 const handleOk = async () => {
+  delLoading.value = true
   let res: any = '';
   if (delType.value == 'storage') { //存储桶
     res = await apiDeleteBucket(bucketName.value);
@@ -59,6 +62,7 @@ const handleOk = async () => {
   } else if (delType.value == 'file') { //文件
     res = await apiDeleteFileFromS3(bucketName.value, bucketKey.value);
   }
+  delLoading.value = false
   if (res.code == 200) {
     message.success(res.message)
     closeModal();
