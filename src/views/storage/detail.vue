@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
 import Header from "@/components/Header.vue";
 import { useRouter, useRoute } from "vue-router";
@@ -55,8 +55,8 @@ import DeleteModal from './components/DeleteModal.vue';
 
 const router = useRouter();
 const route = useRoute();
-const bucketName = (route.query.bucketName || '').toString();
-const prefixName = (route.query.prefixName || '').toString(); 
+const bucketName = ref<any>('');
+const prefixName = ref<any>('');
 const bucketKey = ref('');
 const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
@@ -119,7 +119,10 @@ const pagination = reactive({
 });
 
 const getTableData = async () => {
-  const res = await apiGetBucketList(bucketName, prefixName);
+  // 改赋值，返回才可以刷新界面
+  bucketName.value = route.query.bucketName || ''
+  prefixName.value = route.query.prefixName || ''
+  const res = await apiGetBucketList(bucketName.value, prefixName.value);
   if (res.code == 200) {
     tableData.value = res.data;
   }else{
@@ -129,11 +132,11 @@ const getTableData = async () => {
 // 查看
 const viewStorage = async (item: any) => {
   // router.push("/dashboard/storageDetail?bucketName=" + item.name);
-  window.open("/dashboard/storageDetail?bucketName=" + bucketName + "&prefixName=" + encodeURIComponent(item.name));
+  router.push("/dashboard/storageDetail?bucketName=" + bucketName.value + "&prefixName=" + encodeURIComponent(item.name));
 }
 // 下载
 const downloadStorage = async (item:any) => {
-  const data = await apiDownloadFileFromS3(bucketName, item.name);
+  const data = await apiDownloadFileFromS3(bucketName.value, item.name);
   try {
     await downloadRequest(data,item.name)
     message.success('下载成功')
@@ -154,6 +157,17 @@ const delStorage = async (item: any) => {
 onMounted(() => {
   getTableData();
 })
+
+watch(() => route.fullPath,
+  () => {
+    if(route.fullPath.indexOf('storageDetail') != -1){
+      getTableData();
+    }
+  },
+  {
+    immediate:true
+  }
+)
 </script>
 
 <style scoped lang="less">
