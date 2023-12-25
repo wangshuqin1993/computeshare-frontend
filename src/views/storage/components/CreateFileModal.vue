@@ -8,7 +8,7 @@
           </a-form-item>
         </a-form>
         <div class="text-center">
-          <a-button type="primary" class="ant-btn-m mt-[50px]" @click="handleOk">创建</a-button>
+          <a-button :loading="loading" type="primary" class="ant-btn-m mt-[50px]" @click="handleOk">创建</a-button>
         </div>
       </div>
     </a-modal>
@@ -33,6 +33,7 @@ const props = defineProps({
 const { showVisible, bucketName } = toRefs(props);
 const emit = defineEmits(['closeModal','loadTable']);
 
+const loading = ref(false);
 const formRef = ref();
 const formData = reactive({
   name: '',
@@ -50,7 +51,9 @@ const handleOk = async () => {
   let param = {
     dirName: formData.name
   }
+  loading.value = true;
   const res = await apiS3CreateFolder(bucketName.value, param);
+  loading.value = false;
   if (res.code == 200) {
     message.success(res.message)
     closeModal()

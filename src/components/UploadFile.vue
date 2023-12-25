@@ -22,7 +22,7 @@
       <p class="ant-upload-hint">支持扩展名：{{ suffixText }}</p>
     </div>
   </a-upload-dragger>
-  <div v-if="curBarName == 'StorageDetail' && false" class="mt-[20px] flex justify-center">
+  <div v-if="curBarName == 'StorageDetail'" class="mt-[20px] flex justify-center">
     <a-upload class="mr-[20px]"
         v-model:fileList="fileList"
         name="file"
@@ -35,7 +35,7 @@
         上传文件
       </a-button>
     </a-upload>
-    <a-upload
+    <a-upload v-if="false"
       v-model:fileList="fileList"
       name="folder"
       :showUploadList="false"
@@ -50,7 +50,6 @@
         上传文件夹
       </a-button>
     </a-upload>
-    {{fileList}}
   </div>
 
 </template>
