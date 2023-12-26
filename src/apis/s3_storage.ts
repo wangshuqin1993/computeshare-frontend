@@ -109,12 +109,3 @@ interface s3Folder {
   dirName: string, // 文件夹名称
   prefix: string, // 层级
 }
-
-// 删除文件夹
-export function apiDeleteDir(bucketName: string, params: s3Folder) {
-  return httpRequest({
-    url: `/v1/storage/${bucketName}/mkdir`,
-    method: "delete",
-    data: params
-  });
-}
