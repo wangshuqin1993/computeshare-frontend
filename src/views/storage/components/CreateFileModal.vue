@@ -32,8 +32,12 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  prefixName: {
+    type: String,
+    default: ''
+  }
 });
-const { showVisible, bucketName } = toRefs(props);
+const { showVisible, bucketName, prefixName } = toRefs(props);
 const emit = defineEmits(['closeModal','loadTable']);
 
 const loading = ref(false);
