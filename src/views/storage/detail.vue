@@ -7,7 +7,7 @@
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <div class="flex justify-end">
-        <a-input v-model:value="searchVal" @keyup.enter="getTableData" allow-clear placeholder="按名称查找" class="mb-[20px] w-[40%]">
+        <a-input v-model:value="searchVal" @keyup.enter="getTableData" @change="checkChange" allow-clear placeholder="按名称查找" class="mb-[20px] w-[40%]">
           <template #suffix>
             <a-tooltip title="Search" @click="getTableData">
               <img src="@/assets/icons/search.svg" class="w-[28px] cursor-pointer" />
@@ -117,7 +117,11 @@ const pagination = reactive({
     getTableData()
   },
 });
-
+const checkChange = (row) => {
+  if (row.type == 'click') {
+    getTableData();
+  }
+}
 const getTableData = async () => {
   // 改赋值，返回才可以刷新界面
   bucketName.value = route.query.bucketName || ''
