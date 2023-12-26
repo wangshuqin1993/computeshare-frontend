@@ -70,6 +70,9 @@ const closeModal = () => {
 onMounted(()=>{
   
 })
+defineExpose({
+  formData, //抛出form值
+})
 </script>
 
 <style scoped lang="less">

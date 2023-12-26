@@ -14,7 +14,7 @@
             </a-tooltip>
           </template>
         </a-input>
-        <a-button type="primary" class="ant-btn-s ml-[20px]" @click="fileVisible = true;">创建文件夹</a-button>
+        <a-button type="primary" class="ant-btn-s ml-[20px]" @click="createFile">创建文件夹</a-button>
       </div>
       <!-- :scroll="{x: false, y: 'calc(100vh - 691px)' }" -->
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
@@ -37,7 +37,7 @@
       </a-table>
     </div>
   </div>
-  <CreateFileModal :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
+  <CreateFileModal ref="createFileRef" :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
   <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="bucketName" :bucketKey="bucketKey" @closeModal="delVisible=false" @loadTable="getTableData"></DeleteModal>
 </template>
 
@@ -57,6 +57,7 @@ const router = useRouter();
 const route = useRoute();
 const bucketName = ref<any>('');
 const prefixName = ref<any>('');
+const createFileRef = ref();
 const bucketKey = ref('');
 const searchVal = ref('');
 const fileVisible = ref(false); // 创建文件夹
@@ -133,6 +134,10 @@ const getTableData = async () => {
   }else{
     message.error(res.message)
   }
+}
+const createFile = () => {
+  fileVisible.value = true;
+  createFileRef.value.formData.name = ''; //清空字段
 }
 // 查看
 const viewStorage = async (item: any) => {
