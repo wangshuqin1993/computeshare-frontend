@@ -74,9 +74,9 @@ export function apiDeleteFileFromS3(bucketName: string, key: string) {
 }
 
 // 从s3删除文件夹
-export function apiDeleteFolderFromS3(bucketName:string, dirName:string) {
+export function apiDeleteFolderFromS3(bucketName:string, params:s3Folder) {
     return httpRequest({
-        url: `/v1/storage/${bucketName}/mkdir?dirName=${dirName}`,
+        url: `/v1/storage/${bucketName}/mkdir?dirName=${params.dirName}&prefix=${params.prefix}`,
         method: "delete",
     });
 }
@@ -111,13 +111,10 @@ interface s3Folder {
 }
 
 // 删除文件夹
-export function apiDeleteDir(bucketName: string, params: deleteDirParams) {
+export function apiDeleteDir(bucketName: string, params: s3Folder) {
   return httpRequest({
     url: `/v1/storage/${bucketName}/mkdir`,
     method: "delete",
     data: params
   });
-}
-interface deleteDirParams {
-  dirName: string
 }

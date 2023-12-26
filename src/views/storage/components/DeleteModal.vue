@@ -25,8 +25,11 @@
 
 <script setup lang="ts">
 import { toRefs, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import { apiDeleteBucket, apiDeleteFileFromS3, apiDeleteFolderFromS3 } from '@/apis/s3_storage';
 import { message } from "ant-design-vue";
+
+const route = useRoute()
 
 const props = defineProps({
   showVisible: {
@@ -58,7 +61,11 @@ const handleOk = async () => {
   if (delType.value == 'storage') { //存储桶
     res = await apiDeleteBucket(bucketName.value);
   } else if (delType.value == 'folder') { //文件夹
-    res = await apiDeleteFolderFromS3(bucketName.value, bucketKey.value);
+    const params = {
+      dirName: bucketKey.value,
+      prefix: route.query.prefix || route.query.prefixName,
+    }
+    res = await apiDeleteFolderFromS3(bucketName.value, params);
   } else if (delType.value == 'file') { //文件
     res = await apiDeleteFileFromS3(bucketName.value, bucketKey.value);
   }
