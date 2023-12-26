@@ -63,7 +63,7 @@ const handleOk = async () => {
   } else if (delType.value == 'folder') { //文件夹
     const params = {
       dirName: bucketKey.value,
-      prefix: route.query.prefix || route.query.prefixName,
+      prefix: route.query.prefix || route.query.prefixName || ''
     }
     res = await apiDeleteFolderFromS3(bucketName.value, params);
   } else if (delType.value == 'file') { //文件
