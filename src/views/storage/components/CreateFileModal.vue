@@ -29,8 +29,12 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  prefixName: {
+    type: String,
+    default: ''
+  }
 });
-const { showVisible, bucketName } = toRefs(props);
+const { showVisible, bucketName, prefixName } = toRefs(props);
 const emit = defineEmits(['closeModal','loadTable']);
 
 const loading = ref(false);
@@ -48,8 +52,9 @@ const formRules = computed(() => {
 
 const handleOk = async () => {
   await formRef.value.validate();
+  let prefix = prefixName.value ? prefixName.value + '/' : '' 
   let param = {
-    dirName: formData.name
+    dirName: prefix + formData.name
   }
   loading.value = true;
   const res = await apiS3CreateFolder(bucketName.value, param);

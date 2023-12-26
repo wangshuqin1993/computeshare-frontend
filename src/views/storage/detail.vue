@@ -37,7 +37,7 @@
       </a-table>
     </div>
   </div>
-  <CreateFileModal ref="createFileRef" :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
+  <CreateFileModal ref="createFileRef" :prefixName="prefixName" :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
   <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="bucketName" :bucketKey="bucketKey" @closeModal="delVisible=false" @loadTable="getTableData"></DeleteModal>
 </template>
 
@@ -146,7 +146,8 @@ const createFile = () => {
 // 查看
 const viewStorage = async (item: any) => {
   // router.push("/dashboard/storageDetail?bucketName=" + item.name);
-  router.push("/dashboard/storageDetail?bucketName=" + bucketName.value + "&prefixName=" + encodeURIComponent(item.name));
+  let prefix = item.prefix ? item.prefix + '/' : '' + item.name
+  router.push("/dashboard/storageDetail?bucketName=" + bucketName.value + "&prefixName=" + encodeURIComponent(prefix));
 }
 // 下载
 const downloadStorage = async (item:any) => {
