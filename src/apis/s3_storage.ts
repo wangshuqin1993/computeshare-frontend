@@ -107,6 +107,7 @@ export function apiS3CreateFolder(bucketName: string, params: s3Folder) {
 }
 interface s3Folder {
   dirName: string, // 文件夹名称
+  prefix: string, // 层级
 }
 
 // 删除文件夹

@@ -17,8 +17,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
 import { apiS3CreateFolder } from '@/apis/s3_storage'
 import { message } from "ant-design-vue";
+
+const route = useRoute()
 
 const props = defineProps({
   showVisible: {
@@ -48,11 +51,12 @@ const formRules = computed(() => {
 
 const handleOk = async () => {
   await formRef.value.validate();
-  let param = {
-    dirName: formData.name
+  let params = {
+    dirName: formData.name,
+    prefix: route.query.prefix || route.query.prefixName
   }
   loading.value = true;
-  const res = await apiS3CreateFolder(bucketName.value, param);
+  const res = await apiS3CreateFolder(bucketName.value, params);
   loading.value = false;
   if (res.code == 200) {
     message.success(res.message)

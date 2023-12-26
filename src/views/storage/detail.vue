@@ -125,7 +125,7 @@ const checkChange = (row) => {
 const getTableData = async () => {
   // 改赋值，返回才可以刷新界面
   bucketName.value = route.query.bucketName || ''
-  prefixName.value = route.query.prefixName || ''
+  prefixName.value = route.query.prefix || route.query.prefixName || ''
   const params = {
     page: pagination.current,
     size: pagination.pageSize,
@@ -146,7 +146,8 @@ const createFile = () => {
 // 查看
 const viewStorage = async (item: any) => {
   // router.push("/dashboard/storageDetail?bucketName=" + item.name);
-  router.push("/dashboard/storageDetail?bucketName=" + bucketName.value + "&prefixName=" + encodeURIComponent(item.name));
+  const str = item.prefix ? item.prefix+'/'+item.name : item.name
+  router.push("/dashboard/storageDetail?bucketName=" + bucketName.value + "&prefixName=" + encodeURIComponent(item.name) + "&prefix="+encodeURIComponent(str));
 }
 // 下载
 const downloadStorage = async (item:any) => {
