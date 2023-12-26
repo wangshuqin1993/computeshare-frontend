@@ -126,14 +126,14 @@ const clearStorage = (item: any) => {
 const delStorage = async (item: any) => {
   tempBucketName.value = item.bucket;
   const params = {
-    page: pagination.current,
-    size: pagination.pageSize,
+    page: 1,
+    size: 10,
     prefix: '',
-    name: searchVal.value
+    name: ''
   }
   const res = await apiGetBucketList(tempBucketName.value,params);
   if (res.code == 200) {
-    if (res?.data?.list?.length > 0) {
+    if (res.data.list.length > 0) {
       infoVisible.value = true; //存储桶不为空
     } else {
       delVisible.value = true; //删除存储桶
