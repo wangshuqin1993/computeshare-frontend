@@ -67,7 +67,8 @@ const handleOk = async () => {
     }
     res = await apiDeleteFolderFromS3(bucketName.value, params);
   } else if (delType.value == 'file') { //文件
-    res = await apiDeleteFileFromS3(bucketName.value, bucketKey.value);
+    const str = route.query.prefix ? route.query.prefix+'/'+bucketKey.value : bucketKey.value
+    res = await apiDeleteFileFromS3(bucketName.value, str);
   }
   delLoading.value = false
   if (res.code == 200) {

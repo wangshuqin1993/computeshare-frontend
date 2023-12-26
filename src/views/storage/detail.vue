@@ -151,7 +151,8 @@ const viewStorage = async (item: any) => {
 }
 // 下载
 const downloadStorage = async (item:any) => {
-  const data = await apiDownloadFileFromS3(bucketName.value, item.name);
+  const str = item.prefix ? item.prefix+'/'+item.name : item.name
+  const data = await apiDownloadFileFromS3(bucketName.value, str);
   try {
     await downloadRequest(data,item.name)
     message.success('下载成功')
