@@ -175,6 +175,10 @@ onMounted(() => {
 watch(() => route.fullPath,
   () => {
     if(route.fullPath.indexOf('storageDetail') != -1){
+      pagination.current = 1
+      pagination.pageSize = 10
+      prefixName.value = ''
+      searchVal.value = ''
       getTableData();
     }
   }

@@ -32,16 +32,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
 import { apiBucketList, apiGetBucketList } from '@/apis/s3_storage';
 import { message } from 'ant-design-vue';
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import StorageInfoModal from './components/StorageInfoModal.vue';
 import ClearStorageModal from './components/ClearStorageModal.vue';
 import DeleteModal from './components/DeleteModal.vue';
 
+const route = useRoute()
 const router = useRouter();
 const searchVal = ref('');
 const infoVisible = ref(false); //存储桶提示信息,此存储桶不为空
@@ -138,6 +139,17 @@ const delStorage = async (item: any) => {
 onMounted(() => {
   getTableData();
 })
+
+watch(() => route.fullPath,
+  () => {
+    if(route.fullPath.indexOf('Storage') != -1){
+      pagination.current = 1
+      pagination.pageSize = 10
+      searchVal.value = ''
+      getTableData();
+    }
+  }
+)
 </script>
 
 <style scoped lang="less">
