@@ -7,7 +7,7 @@
           <label v-else-if="delType == 'folder'">确认要永久删除文件夹“{{ bucketKey }}”吗？</label>
           <label v-else>确认要删除存储桶“{{ bucketName }}”？</label>
         </div>
-        <div if="delType == 'folder'" class="mt-[20px] bg-[#FFFBE6] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
+        <div v-if="delType == 'folder'" class="mt-[20px] bg-[#FFFBE6] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
           <div class="pt-[2px]">
             <img src="@/assets/images/IconWarning.png" class="h-[14px] w-[14px] mr-[8px]" />
           </div>
