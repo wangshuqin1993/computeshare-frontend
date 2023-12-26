@@ -72,9 +72,13 @@ const props = defineProps({
   suffixText: {
     type:String,
     default: '.py'
+  },
+  prefixName: {
+    type: String,
+    default: ''
   }
 })
-const { suffixNames,suffixText } = toRefs(props);
+const { suffixNames,suffixText, prefixName } = toRefs(props);
 const emit = defineEmits(["refreshList"])
 // 上传脚本后拿到脚本信息
 const scriptInfo = ref()
@@ -92,7 +96,7 @@ const handleUploadAttachement = async (fileData) => {
   //文件存储
   if (curBarName.value === 'StorageDetail') {
     const params = {
-      prefix: '',
+      prefix: prefixName.value,
       file: formData.get('file')
     }
     res = await apiUploadFileToS3(bucketName, params);

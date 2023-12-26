@@ -3,7 +3,7 @@
   <Header />
   <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
-      <UploadFile :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
+      <UploadFile :prefixName="prefixName" :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
     </div>
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <div class="flex justify-end">
@@ -23,10 +23,10 @@
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
-                  <div v-if="!suffixRegex.test(record.name)" class="tips-css" @click="viewStorage(record)">查看</div>
+                  <div v-if="!record.etag" class="tips-css" @click="viewStorage(record)">查看</div>
                   <div class="tips-css" @click="copyToClipboard(record.s3Url)">复制 S3 URL</div>
                   <div class="tips-css" @click="copyToClipboard(record.url)">复制 URL</div>
-                  <div v-if="suffixRegex.test(record.name)" class="tips-css" @click="downloadStorage(record)">下载文件</div>
+                  <div v-if="record.etag" class="tips-css" @click="downloadStorage(record)">下载文件</div>
                   <div class="tips-css" @click="delStorage(record)">删除</div>
                 </div>
               </template>
@@ -65,7 +65,6 @@ const delType = ref('folder'); //删除文件：file，文件夹：folder，存�
 const suffixNames = ref(".*");
 const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
 const tableData = ref([])
-const suffixRegex = /\.[A-Za-z]+$/i;
 const tableColumns = reactive([
   {
     title: '名称',
@@ -122,9 +121,15 @@ const getTableData = async () => {
   // 改赋值，返回才可以刷新界面
   bucketName.value = route.query.bucketName || ''
   prefixName.value = route.query.prefixName || ''
-  const res = await apiGetBucketList(bucketName.value, prefixName.value);
+  const params = {
+    page: pagination.current,
+    size: pagination.pageSize,
+    prefix: prefixName.value,
+    name: searchVal.value
+  }
+  const res = await apiGetBucketList(bucketName.value, params);
   if (res.code == 200) {
-    tableData.value = res.data;
+    tableData.value = res.data.list;
   }else{
     message.error(res.message)
   }
@@ -147,10 +152,10 @@ const downloadStorage = async (item:any) => {
 const delStorage = async (item: any) => {
   delVisible.value = true;
   bucketKey.value = item.name;
-  if (suffixRegex.test(item.name)) {
-    delType.value = 'file'; //删除文件：file，文件夹：folder
+  if (item.etag) {
+    delType.value = 'file'; //删除文件：file
   } else {
-    delType.value = 'folder'; //删除文件：file，文件夹：folder
+    delType.value = 'folder'; //删除文件夹：folder
   }
 
 }
@@ -163,10 +168,10 @@ watch(() => route.fullPath,
     if(route.fullPath.indexOf('storageDetail') != -1){
       getTableData();
     }
-  },
-  {
-    immediate:true
   }
+  // {
+  //   immediate:true
+  // }
 )
 </script>
 

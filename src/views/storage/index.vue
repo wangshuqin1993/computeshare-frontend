@@ -94,9 +94,14 @@ const pagination = reactive({
 });
 
 const getTableData = async () => {
-  const res = await apiBucketList();
+  const params = {
+    page: pagination.current,
+    size: pagination.pageSize,
+    name: searchVal.value
+  }
+  const res = await apiBucketList(params);
   if (res.code == 200) {
-    tableData.value = res.data;
+    tableData.value = res.data.list;
   }else{
     message.error(res.message)
   }

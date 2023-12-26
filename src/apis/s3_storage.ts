@@ -1,13 +1,23 @@
 import httpRequest from "@/request";
 
+interface baseParams {
+  page: number,
+  size: number,
+  name: string,
+}
+
 // 获取桶中的存储列表
 // bucketName: 桶名
 // prefix：文件夹的名字
-export function apiGetBucketList(bucketName: string, prefix: string) {
+export function apiGetBucketList(bucketName: string, params: bucketListParams) {
   return httpRequest({
-    url: `/v1/s3bucket/${bucketName}/objects?prefix=${prefix}`,
+    url: `/v1/s3bucket/${bucketName}/objects?prefix=${params.prefix}&page=${params.page}&size=${params.size}&name=${params.name}`,
     method: "get",
   });
+}
+
+interface bucketListParams extends baseParams{
+  prefix: string,
 }
 
 // 创建桶
@@ -23,9 +33,9 @@ interface createBucket {
 }
 
 // 获取桶列表
-export function apiBucketList() {
+export function apiBucketList(params: baseParams) {
   return httpRequest({
-    url: `/v1/s3bucket`,
+    url: `/v1/s3bucket?page=${params.page}&size=${params.size}&name=${params.name}`,
     method: "get",
   });
 }
