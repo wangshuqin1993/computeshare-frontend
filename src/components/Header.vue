@@ -59,7 +59,7 @@ const getUserInfo = async () => {
   const res = await apiGetUser();
   if (res.code == 200) {
     // userInfo.value = res.data;
-    prefixValue.value = res.data.name || res.data.telephoneNumber + '-'
+    prefixValue.value = res.data.name + '-' || res.data.telephoneNumber + '-'
   }else{
     message.error(res.message)
   }
