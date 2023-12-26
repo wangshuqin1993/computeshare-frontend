@@ -9,9 +9,7 @@
       <div class="flex justify-end">
         <a-input v-model:value="searchVal" @keyup.enter="getTableData" @change="checkChange" allow-clear placeholder="按名称查找" class="mb-[20px] w-[40%]">
           <template #suffix>
-            <a-tooltip title="Search" @click="getTableData">
-              <img src="@/assets/icons/search.svg" class="w-[28px] cursor-pointer" />
-            </a-tooltip>
+            <img @click="getTableData" src="@/assets/icons/search.svg" class="w-[28px] cursor-pointer" />
           </template>
         </a-input>
         <a-button type="primary" class="ant-btn-s ml-[20px]" @click="createFile">创建文件夹</a-button>
