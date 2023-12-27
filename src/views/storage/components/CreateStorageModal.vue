@@ -4,7 +4,7 @@
       <div class="mt-[32px]">
         <a-form ref="formRef" :rules="formRules" :model="formData">
           <a-form-item label="存储桶名：" name="name">
-            <a-input class="modal-input" v-model:value="formData.name"  :prefix="prefixValue" placeholder="请输入用户名" allow-clear />
+            <a-input class="modal-input" v-model:value="formData.name"  :prefix="prefixValue" placeholder="请输入存储桶名称" allow-clear />
             <div class="text-[#8C8C8C] mt-[10px]">
               存储桶格式为“用户名-自定义名称”。<br>
               整个存储桶名称的长度必须介于 3（最小）到 63（最大）个字符之间。<br>
