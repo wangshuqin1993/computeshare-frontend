@@ -188,4 +188,8 @@ onMounted(() => {
 :deep(.rowClass){
   height: 90px;
 }
+.scroll-contain-h{
+  height: calc(100vh - 205px);
+  overflow-y: auto;
+}
 </style>

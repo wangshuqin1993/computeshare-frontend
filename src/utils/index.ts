@@ -32,6 +32,7 @@ export function convertToBlob(info: any): Promise<Blob> {
 }
 
 export function getfilesize(size) {//把字节转换成正常文件大小
+  if (size==0) return size;
   if (!size) return "";
   var num = 1024.00; //byte
   if (size < num)
