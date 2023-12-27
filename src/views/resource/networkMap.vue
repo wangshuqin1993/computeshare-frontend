@@ -6,7 +6,7 @@
     </div>
     <div class="p-[20px] scroll-contain-h">
       <div class=" bg-[#ffffff] p-[20px] rounded-[2px]">
-        <a-table :columns="columns" :data-source="networkMapList" :rowClassName="setRowClassName">
+        <a-table :columns="columns" :data-source="networkMapList" :rowClassName="setRowClassName" :pagination="pagination">
           <template #bodyCell="{ column, text, record }">
             <template v-if="column.key === 'domains'">
               <div>{{ text[0]?.name }}</div>
