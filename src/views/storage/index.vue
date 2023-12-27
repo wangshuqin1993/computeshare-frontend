@@ -108,6 +108,7 @@ const getTableData = async () => {
   const res = await apiBucketList(params);
   if (res.code == 200) {
     tableData.value = res.data.list;
+    pagination.total = res.data.total
   }else{
     message.error(res.message)
   }
