@@ -81,3 +81,20 @@ export function apiInstanceDelete(id: string) {
     method: "delete",
   });
 }
+
+//重启实例
+export function apiInstanceRestart(id: string) {
+  return httpRequest({
+    url: `/v1/instance/${id}/restart`,
+    method: "put",
+    data:{}
+  });
+}
+
+// 获取vnc 的访问地址
+export function apiInstanceVncURL(id: string) {
+  return httpRequest({
+    url: `/v1/instance/${id}/vnc`,
+    method: "get",
+  });
+}

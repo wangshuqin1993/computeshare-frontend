@@ -33,7 +33,7 @@
       <a-form :model="formData" ref="formRef" :rules="formRules" :label-col="labelCol">
         <a-form-item label="用户名：" name="name">
           <a-input class="modal-input" autocomplete="off" v-model:value="formData.name" placeholder="请输入用户名"/>
-          <div class="text-[#8C8C8C] text-[14px] mt-[10px]">用户名只能包含英文、中文、数字、下划线、中划线、大于两个中文或者三个英文字母并小于32个字符</div>
+          <div class="text-[#8C8C8C] text-[14px] mt-[10px]">用户名只能包含小写字母、数字、中划线、大于三个英文字母并小于32个字符</div>
         </a-form-item>
         <div class="text-center mt-[50px]">
           <a-button class="ant-btn-m" type="primary" :loading="loading" @click="handleDone">确认更改</a-button>
@@ -51,7 +51,7 @@
         <a-form-item label="验证码：" name="validateCode" >
           <div class="flex">
             <a-input class="w-[302px] mr-[10px] modal-input" v-model:value="formMobileData.validateCode" placeholder="请输入验证码" autocomplete="off" />
-            <a-button type="primary" class="ant-btn-m" @click="getSmsCode">获取验证码</a-button>
+            <a-button type="primary" class="ant-btn-m" @click="getSmsCode" :disabled="timerValue"><label v-if="timerValue">( {{ timerValue }} ) </label>获取验证码</a-button>
           </div>
         </a-form-item>
         <div class="text-center mt-[50px]">
@@ -83,11 +83,13 @@
 </template>
 <script setup lang="ts">
 import Header from "@/components/Header.vue";
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { apiSMS } from '@/apis/index'
 import { apiGetUser, apiUpdateUser, apiUpdatePassword, apiUpdatePhone } from '@/apis/user';
 
+const timer = ref();
+const timerValue = ref(0);
 const labelCol = { style: { width: '120px' } };
 const isPwd = ref(false);
 const visibleName = ref(false);
@@ -160,8 +162,8 @@ const checkMobile = () => {
   }
 }
 const checkName = () => {
-  //用户名只能包含英文、中文、数字、下划线、中划线、大于两个中文或者三个英文字母并小于32个字符
-  let reg = /^((?=.*[\u4e00-\u9fa5]{2,})|(?=.*[a-zA-Z]{3,}))[\u4E00-\u9FA5A-Za-z0-9_-]{3,32}$/;
+  //用户名只能包含小写字母、数字、中划线、大于三个英文字母并小于32个字符
+  let reg = /^(?=[a-z0-9-]{4,32}$)[a-z0-9]+-?[a-z0-9]+$/;
 
   if (formData.name != '' && formData.name != null && !reg.test(formData.name)) {
     return Promise.reject("请输入合理的用户名");
@@ -196,13 +198,17 @@ const handleDone = async () => {
 }
 // 获取验证码
 const getSmsCode = async()=>{
+  if(!formMobileData.telephoneNumber.trim()) return
+  timerValue.value = 60;
+  setTimer();
   const params = {
     countryCallCoding: formMobileData.countryCallCoding,
     telephoneNumber: formMobileData.telephoneNumber
   }
   const res = await apiSMS(params)
   if(res.code==200){
-    formMobileData.validateCode = '000000'
+    // formMobileData.validateCode = '000000'
+    message.success('请查收短信验证码')
   }else{
     message.error(res.message)
   }
@@ -245,6 +251,17 @@ const handlePwdDone = async () => {
     message.error("当前密码输入错误！")
   }
 }
+const setTimer = () => {
+  timer.value = window.setInterval(() => {
+    timerValue.value--;
+    if (timerValue.value <= 0) {
+      window.clearInterval(timer.value);
+    }
+  }, 1000);
+}
+onBeforeUnmount(()=>{ //离开当前组件的生命周期执行的方法
+  window.clearInterval(timer.value);
+})
 onMounted(() => {
   getUserInfo();
 })

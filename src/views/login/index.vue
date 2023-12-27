@@ -11,12 +11,12 @@
             <a-tab-pane key="1" :tab="[isLogin?'短信登录':'短信注册']">
               <a-form :model="formNoteData" layout="vertical" ref="formNoteRef" :rules="formNoteRules">
                 <a-form-item name="telephoneNumber" >
-                  <a-input prefix="+86" v-model:value="formNoteData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                  <a-input prefix="+86" id="phone-register" v-model:value="formNoteData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="validateCode" >
                   <div class="flex">
                     <a-input class="w-[302px] mr-[10px]" v-model:value="formNoteData.validateCode" placeholder="请输入验证码" allow-clear autocomplete="off" />
-                    <a-button type="primary" class="ant-btn-s" @click="getSmsCode">获取验证码</a-button>
+                    <a-button type="primary" class="ant-btn-s" @click="getSmsCode" :disabled="timerValue"><label v-if="timerValue">( {{ timerValue }} ) </label>获取验证码</a-button>
                   </div>
                 </a-form-item>
               </a-form>
@@ -24,7 +24,7 @@
             <a-tab-pane key="2" :tab="[isLogin?'密码登录':'账号注册']">
               <a-form :model="formPwdData" layout="vertical" ref="formPwdRef" :rules="formPwdRules">
                 <a-form-item name="telephoneNumber" >
-                  <a-input prefix="+86" @change="resetSlider" v-model:value="formPwdData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
+                  <a-input prefix="+86" id="phone-login" @change="resetSlider" v-model:value="formPwdData.telephoneNumber" placeholder="请输入手机号" allow-clear autocomplete="off" />
                 </a-form-item>
                 <a-form-item name="password" >
                   <a-input-password @change="resetSlider" v-model:value="formPwdData.password" placeholder="请输入密码" allow-clear autocomplete="off" />
@@ -39,7 +39,7 @@
           </a-tabs>
           <div class="absolute bottom-[54px] w-[482px]">
             <div class="flex items-start">
-              <a-radio v-model:checked="isChecked"></a-radio>
+              <a-radio @click="checkRadio" v-model:checked="isChecked"></a-radio>
               <div>未注册手机号验证后将自动创建账号，登录即代表您已同意<div class="text-[#017AFF]">服务条款、隐私政策</div></div>
             </div>
             <a-button type="primary" class="ant-btn-l w-full my-[20px]" @click="handleDone">{{ isLogin?'登录':'注册' }}</a-button>
@@ -52,11 +52,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import dragVerify from '@/components/demo.vue'
 import { message } from 'ant-design-vue';
 import { apiSMS, apiSMSLogin, apiPwdLogin } from '@/apis/index'
+import { cookieUtil } from '@/utils/index'
 
 const router = useRouter();
 
@@ -64,6 +65,8 @@ const router = useRouter();
 const activeKey = ref("1");
 const isChecked = ref(false);
 const isLogin = ref(true);
+const timer = ref();
+const timerValue = ref(0);
 const formNoteRef = ref();
 const formNoteData = reactive({
   countryCallCoding: '+86',
@@ -118,12 +121,13 @@ const passBySmsCode = async () => {
   if(res.code==200){
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
+    const domain = '.' + window.location.hostname
+    cookieUtil.set('token', res.data.token, 1, domain)
     router.push('/')
   }else{
     message.error(res.message)
   }
 }
-
 // 通过 用户手机和密码 登录
 const loginByPwd = async () => {
   const res = await apiPwdLogin(formPwdData);
@@ -132,6 +136,8 @@ const loginByPwd = async () => {
   if(res.code==200){
     // 拿到token缓存起来
     localStorage.setItem('token',res.data.token)
+    const domain = '.' + window.location.hostname
+    cookieUtil.set('token', res.data.token, 1, domain)
     router.push('/')
   }else{
     message.error(res.message)
@@ -168,20 +174,39 @@ const resetSlider = () => {
 }
 
 // 获取验证码
-const getSmsCode = async()=>{
+const getSmsCode = async () => {
+  if(!formNoteData.telephoneNumber.trim()) return
+  timerValue.value = 60;
+  setTimer();
   const params = {
     countryCallCoding: formNoteData.countryCallCoding,
     telephoneNumber: formNoteData.telephoneNumber
   }
   const res = await apiSMS(params)
   if(res.code==200){
-    formNoteData.validateCode = '000000'
-    // message.success('请查收短信验证码')
+    // formNoteData.validateCode = '000000'
+    message.success('请查收短信验证码')
   }else{
     message.error(res.message)
   }
 }
 
+const setTimer = () => {
+  timer.value = window.setInterval(() => {
+    timerValue.value--;
+    if (timerValue.value <= 0) {
+      window.clearInterval(timer.value);
+    }
+  }, 1000);
+}
+const checkRadio = () => {
+  if (isChecked.value) {
+    isChecked.value = false;
+  }
+}
+onBeforeUnmount(()=>{ //离开当前组件的生命周期执行的方法
+  window.clearInterval(timer.value);
+})
 onMounted(() => {
   rightWidth.value = (document.getElementsByClassName('container-width')[0].clientWidth - document.getElementsByClassName('left-width')[0].clientWidth) + 'px';
 })

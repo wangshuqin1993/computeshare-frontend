@@ -71,7 +71,7 @@ export function formatToDateTimeBy12HWithLocale(
  *           dateFormat("2021-09-03T22:42:05.659+00:00")
  */
 export function transTimestamp(datetime: any, dateSeprator = '-', timeSeprator = ':') {
-  if (datetime === '0001-01-01T00:00:00Z') {
+  if (datetime === '0001-01-01T00:00:00Z' || datetime == '0') {
     return '';
   } else {
     const date = new Date(datetime)

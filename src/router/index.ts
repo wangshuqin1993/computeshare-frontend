@@ -14,6 +14,7 @@ let router = createRouter({
           component: () => import('@/views/resource/index.vue'),
           meta: {
             isShow: true,
+            isPersonal: false,
             sidebarMap: ['Resource'],
           }
         },
@@ -22,7 +23,7 @@ let router = createRouter({
           name: "Script",
           component: () => import('@/views/script/index.vue'),
           meta: {
-            isShow: true,
+            isShow: false,
             sidebarMap: ['Script'],
           }
         },
@@ -32,6 +33,17 @@ let router = createRouter({
           component: () => import('@/views/storage/index.vue'),
           meta: {
             isShow: true,
+            isPersonal: false,
+            sidebarMap: ['Storage'],
+          }
+        },
+        {
+          path: "/dashboard/storageDetail",
+          name: "StorageDetail",
+          component: () => import('@/views/storage/detail.vue'),
+          meta: {
+            isShow: true,
+            isPersonal: false,
             sidebarMap: ['Storage'],
           }
         },
@@ -41,7 +53,18 @@ let router = createRouter({
           component: () => import('@/views/user/index.vue'),
           meta: {
             isShow: true,
+            isPersonal: true,
             sidebarMap: ['User'],
+          }
+        },
+        {
+          path: "/dashboard/developer",
+          name: "Developer",
+          component: () => import('@/views/developer/index.vue'),
+          meta: {
+            isShow: true,
+            isPersonal: true,
+            sidebarMap: ['Developer'],
           }
         }
       ]

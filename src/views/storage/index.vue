@@ -1,68 +1,71 @@
 <!-- 文件存储 -->
 <template>
-  <Header />
-  <div class="m-[20px]">
-    <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
-      <UploadFile :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
-    </div>
+  <Header @handleDone="getTableData" />
+  <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
-      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" :scroll="{x: false, y: 'calc(100vh - 691px)' }">
+      <div class="flex justify-end">
+        <a-input v-model:value="searchVal" @keyup.enter="getTableData" @change="checkChange" allow-clear placeholder="按名称查找存储桶" class="mb-[20px] w-[40%]">
+          <template #suffix>
+            <img @click="getTableData" src="@/assets/icons/search.svg" class="w-[28px] cursor-pointer" />
+          </template>
+        </a-input>
+      </div>
+      <!-- :scroll="{x: false, y: 'calc(100vh - 400px)' }" -->
+      <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
-            <a-tooltip placement="left" color="#FFFFFF">
-              <template #title>
-                <div class="text-[14px]">
-                  <div class="tips-css" @click="downloadStorage(record.id,record.name)">下载</div>
-                  <div class="tips-css" @click="delStorage(record.id)">删除</div>
-                </div>
-              </template>
-              <img src="@/assets/images/more-vertical.svg" class="h-[26px] cursor-pointer" />
-            </a-tooltip>
+            <div class="text-[14px] flex">
+              <a-button type="link" @click="viewStorage(record)">查看</a-button>
+              <a-button type="link" @click="clearStorage(record)">清空</a-button>
+              <a-button type="link" danger @click="delStorage(record)">删除</a-button>
+            </div>
           </template>
         </template>
       </a-table>
     </div>
   </div>
+  <StorageInfoModal :showVisible="infoVisible" @closeModal="infoVisible=false"></StorageInfoModal>
+  <ClearStorageModal :showVisible="clearVisible" :bucketName="tempBucketName" @closeModal="clearVisible=false"></ClearStorageModal>
+  <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="tempBucketName" @loadTable="getTableData" @closeModal="delVisible=false"></DeleteModal>
 </template>
 
 <script setup lang="ts">
-import { createVNode, onMounted, reactive, ref } from 'vue';
-import UploadFile from '@/components/UploadFile.vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
-import { apiStorageList, apiDownloadStorage, apiDelStorage } from '@/apis/storage';
-import { Modal, message } from 'ant-design-vue';
-import { getfilesize, downloadRequest } from '@/utils/index'
+import { apiBucketList, apiGetBucketList } from '@/apis/s3_storage';
+import { message } from 'ant-design-vue';
+import { useRouter, useRoute } from "vue-router";
+import StorageInfoModal from './components/StorageInfoModal.vue';
+import ClearStorageModal from './components/ClearStorageModal.vue';
+import DeleteModal from './components/DeleteModal.vue';
 
-const suffixNames = ref(".*");
-const suffixText = ref(".rar .zip .doc .docx .pdf .jpg...");
+const route = useRoute()
+const router = useRouter();
+const searchVal = ref('');
+const infoVisible = ref(false); //存储桶提示信息,此存储桶不为空
+const clearVisible = ref(false); //清空存储桶
+const delVisible = ref(false); //删除。。。
+const delType = ref('storage'); //删除文件：file，文件夹：folder，存储桶：storage
+const tempBucketName = ref('');
 const tableData = ref([])
 const tableColumns = reactive([
   {
-    title: '名称',
-    dataIndex: 'name',
-    key: 'name',
+    title: '存储桶名称',
+    dataIndex: 'bucket',
+    key: 'bucket',
   },
   {
     title: '修改时间',
-    dataIndex: 'lastModify',
-    key: 'lastModify',
+    dataIndex: 'createdTime',
+    key: 'createdTime',
     width: '30%',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
-    title: '文件大小',
-    dataIndex: 'size',
-    key: 'size',
-    width: '15%',
-    align:'center',
-    customRender: ({ text: date }) =>  getfilesize(date),
-  },
-  {
-    title: '',
+    title: '操作',
     dataIndex: 'action',
     key: 'action',
-    width: '5%'
   },
 ])
 const pagination = reactive({
@@ -88,49 +91,69 @@ const pagination = reactive({
     getTableData()
   },
 });
+const checkChange = (row) => {
+  if (row.type == 'click') {
+    getTableData();
+  }
+}
 
 const getTableData = async () => {
-  const parentId = '';
-  const res = await apiStorageList(parentId, {page:pagination.current, size:pagination.pageSize});
+  const params = {
+    page: pagination.current,
+    size: pagination.pageSize,
+    name: searchVal.value
+  }
+  const res = await apiBucketList(params);
   if (res.code == 200) {
-    tableData.value = res.data;
+    tableData.value = res.data.list;
   }else{
     message.error(res.message)
   }
 }
-const downloadStorage = async (id: string, name:string) => {
-  const data = await apiDownloadStorage(id);
-  try {
-    await downloadRequest(data,name)
-    message.success('下载成功')
-  } catch (error:any) {
-    message.error('下载失败')
-  }
+// 查看
+const viewStorage = (item: any) => {
+  router.push("/dashboard/storageDetail?bucketName=" + item.bucket);
+  console.log("viewStorage:",item);
 }
-const delStorage = async (id: string) => {
-  Modal.confirm({
-    title: () => "删除",
-    content: () => createVNode('div', { style: 'color:rgba(0, 0, 0, 0.8);' }, "确认删除该数据吗?"),
-    okText: '确定',
-    cancelText: '取消',
-    async onOk() {
-      const res = await apiDelStorage([id]);
-      if (res.code == 200) {
-        message.success(res.message)
-        getTableData();
-      }else{
-        message.error(res.message)
-      }
-    },
-    onCancel() {
-        
-    },
-  });
-  
+// 清空
+const clearStorage = (item: any) => {
+  tempBucketName.value = item.bucket;
+  clearVisible.value = true;
+}
+// 删除
+const delStorage = async (item: any) => {
+  tempBucketName.value = item.bucket;
+  const params = {
+    page: 1,
+    size: 10,
+    prefix: '',
+    name: ''
+  }
+  const res = await apiGetBucketList(tempBucketName.value,params);
+  if (res.code == 200) {
+    if (res.data.list.length > 0) {
+      infoVisible.value = true; //存储桶不为空
+    } else {
+      delVisible.value = true; //删除存储桶
+    }
+  }else{
+    message.error(res.message)
+  }
 }
 onMounted(() => {
   getTableData();
 })
+
+watch(() => route.fullPath,
+  () => {
+    if(route.fullPath.indexOf('Storage') != -1){
+      pagination.current = 1
+      pagination.pageSize = 10
+      searchVal.value = ''
+      getTableData();
+    }
+  }
+)
 </script>
 
 <style scoped lang="less">
@@ -138,7 +161,7 @@ onMounted(() => {
   max-height: calc(100vh - 691px);
 }
 :deep(.ant-table-tbody){
-  max-height: calc(100vh - 691px);
-  overflow-y: auto;
+  // max-height: calc(100vh - 691px);
+  // overflow-y: auto;
 }
 </style>
