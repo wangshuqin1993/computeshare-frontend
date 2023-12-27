@@ -1,9 +1,10 @@
 <template>
   <div class="text-[#121211] text-[24px]">
-    <span @click="backRoute($event)" class="backInfo cursor-pointer">
-      <img src="@/assets/icons/back(B).svg" class="w-[24px] inline-block" />
-      <!-- <svg-icon name="back(B)" size="24" class="mr-[8px]" /> -->
-      <span class="font-bold align-middle">返回</span>
+    <span @click="backRoute($event)" class="backInfo cursor-pointer group ">
+      <img src="@/assets/icons/back1.svg" class="w-[16px] hidden group-hover:inline-block" />
+      <img src="@/assets/icons/back2.svg" class="w-[16px] inline-block group-hover:hidden" />
+      <!-- <svg-icon name="back(B)" size="24" class="mr-[8px] text-red-900" /> -->
+      <span class="font-bold align-middle text-[14px] ml-[6px] text-[#8C8C8C] group-hover:text-[#484FFF]">返回</span>
     </span>
     <span class="font-bold align-middle">
       <span class="font-bold">{{ currentName }}</span>
