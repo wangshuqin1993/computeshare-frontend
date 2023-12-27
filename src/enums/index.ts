@@ -4,6 +4,8 @@ export enum sidebarName {
   'Storage' = '文件存储',
   'User' = '账户设置',
   'Developer' = '开发者选项',
+  'Cycles' = '我的Cycles',
+  'Order' = '我的账单',
 }
 export enum resourceStatus {
   '创建中' = 0,
