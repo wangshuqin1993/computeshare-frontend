@@ -6,7 +6,7 @@
           <a-form-item label="存储桶名：" name="name">
             <a-input class="modal-input" v-model:value="formData.name"  :prefix="prefixValue" placeholder="请输入存储桶名称" allow-clear />
             <div class="text-[#8C8C8C] mt-[10px]">
-              存储桶格式为“用户名-自定义名称”。<br>
+              存储桶格式为“用户名-自定义名称”，为方便管理,建议设置一个易记简洁的用户名，<label class="text-[#1677ff] cursor-pointer text-[14px] underline" @click="goUser">点击此处</label>修改。。<br>
               整个存储桶名称的长度必须介于 3（最小）到 63（最大）个字符之间。<br>
               桶名称只能由小写字母、数字、点（.）和连字符（-）组成。<br>
               存储桶名称必须以字母或数字开头和结尾。<br>
@@ -83,7 +83,10 @@ const handleOk = async () => {
     message.error(res.message)
   }
 }
-
+const goUser = () => {
+  emit('closeModal');
+  window.open("/dashboard/user");
+}
 const closeModal = () => {
   emit('closeModal')
 }
