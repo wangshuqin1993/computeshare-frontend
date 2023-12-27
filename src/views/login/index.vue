@@ -39,7 +39,7 @@
           </a-tabs>
           <div class="absolute bottom-[54px] w-[482px]">
             <div class="flex items-start">
-              <a-radio v-model:checked="isChecked"></a-radio>
+              <a-radio @click="checkRadio" v-model:checked="isChecked"></a-radio>
               <div>未注册手机号验证后将自动创建账号，登录即代表您已同意<div class="text-[#017AFF]">服务条款、隐私政策</div></div>
             </div>
             <a-button type="primary" class="ant-btn-l w-full my-[20px]" @click="handleDone">{{ isLogin?'登录':'注册' }}</a-button>
@@ -198,6 +198,11 @@ const setTimer = () => {
       window.clearInterval(timer.value);
     }
   }, 1000);
+}
+const checkRadio = () => {
+  if (isChecked.value) {
+    isChecked.value = false;
+  }
 }
 onBeforeUnmount(()=>{ //离开当前组件的生命周期执行的方法
   window.clearInterval(timer.value);
