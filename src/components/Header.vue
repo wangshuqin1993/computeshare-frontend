@@ -15,7 +15,7 @@
     <div class="h-[130px] px-[40px] flex justify-between items-center">
       <div class="menu-title">
         <label v-if="curBarName == 'Storage'">存储桶
-          <div class="mt-[10px] text-[16px] text-[#8C8C8C]">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
+          <div class="mt-[10px] text-[16px] text-[#8C8C8C] font-light">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
         </label>
         <label v-else-if="curBarName == 'StorageDetail'">
           <bread-crumb :routes="breadCrumbInfo"/>
