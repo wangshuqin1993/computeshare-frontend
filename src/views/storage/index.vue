@@ -54,18 +54,20 @@ const tableColumns = reactive([
     title: '存储桶名称',
     dataIndex: 'bucket',
     key: 'bucket',
+    width: '34%',
   },
   {
     title: '修改时间',
     dataIndex: 'createdTime',
     key: 'createdTime',
-    width: '30%',
+    width: '33%',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
     title: '操作',
     dataIndex: 'action',
     key: 'action',
+    width: '34%',
   },
 ])
 const pagination = reactive({
