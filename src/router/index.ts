@@ -78,6 +78,16 @@ let router = createRouter({
           }
         },
         {
+          path: "/dashboard/renewal",
+          name: "Renewal",
+          component: () => import('@/views/renewal/index.vue'),
+          meta: {
+            isShow: true,
+            isPersonal: true,
+            sidebarMap: ['Renewal'],
+          }
+        },
+        {
           path: "/dashboard/developer",
           name: "Developer",
           component: () => import('@/views/developer/index.vue'),
