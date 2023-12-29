@@ -1,31 +1,39 @@
 <template>
   <div class="p-[20px]">
-    <p class="text-[14px] text-[#8C8C8C] font-normal">使用访问密钥从SDK以编程方式调用文件存 </p>
+    <p class="text-[14px] text-[#8C8C8C] font-normal">使用访问密钥通过命令行的方式管理文件存储 </p>
     <p class="title">安装工具</p>
     <p class="title-sub">在终端执行以下命令安装一个免费的命令行工具</p>
     <div class="div-bg text-[#E34594]">
-        sudo apt install s3cmd
+      sudo apt install s3cmd
     </div>
     <div class="w-[100%] my-[18px] line"></div>
     <p class="title">配置凭证</p>
     <p class="title-sub">在终端执行以下命令来更改配置文件的内容</p>
     <div class="div-bg text-[#E34594]">
-        sudo apt install s3cmd
+      s3cmd --configure
     </div>
     <p class="title-sub">将以下内容添加到文件中，并将 &lt;YOUR_ACCESS_KEY&gt;和&lt;YOUR_SECRET_KEY&gt;替换为您的凭据。</p>
     <div class="div-bg">
-        <p>
-            <span class="text-[#C8AD26]">host_base = </span>
-            <span class="text-[#60A210]">computeshare.newtouch.com:8333</span>
-        </p>
-        <p class="py-[10px]">
-            <span class="text-[#C8AD26]">access_key = </span>
-            <span class="text-[#60A210]">&lt;YOUR_ACCESS_KEY&gt;</span>
-        </p>
-        <p>
-            <span class="text-[#C8AD26]">secret_key = </span>
-            <span class="text-[#60A210]">&lt;YOUR_SECRET_KEY&gt;</span>
-        </p>
+      <p>
+          <span class="text-[#C8AD26]">access_key = </span>
+          <span class="text-[#60A210]">&lt;YOUR_ACCESS_KEY&gt;</span>
+      </p>
+      <p class="py-[10px]">
+          <span class="text-[#C8AD26]">secret_key = </span>
+          <span class="text-[#60A210]">&lt;YOUR_SECRET_KEY&gt;</span>
+      </p>
+      <p>
+          <span class="text-[#C8AD26]">host_base = </span>
+          <span class="text-[#60A210]">computeshare.newtouch.com:8333</span>
+      </p>
+      <p class="py-[10px]">
+          <span class="text-[#C8AD26]">host_bucket = </span>
+          <span class="text-[#60A210]">computeshare.newtouch.com:8333</span>
+      </p>
+      <p>
+          <span class="text-[#C8AD26]">use_https = </span>
+          <span class="text-[#60A210]">False</span>
+      </p>
     </div>
   </div>
 </template>
