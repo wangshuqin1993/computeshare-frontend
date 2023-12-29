@@ -4,10 +4,10 @@
       <div class="mt-[32px]">
         <a-form layout="inline" :model="formState" class="flex flex-row items-center">
           <a-form-item label="绑定域名：">
-            <a-input v-model:value="formState.domainName" placeholder="请输入需绑定域名" allow-clear />
+            <a-input class="modal-input" v-model:value="formState.domainName" placeholder="请输入需绑定域名" allow-clear />
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" class="w-[96px]" @click="bindDomain">绑定</a-button>
+            <a-button type="primary" class="w-[96px] h-[42px]" @click="bindDomain">绑定</a-button>
           </a-form-item>
         </a-form>
         <div class="mt-[32px]">
