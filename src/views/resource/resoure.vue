@@ -72,7 +72,7 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
+    <!-- <Footer></Footer> -->
   </div>
   <CreateModal :createVisible="createVisible" @handleCancelCreate="createVisible = false;" @handleDone="handleDone">
   </CreateModal>

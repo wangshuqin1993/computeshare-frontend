@@ -5,39 +5,15 @@
         <div class="border border-solid border-[#E9E9E9] rounded-[4px]">
             <div class="p-[20px]">
                 <p class="text-[18px] font-medium mb-[5px]">文件存储SDK</p>
-                <p class="text-[14px] text-[#8C8C8C] font-normal">使用访问密钥从SDK以编程方式调用文件存 </p>
             </div>
-            <div class="w-[100%] mb-[18px] line"></div>
-            <div class="p-[20px]">
-                <p class="text-[16px] font-medium text-[#595959]">下载路径</p>
-                <div class="text-[14px] font-normal mt-[14px]">
-                    <div>
-                        <span class="w-[45px] inline-block">Go：</span>
-                        <span>https://github.com/aws/aws-sdk-go</span>
-                    </div>
-                    <div>
-                        <span class="w-[45px] inline-block">Java：</span>
-                        <span>https://github.com/aws/aws-sdk-java</span>
-                    </div>
-                </div>
-                <div class="w-[100%] my-[18px] line"></div>
-                <p class="text-[16px] font-medium text-[#595959] mb-[10px]">配置凭证</p>
-                <p class="text-[14px] font-medium">您可以使用任何文本编辑器在您的主目录中创建一个。将以下内容添加到您的凭据文件中，并将 &lt;YOUR_ACCESS_KEY&gt; 和替换 &lt;YOUR_SECRET_KEY&gt; 为您的凭据。</p>
-                <div class="rounded-[4px] bg-[#FAFBFF] p-[20px] mt-[14px] mb-[20px] text-[14px]">
-                    <p>
-                        <span class="text-[#C8AD26]">host_base = </span>
-                        <span class="text-[#60A210]">computeshare.newtouch.com:8333</span>
-                    </p>
-                    <p class="py-[10px]">
-                        <span class="text-[#C8AD26]">access_key = </span>
-                        <span class="text-[#60A210]">&lt;YOUR_ACCESS_KEY&gt;</span>
-                    </p>
-                    <p>
-                        <span class="text-[#C8AD26]">secret_key = </span>
-                        <span class="text-[#60A210]">&lt;YOUR_SECRET_KEY&gt;</span>
-                    </p>
-                </div>
-            </div>
+            <a-tabs v-model:activeKey="activeKey">
+              <a-tab-pane key="1" tab="cmd">
+                <cmdTabContent ></cmdTabContent>
+              </a-tab-pane>
+              <a-tab-pane key="2" tab="sdk">
+                <sdkTabContent></sdkTabContent>
+              </a-tab-pane>
+            </a-tabs>
         </div>
         <!-- 密钥信息 -->
         <div class="border border-solid border-[#E9E9E9] rounded-[4px] mt-[20px]">
@@ -82,6 +58,8 @@ import { onMounted, ref } from 'vue';
 import Header from "@/components/Header.vue";
 import checkOrDelKeyModal from './components/checkOrDelKeyModal.vue';
 import showKeyModal from './components/showKeyModal.vue';
+import cmdTabContent from './components/cmdTabContent.vue';
+import sdkTabContent from './components/sdkTabContent.vue';
 import { apiCreateKey, apiS3User, apiGetKey, apiDelKey } from '@/apis/developer'
 import { message } from 'ant-design-vue';
 import { transTimestamp } from '@/utils/dateUtil';
@@ -90,6 +68,7 @@ const visibleMobile = ref(false)
 const showKeepKeyVisible = ref(false)
 const title = ref('')
 const keyInfo = ref({})
+const activeKey = ref('1');
 
 // 密钥 id 
 const id = ref('')
@@ -210,5 +189,11 @@ onMounted(()=>{
 }
 .scroll-max-h{
   max-height: calc(100vh - 242px);
+}
+:deep(.ant-tabs-top > .ant-tabs-nav){
+  margin-bottom: 0px !important;
+}
+:deep(.ant-tabs .ant-tabs-tab){
+  padding: 12px 30px;
 }
 </style>
