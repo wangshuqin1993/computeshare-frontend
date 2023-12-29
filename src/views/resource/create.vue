@@ -48,7 +48,7 @@
             <img src="@/assets/images/IconWarning.png" class="h-[14px] w-[14px] mr-[8px]" />
           </div>
           <div class="text-[12px] text-[#595750]">
-            为了避免忘记续费影响业务，平台默认自动续费，您可以在<span class="text-[#484FFF] cursor-pointer text-[14px] underline" @click="goRenewal">续费管理</span>中进行设置。<br>
+            为了避免忘记续费影响业务，平台默认自动续费，您可以在<span class="text-[#484FFF] cursor-pointer underline" @click="goRenewal">续费管理</span>中进行设置。<br>
             请妥善保管好密码，如丢失无法找回，可能会造成损失
           </div>
         </div>
