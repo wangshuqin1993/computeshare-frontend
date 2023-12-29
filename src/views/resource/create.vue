@@ -1,5 +1,5 @@
 <template>
-  <a-modal :footer="null" title="创建实例" width="930px" centered="true" v-model:open="createVisible" @cancel="handleCancel">
+  <a-modal :footer="null" title="创建实例" width="758px" centered="true" v-model:open="createVisible" @cancel="handleCancel">
     <div class="mt-[30px] ">
       <a-form :model="formData" ref="formRef" :rules="formRules" :label-col="labelCol">
         <a-form-item label="规格：" name="specId">
