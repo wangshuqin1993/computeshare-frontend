@@ -23,11 +23,35 @@
         <a-form-item label="用户名：" name="username">
           <div class="!text-[16px] font-medium">ubuntu</div>
         </a-form-item>
-        <a-form-item label="密码：" name="password" class="!mb-[10px]">
+        <a-form-item label="密码：" name="password" >
           <a-input class="modal-input" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
-        <div class="ml-[120px] warn-msg h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
+        <!-- <div class="ml-[120px] warn-msg h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
           请妥善保管好密码，如丢失无法找回，可能会造成损失
+        </div> -->
+        <a-form-item label="公钥：" name="secretKey" class="!mb-0">
+          <a-textarea class="modal-input" v-model:value="formData.secretKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="200" />
+        </a-form-item>
+        <div class="ml-[120px]">
+          <a-upload 
+            :showUploadList="false"
+            :multiple="true"
+            :customRequest="handleUploadAttachement"
+            :before-upload="beforeUpload"
+            accept=".pub"
+            >
+            <label class="text-[#484FFF] cursor-pointer">从本地文件读取</label>
+          </a-upload>
+          <p>{{ fileContent }}</p>
+        </div>
+        <div class="bg-[#FFFBE6] mt-[30px] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
+          <div class="pt-[2px]">
+            <img src="@/assets/images/IconWarning.png" class="h-[14px] w-[14px] mr-[8px]" />
+          </div>
+          <div class="text-[12px] text-[#595750]">
+            为了避免忘记续费影响业务，平台默认自动续费，您可以在<span class="text-[#484FFF] cursor-pointer text-[14px] underline" @click="goRenewal">续费管理</span>中进行设置。<br>
+            请妥善保管好密码，如丢失无法找回，可能会造成损失
+          </div>
         </div>
         <div class="text-center mt-[50px]">
           <a-button class="ant-btn-m" type="primary" :loading="loading" @click="handleCreate">创建</a-button>
@@ -53,6 +77,8 @@ const labelCol = { style: { width: '120px' } };
 const loading = ref(false);
 const specList = ref([]);
 const imageList = ref([]);
+const fileContent = ref('');
+const file = ref();
 const durationList = ref([]);
 const formRef = ref();
 const formData = reactive({
@@ -61,7 +87,8 @@ const formData = reactive({
   duration: 1,
   name: '',
   // username: 'ubuntu',
-  password: ''
+  password: '',
+  secretKey:'', //公匙
 });
 const formRules = computed(() => {
 
@@ -79,6 +106,11 @@ const handleCancel = () => {
 
 const handleCreateDone = () => {
   emit('handleDone');
+}
+
+const goRenewal = async () => {
+  await emit('handleCancelCreate');;
+  window.open("/dashboard/renewal");
 }
 
 const handleCreate = async () => {
@@ -122,6 +154,28 @@ const getDuration = async () => {
     message.error(res.message)
   }
 }
+//上传文件
+const handleUploadAttachement = async (fileData) => {
+  console.log(222222222222, fileData)
+  file.value = fileData.file;
+  readFile(); //读取文件
+}
+const readFile = () => {
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    fileContent.value = event.target.result;
+  };
+  reader.readAsText(file.value);
+}
+//文件后缀名验证
+const beforeUpload = (file) => {
+  
+  let suffixVal = file.name.substring(file.name.indexOf("."), file.name.length);
+  if (suffixVal !== '.pub') {
+    message.error(`请上传 .pub 的文件`);
+    return false;
+  }
+};
 onMounted(() => {
   getSpec();
   getImage();
