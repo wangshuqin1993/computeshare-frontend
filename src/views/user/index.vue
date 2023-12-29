@@ -65,13 +65,13 @@
     <div class="mt-[30px] ">
       <a-form :model="formPwdData" ref="formPwdRef" :rules="formPwdRules" :label-col="labelCol">
         <a-form-item label="当前密码：" name="oldPassword" v-if="isPwd">
-          <a-input class="modal-input" v-model:value="formPwdData.oldPassword" placeholder="请输入密码" autocomplete="off" />
+          <a-input-password class="modal-input" v-model:value="formPwdData.oldPassword" placeholder="请输入密码" autocomplete="off" />
         </a-form-item>
         <a-form-item :label="[isPwd ? '新密码' : '输入密码：']" name="newPassword" >
-          <a-input class="modal-input" v-model:value="formPwdData.newPassword" :placeholder="[isPwd ? '请输入新密码' : '请输入密码']" autocomplete="off" />
+          <a-input-password class="modal-input" v-model:value="formPwdData.newPassword" :placeholder="[isPwd ? '请输入新密码' : '请输入密码']" autocomplete="off" />
         </a-form-item>
         <a-form-item label="确认密码：" name="rePwd" >
-          <a-input class="modal-input" v-model:value="formPwdData.rePwd" placeholder="请再次输入密码" autocomplete="off" />
+          <a-input-password class="modal-input" v-model:value="formPwdData.rePwd" placeholder="请再次输入密码" autocomplete="off" />
           <div class="text-[#8C8C8C] text-[14px] mt-[10px]">8-20个字符，需同时包含数字、字母及符号。</div>
         </a-form-item>
         <div class="text-center mt-[50px]">

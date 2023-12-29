@@ -15,7 +15,7 @@
     </p>
     <div v-if="curBarName == 'StorageDetail'">
       <p class="ant-upload-text">可将文件拖至此处上传</p>
-      <p class="ant-upload-hint">您可以将任何文件类型（图像、备份、数据、电影等）上传到S3存储桶<br>上传的文件的最大大小为3GB</p>
+      <p class="ant-upload-hint">您可以将任何文件类型（图像、备份、数据、电影等）上传到S3存储桶<br>上传的文件的最大大小为500MB</p>
     </div>
     <div v-else>
       <p class="ant-upload-text">可将脚本文件拖至此处上传</p>
