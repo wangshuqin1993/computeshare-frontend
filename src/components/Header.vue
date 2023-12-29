@@ -28,7 +28,7 @@
       <a-button v-else-if="curBarName === 'Storage'" type="primary" class="ant-btn-s" @click="storageShowModal">创建存储桶</a-button>
     </div>
   </div>
-  <CreateStorageModal ref="storageRef" :showVisible="storageVisible" :prefixValue="prefixValue" @closeModal="storageCloseModal" @loadTable="storageHandleDone"></CreateStorageModal>
+  <CreateStorageModal v-if="storageVisible" ref="storageRef" :showVisible="storageVisible" :prefixValue="prefixValue" @closeModal="storageCloseModal" @loadTable="storageHandleDone"></CreateStorageModal>
   <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible" @handleCancelCreate="createVisible=false;" @handleDone="handleDone"></CreateModal>
 </template>
 <script setup lang="ts">
@@ -65,9 +65,7 @@ const getUserInfo = async () => {
   }
 }
 const storageShowModal = async () => {
-  if (prefixValue.value == '') {
-    await getUserInfo();
-  }
+  await getUserInfo();
   storageVisible.value = true;
   storageRef.value.formData.name = ''; //清空字段
 }
