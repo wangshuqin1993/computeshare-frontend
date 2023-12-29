@@ -1,6 +1,7 @@
 <template>
   <div class="p-[20px]">
-    <p class="text-[16px] font-medium text-[#595959]">下载路径</p>
+    <p class="text-[14px] text-[#8C8C8C] font-normal">使用访问密钥从sdk以编程方式调用文件存储 </p>
+    <p class="text-[16px] font-medium text-[#595959] mt-[20px]">下载路径</p>
     <div class="text-[14px] font-normal mt-[14px]">
         <div>
             <span class="w-[45px] inline-block">Go：</span>
