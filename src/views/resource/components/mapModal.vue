@@ -6,18 +6,18 @@
            ref="formRef">
           <a-form-item label="映射描述" name="des"
             :rules="[{ required: true, message: '请输入映射描述' }]">
-            <a-input v-model:value="formState.des" placeholder="请输入映射描述" />
+            <a-input class="modal-input" v-model:value="formState.des" placeholder="请输入映射描述" />
           </a-form-item>
 
           <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: '请选择支持协议' }]">
-            <a-select v-model:value="formState.name" placeholder="请选择支持协议">
+            <a-select class="modal-select" v-model:value="formState.name" placeholder="请选择支持协议">
               <a-select-option value="TCP">TCP</a-select-option>
             </a-select>
           </a-form-item>
 
           <a-form-item label="云服务器实例" name="instanceName"
             :rules="[{ required: true, message: '请选择云服务器实例' }]">
-            <a-select v-model:value="formState.instanceName" placeholder="请选择云服务器实例" @select="selectCloudInstance">
+            <a-select class="modal-select" v-model:value="formState.instanceName" placeholder="请选择云服务器实例" @select="selectCloudInstance">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
               }}</a-select-option>
             </a-select>
@@ -25,13 +25,13 @@
 
           <a-form-item label="私网端口" name="instancePort"
             :rules="[{ required: true, message: '请输入私网端口' }]">
-            <a-input v-model:value="formState.instancePort" placeholder="请输入" />
+            <a-input class="modal-input" v-model:value="formState.instancePort" placeholder="请输入" />
           </a-form-item>
           <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
-            <div>{{ formState.gatewayIp }}</div>
+            <div class="leading-[42px]">{{ formState.gatewayIp }}</div>
           </a-form-item>
           <a-form-item label="公网端口" name="password" :rules="[{ required: false }]">
-            <div>{{ formState.gatewayPort }}</div>
+            <div class="leading-[42px]">{{ formState.gatewayPort }}</div>
           </a-form-item>
           <div class="text-center mt-[50px]">
             <a-button class="w-[200px] h-[38px]" type="primary" @click="createMap">确定</a-button>
@@ -161,11 +161,11 @@ onMounted(async () => {
   justify-content: center;
 }
 
-:deep(.ant-select-selector) {
-  height: 36px !important;
-}
+// :deep(.ant-select-selector) {
+//   height: 36px !important;
+// }
 
-:deep(.ant-input) {
-  height: 36px !important;
-}
+// :deep(.ant-input) {
+//   height: 36px !important;
+// }
 </style>
