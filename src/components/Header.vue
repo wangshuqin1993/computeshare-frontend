@@ -20,7 +20,7 @@
         <label v-else-if="curBarName == 'StorageDetail'">
           <bread-crumb :routes="breadCrumbInfo"/>
           <BreadCrumbBack currentName="" />
-          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ bucketName }}</div>
+          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ prefixName || bucketName }}</div>
         </label>
         <label v-else>{{ sidebarName[curBarName] }}</label>
       </div> 
@@ -32,7 +32,7 @@
   <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible" @handleCancelCreate="createVisible=false;" @handleDone="handleDone"></CreateModal>
 </template>
 <script setup lang="ts">
-import { watch, ref, onMounted } from 'vue';
+import { watch, ref, onMounted, toRefs } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 import { sidebarName } from '@/enums/index';
 // import { getPonitStr } from '@/utils/index';
@@ -42,6 +42,14 @@ import BreadCrumbBack from "@/components/BreadCrumbBack.vue";
 import CreateModal from "@/views/resource/create.vue";
 import CreateStorageModal from '@/views/storage/components/CreateStorageModal.vue';
 import { message } from 'ant-design-vue';
+
+const props = defineProps({
+  prefixName:{
+    type: String,
+    default:''
+  }
+})
+const { prefixName } = toRefs(props);
 
 const router = useRouter();
 const route = useRoute();

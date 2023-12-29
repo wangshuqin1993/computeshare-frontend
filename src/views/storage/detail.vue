@@ -1,6 +1,6 @@
 <!-- 文件存储 -->
 <template>
-  <Header />
+  <Header :prefixName="prefixName"/>
   <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
       <UploadFile :prefixName="prefixName" :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
