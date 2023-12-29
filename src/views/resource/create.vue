@@ -30,7 +30,7 @@
           请妥善保管好密码，如丢失无法找回，可能会造成损失
         </div> -->
         <a-form-item label="公钥：" name="secretKey" class="!mb-0">
-          <a-textarea class="modal-input" v-model:value="formData.secretKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="200" />
+          <a-textarea class="modal-input" v-model:value="formData.secretKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="500" />
         </a-form-item>
         <div class="ml-[120px]">
           <a-upload 
@@ -42,7 +42,6 @@
             >
             <label class="text-[#484FFF] cursor-pointer">从本地文件读取</label>
           </a-upload>
-          <p>{{ fileContent }}</p>
         </div>
         <div class="bg-[#FFFBE6] mt-[30px] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
           <div class="pt-[2px]">
@@ -77,7 +76,6 @@ const labelCol = { style: { width: '120px' } };
 const loading = ref(false);
 const specList = ref([]);
 const imageList = ref([]);
-const fileContent = ref('');
 const file = ref();
 const durationList = ref([]);
 const formRef = ref();
@@ -163,7 +161,7 @@ const handleUploadAttachement = async (fileData) => {
 const readFile = () => {
   const reader = new FileReader();
   reader.onload = (event) => {
-    fileContent.value = event.target.result;
+    formData.secretKey = event.target.result;
   };
   reader.readAsText(file.value);
 }
