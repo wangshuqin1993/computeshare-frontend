@@ -17,6 +17,13 @@
       <!-- :scroll="{x: false, y: 'calc(100vh - 691px)' }" -->
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'name'">
+            <div class="flex items-center">
+              <img v-if="record.etag" src="@/assets/images/file-img.png" class="h-[20px] mr-[8px]">
+              <img v-else src="@/assets/images/folder-img.png" class="h-[20px] mr-[8px]">
+              <span>{{ record.name }}</span>
+            </div>
+          </template>
           <template v-if="column.dataIndex === 'action'">
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
