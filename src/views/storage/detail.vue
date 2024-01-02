@@ -1,6 +1,6 @@
 <!-- 文件存储 -->
 <template>
-  <Header />
+  <Header :prefixName="prefixName"/>
   <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] mb-[20px] p-[20px]">
       <UploadFile :prefixName="prefixName" :suffixNames="suffixNames" :suffixText="suffixText" @refreshList="getTableData"></UploadFile>
@@ -17,13 +17,20 @@
       <!-- :scroll="{x: false, y: 'calc(100vh - 691px)' }" -->
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'name'">
+            <div class="flex items-center">
+              <img v-if="record.etag" src="@/assets/images/file-img.png" class="h-[20px] mr-[8px]">
+              <img v-else src="@/assets/images/folder-img.png" class="h-[20px] mr-[8px]">
+              <span>{{ record.name }}</span>
+            </div>
+          </template>
           <template v-if="column.dataIndex === 'action'">
             <a-tooltip placement="left" color="#FFFFFF">
               <template #title>
                 <div class="text-[14px]">
                   <div v-if="!record.etag" class="tips-css" @click="viewStorage(record)">查看</div>
-                  <div class="tips-css" @click="copyToClipboard(record.s3Url)">复制 S3 URI</div>
-                  <div class="tips-css" @click="copyToClipboard(record.url)">复制 URL</div>
+                  <div class="tips-css" @click="copyToClipboard(record.s3Url,'已复制 S3 URI')">复制 S3 URI</div>
+                  <div class="tips-css" @click="copyToClipboard(record.url,'已复制 URL')">复制 URL</div>
                   <div v-if="record.etag" class="tips-css" @click="downloadStorage(record)">下载文件</div>
                   <div class="tips-css" @click="delStorage(record)">删除</div>
                 </div>

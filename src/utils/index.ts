@@ -47,15 +47,15 @@ export function getfilesize(size) {//把字节转换成正常文件大小
 }
 
 // 复制文本
-export const copyToClipboard = (text: string) => {
+export const copyToClipboard = (text: string, msg?: string) => {
   if (!navigator.clipboard) {
     fallbackCopyTextToClipboard(text);
     return;
   }
   navigator.clipboard.writeText(text).then(function () {
-    message.success("copy success");
+    message.success(msg || "复制成功");
   }, function (err) {
-    message.error("copy failed");
+    message.error("复制失败");
   });
 }
 

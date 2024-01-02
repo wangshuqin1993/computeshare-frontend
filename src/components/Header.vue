@@ -23,7 +23,7 @@
         <label v-else-if="curBarName == 'StorageDetail'">
           <bread-crumb :routes="breadCrumbInfo"/>
           <BreadCrumbBack currentName="" />
-          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ bucketName }}</div>
+          <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ prefixName || bucketName }}</div>
         </label>
         <label v-else>{{ sidebarName[curBarName] }}</label>
       </div> 
@@ -31,11 +31,11 @@
       <a-button v-else-if="curBarName === 'Storage'" type="primary" class="ant-btn-s" @click="storageShowModal">创建存储桶</a-button>
     </div>
   </div>
-  <CreateStorageModal ref="storageRef" :showVisible="storageVisible" :prefixValue="prefixValue" @closeModal="storageCloseModal" @loadTable="storageHandleDone"></CreateStorageModal>
+  <CreateStorageModal v-if="storageVisible" ref="storageRef" :showVisible="storageVisible" :prefixValue="prefixValue" @closeModal="storageCloseModal" @loadTable="storageHandleDone"></CreateStorageModal>
   <CreateModal v-if="curBarName === 'Resource'" :createVisible="createVisible" @handleCancelCreate="createVisible=false;" @handleDone="handleDone"></CreateModal>
 </template>
 <script setup lang="ts">
-import { watch, ref, onMounted } from 'vue';
+import { watch, ref, onMounted, toRefs } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 import { sidebarName } from '@/enums/index';
 // import { getPonitStr } from '@/utils/index';
@@ -45,6 +45,14 @@ import BreadCrumbBack from "@/components/BreadCrumbBack.vue";
 import CreateModal from "@/views/resource/create.vue";
 import CreateStorageModal from '@/views/storage/components/CreateStorageModal.vue';
 import { message } from 'ant-design-vue';
+
+const props = defineProps({
+  prefixName:{
+    type: String,
+    default:''
+  }
+})
+const { prefixName } = toRefs(props);
 
 const router = useRouter();
 const route = useRoute();
@@ -68,9 +76,7 @@ const getUserInfo = async () => {
   }
 }
 const storageShowModal = async () => {
-  if (prefixValue.value == '') {
-    await getUserInfo();
-  }
+  await getUserInfo();
   storageVisible.value = true;
   storageRef.value.formData.name = ''; //清空字段
 }
