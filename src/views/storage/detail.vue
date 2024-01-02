@@ -22,8 +22,8 @@
               <template #title>
                 <div class="text-[14px]">
                   <div v-if="!record.etag" class="tips-css" @click="viewStorage(record)">查看</div>
-                  <div class="tips-css" @click="copyToClipboard(record.s3Url)">复制 S3 URI</div>
-                  <div class="tips-css" @click="copyToClipboard(record.url)">复制 URL</div>
+                  <div class="tips-css" @click="copyToClipboard(record.s3Url,'已复制 S3 URI')">复制 S3 URI</div>
+                  <div class="tips-css" @click="copyToClipboard(record.url,'已复制 URL')">复制 URL</div>
                   <div v-if="record.etag" class="tips-css" @click="downloadStorage(record)">下载文件</div>
                   <div class="tips-css" @click="delStorage(record)">删除</div>
                 </div>
