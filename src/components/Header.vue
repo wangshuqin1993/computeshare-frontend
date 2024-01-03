@@ -1,27 +1,15 @@
 <template>
   <div class="bg-[#FFFFFF]">
     <div class="top-css py-[18px] px-[40px] flex justify-end">
-      <a-tooltip placement="bottom" color="#FFFFFF">
-        <template #title>
-          <div class="text-[14px]">
-            <div class="tips-css" @click="goUser">账户设置</div>
-            <div class="tips-css" @click="goCycles">我的Cycles</div>
-            <div class="tips-css" @click="goOrder">我的订单</div>
-            <div class="tips-css" @click="goRenewal">续费管理</div>
-            <div class="tips-css" @click="goDeveloper">开发者选项</div>
-            <div class="tips-css" @click="logout">退出</div>
-          </div>
-        </template>
-        <img src="@/assets/images/user-logo.png" class="h-[36px] w-[36px] cursor-pointer " />
-      </a-tooltip>
+      <HeaderUser></HeaderUser>
     </div>
     <div class="h-[130px] px-[40px] flex justify-between items-center">
       <div class="menu-title">
         <label v-if="curBarName == 'Storage'">存储桶
           <div class="mt-[10px] text-[16px] text-[#8C8C8C] font-light">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
         </label>
-        <label v-else-if="curBarName == 'StorageDetail'">
-          <bread-crumb :routes="breadCrumbInfo"/>
+        <label v-else-if="curBarName == 'StorageDetail'">a
+          <!-- <bread-crumb :routes="breadCrumbInfo"/> -->
           <BreadCrumbBack currentName="" />
           <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ prefixName || bucketName }}</div>
         </label>
@@ -40,6 +28,7 @@ import { useRouter, useRoute } from "vue-router";
 import { sidebarName } from '@/enums/index';
 // import { getPonitStr } from '@/utils/index';
 import { apiGetUser } from '@/apis/user';
+import HeaderUser from './HeaderUser.vue';
 import BreadCrumb from "@/components/BreadCrumb.vue";
 import BreadCrumbBack from "@/components/BreadCrumbBack.vue";
 import CreateModal from "@/views/resource/create.vue";
@@ -93,31 +82,6 @@ const handleDone = ()=>{
 // 创建实例
 const showCreateModal = () => {
   createVisible.value = true;
-}
-
-const goUser = () => {
-  window.open("/dashboard/user");
-}
-
-const goCycles = () => {
-  window.open("/dashboard/cycles");
-}
-
-const goOrder = () => {
-  window.open("/dashboard/order");
-}
-
-const goRenewal = () => {
-  window.open("/dashboard/renewal");
-}
-
-const goDeveloper = ()=>{
-  window.open("/dashboard/developer");
-}
-
-const logout = () => {
-  localStorage.removeItem('token')
-  router.push('/login')
 }
 
 watch(() => router.currentRoute.value,

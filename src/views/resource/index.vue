@@ -11,16 +11,7 @@
         </a-tab-pane>
       </a-tabs>
       <div class="flex justify-end absolute w-[36px] top-[18px] right-[40px]">
-        <a-tooltip placement="bottom" color="#FFFFFF">
-          <template #title>
-            <div class="text-[14px]">
-              <div class="tips-css" @click="goUser">账户设置</div>
-              <div class="tips-css" @click="goDeveloper">开发者选项</div>
-              <div class="tips-css" @click="logout">退出</div>
-            </div>
-          </template>
-          <img src="@/assets/images/user-logo.png" class="h-[36px] w-[36px] cursor-pointer " />
-        </a-tooltip>
+        <HeaderUser></HeaderUser>
       </div>
     </div>
   </div>
@@ -31,6 +22,7 @@ import { watch, ref } from 'vue';
 import { useRouter } from "vue-router";
 import NetworkMap from './networkMap.vue';
 import Resoure from "./resoure.vue";
+import HeaderUser from '@/components/HeaderUser.vue';
 const router = useRouter();
 const curBarName = ref(router.currentRoute.value.name);
 const createVisible = ref(false);
@@ -42,19 +34,6 @@ const emit = defineEmits(["handleDone"])
 // 创建实例
 const showCreateModal = () => {
   createVisible.value = true;
-}
-
-const goUser = () => {
-  window.open("/dashboard/user");
-}
-
-const goDeveloper = ()=>{
-  window.open("/dashboard/developer");
-}
-
-const logout = () => {
-  localStorage.removeItem('token')
-  router.push('/login')
 }
 
 const changeTabKey = ()=>{
