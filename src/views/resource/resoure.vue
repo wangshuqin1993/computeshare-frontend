@@ -209,6 +209,7 @@ const handleDone = () => {
 }
 
 onMounted(() => {
+  getInstanceList()
   // 开启循环去实时调实例的状态
   isLoop.value = setInterval(() => {
     getInstanceList()
