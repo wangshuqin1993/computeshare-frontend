@@ -4,11 +4,12 @@
         <div class="dashboard-index-left">
           <img src="@/assets/images/menu-logo-cs.png" class="h-[38px] my-[32px] mx-[24px] cursor-pointer" @click="goHome" />
           <a-menu theme="dark" v-model:selectedKeys="selectedKeys" style="width: 312px">
-              <a-menu-item v-for="item in menuRouterList" :key="item.name">
+              <a-menu-item v-for="item in menuRouterList" :key="item.name" class="group">
                   <router-link :to="item.name">
                       <div class="flex items-center">
                         <!-- 小图标默认是暗色，选中是亮色 -->
-                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] mr-[17px]" />
+                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] mr-[17px] dark-img inline-block group-hover:hidden" />
+                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] mr-[17px] demo-img hidden group-hover:inline-block" />
                         <span>{{ sidebarName[item.name] }}</span>
                       </div>
                   </router-link>
@@ -107,5 +108,11 @@ watch(() => router.currentRoute.value,
 }
 :deep(.ant-menu-dark .ant-menu-item-selected){
   background-color: #484FFF;
+  .dark-img{
+    display: none;
+  }
+  .demo-img{
+    display: inline-block;
+  }
 }
 </style>
