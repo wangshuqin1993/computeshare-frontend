@@ -7,7 +7,8 @@
               <a-menu-item v-for="item in menuRouterList" :key="item.name">
                   <router-link :to="item.name">
                       <div class="flex items-center">
-                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] mr-[17px]" />
+                        <!-- 小图标默认是暗色，选中是亮色 -->
+                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] mr-[17px]" />
                         <span>{{ sidebarName[item.name] }}</span>
                       </div>
                   </router-link>
