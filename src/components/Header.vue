@@ -45,7 +45,6 @@ const { prefixName } = toRefs(props);
 
 const router = useRouter();
 const route = useRoute();
-const breadCrumbInfo = ref<any>([])
 const curBarName = ref(router.currentRoute.value.name);
 const bucketName = (route.query.bucketName || '').toString();
 const createVisible = ref(false);
@@ -91,16 +90,7 @@ watch(() => router.currentRoute.value,
 )
 
 onMounted(async() => {
-  breadCrumbInfo.value = [
-    // {
-    //   breadcrumbName:'S3存储桶',
-    //   path:'/dashboard/storage'
-    // },
-    // {
-    //   breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
-    //   path:''
-    // },
-  ]
+  // 此界面为公共组件，页面的具体信息由 传递数据 接收。比如面包屑的内容，只能接收，不能写死在这个界面
 })
 
 defineExpose({
