@@ -55,11 +55,4 @@ const backRoute = (e: Event) => {
 .isclick {
   cursor: pointer;
 }
-
-
-html[data-theme='dark'] {
-  .backInfo::before {
-    background-color: #ffffff;
-  }
-}
 </style>
