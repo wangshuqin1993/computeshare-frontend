@@ -94,16 +94,7 @@ watch(() => router.currentRoute.value,
 )
 
 onMounted(async() => {
-  // breadCrumbInfo.value = [
-  //   // {
-  //   //   breadcrumbName:'S3存储桶',
-  //   //   path:'/dashboard/storage'
-  //   // },
-  //   // {
-  //   //   breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
-  //   //   path:''
-  //   // },
-  // ]
+  // 此界面为公共组件，页面的具体信息由 传递数据 接收。比如面包屑的内容，只能接收，不能写死在这个界面
 })
 
 defineExpose({
