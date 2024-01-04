@@ -51,20 +51,20 @@ onBeforeMount(() => {
   const dashboard: any = router.options.routes.find((val) => { return val.path === '/' });
 
   // 过滤出所有服务那边的菜单
-  const serviceArr = dashboard.children.filter((item:any)=>{
+  const serviceArr = dashboard.children.filter((item: any) => {
     return item.meta.isShow && !item.meta.isPersonal
   })
-  serviceBool.value = serviceArr.map((item:any)=>{return item.name}).includes(curBarName.value)
-  if(serviceBool.value){
+  serviceBool.value = serviceArr.map((item: any) => { return item.name }).includes(curBarName.value)
+  if (serviceBool.value) {
     menuRouterList.value = serviceArr
   }
 
   // 过滤出所有账户那边的菜单
-  const userArr = dashboard.children.filter((item:any)=>{
+  const userArr = dashboard.children.filter((item: any) => {
     return item.meta.isShow && item.meta.isPersonal
   })
-  userBool.value = userArr.map((item:any)=>{return item.name}).includes(curBarName.value)
-  if(userBool.value){
+  userBool.value = userArr.map((item: any) => { return item.name }).includes(curBarName.value)
+  if (userBool.value || router.currentRoute.value.meta.isPersonal){
     menuRouterList.value = userArr
   }
 })

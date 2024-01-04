@@ -68,6 +68,16 @@ let router = createRouter({
           }
         },
         {
+          path: "/dashboard/cyclesDetail",
+          name: "CyclesDetail",
+          component: () => import('@/views/cycles/detail.vue'),
+          meta: {
+            isShow: false,
+            isPersonal: true,
+            sidebarMap: ['Cycles'],
+          }
+        },
+        {
           path: "/dashboard/order",
           name: "Order",
           component: () => import('@/views/order/index.vue'),

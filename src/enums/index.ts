@@ -5,6 +5,7 @@ export enum sidebarName {
   'User' = '账户设置',
   'Developer' = '开发者选项',
   'Cycles' = '我的Cycles',
+  'CyclesDetail' = '明细记录',
   'Renewal' = '续费管理',
   'Order' = '我的订单',
 }

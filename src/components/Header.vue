@@ -5,11 +5,11 @@
     </div>
     <div class="h-[130px] px-[40px] flex justify-between items-center">
       <div class="menu-title">
+        <bread-crumb :routes="breadCrumbInfo"/>
         <label v-if="curBarName == 'Storage'">存储桶
           <div class="mt-[10px] text-[16px] text-[#8C8C8C] font-light">存储桶是在存储数据的容器，您可以在存储桶中存储任意数量的对象。您可以创建、清空和删除存储桶，但只能删除空的存储桶。</div>
         </label>
         <label v-else-if="curBarName == 'StorageDetail'">
-          <!-- <bread-crumb :routes="breadCrumbInfo"/> -->
           <BreadCrumbBack currentName="" />
           <div class="text-[24px] font-medium text-[rgba(0,0,0,0.85)]">{{ prefixName || bucketName }}</div>
         </label>
@@ -39,13 +39,16 @@ const props = defineProps({
   prefixName:{
     type: String,
     default:''
+  },
+  breadCrumbInfo: {
+    type: Array,
+    default:[]
   }
 })
-const { prefixName } = toRefs(props);
+const { prefixName,breadCrumbInfo } = toRefs(props);
 
 const router = useRouter();
 const route = useRoute();
-const breadCrumbInfo = ref<any>([])
 const curBarName = ref(router.currentRoute.value.name);
 const bucketName = (route.query.bucketName || '').toString();
 const createVisible = ref(false);
@@ -91,16 +94,16 @@ watch(() => router.currentRoute.value,
 )
 
 onMounted(async() => {
-  breadCrumbInfo.value = [
-    // {
-    //   breadcrumbName:'S3存储桶',
-    //   path:'/dashboard/storage'
-    // },
-    // {
-    //   breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
-    //   path:''
-    // },
-  ]
+  // breadCrumbInfo.value = [
+  //   // {
+  //   //   breadcrumbName:'S3存储桶',
+  //   //   path:'/dashboard/storage'
+  //   // },
+  //   // {
+  //   //   breadcrumbName: getPonitStr('13700000000-hamster-deployments', 10 , 10),
+  //   //   path:''
+  //   // },
+  // ]
 })
 
 defineExpose({
