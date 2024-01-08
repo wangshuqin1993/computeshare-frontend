@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <div class="m-[20px]">
+    <div class="m-[20px] scroll-contain-h">
       <div class="flex">
         <div class="w-[70%]">
           <div class="bg-[#FFFFFFFF] rounded-[2px] mb-[2px] h-[100px] px-[20px] flex justify-between items-center">
@@ -21,8 +21,35 @@
             </a-tabs>
           </div>
         </div>
-        <div class="w-0 flex-1 ml-[20px] bg-[#FFFFFFFF] rounded-[2px]">
-          123
+        <div class="w-0 flex-1 ml-[20px] p-[20px] bg-[#FFFFFFFF] rounded-[2px]">
+          <div class="text-[18px] font-medium mb-[10px]">Cycle是平台充值币</div>
+          <div class="text-[12px] font-light text-[#8C8C8C]">用于购买平台上的所有资源和服务,每个Cycle的购买价格为0.001元,至少1000个Cycles起</div>
+          <div class="right-title">云服务器</div>
+          <div class="right-desc">
+            <div>租用云服务器</div>
+            <div>50,000 Cycles /30天</div>
+          </div>
+          <div class="right-desc2">
+            <div>适用于测试环境搭建</div>
+            <div>（ ¥50 /30天 ）</div>
+          </div>
+          <div class="right-title">文件存储</div>
+          <div class="right-desc">
+            <div>租用S3存储空间</div>
+            <div>5 Cycles / GB / 30天</div>
+          </div>
+          <div class="right-desc2">
+            <div>适用于测试环境搭建</div>
+            <div>（ ¥0.005 /30天 ）</div>
+          </div>
+          <div class="right-title">沙箱服务</div>
+          <div class="right-desc">
+            <div>使用沙箱服务</div>
+            <div>Coming Soon</div>
+          </div>
+          <div class="right-desc2">
+            <div>适用于测试环境搭建</div>
+          </div>
         </div>
       </div>
     </div>
@@ -40,7 +67,7 @@ const goDetail = () => {
   router.push('/dashboard/cyclesDetail')
 }
 </script>
-<style lang="less" scoped>
+<style scoped>
 :deep(.ant-tabs-top > .ant-tabs-nav){
   margin-bottom: 0px !important;
 }
@@ -51,5 +78,14 @@ const goDetail = () => {
 :deep(.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn){
   color: #262626;
   font-weight: 600;
+}
+.right-title{
+  @apply text-[14px] font-semibold mt-[20px] mb-[10px];
+}
+.right-desc{
+  @apply flex justify-between text-[14px] font-light;
+}
+.right-desc2{
+  @apply flex justify-between text-[12px] font-light text-[#8C8C8C];
 }
 </style>

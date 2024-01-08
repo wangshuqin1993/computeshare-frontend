@@ -40,10 +40,10 @@
             :before-upload="beforeUpload"
             accept=".pub"
             >
-            <label class="text-[#484FFF] cursor-pointer">从本地文件读取</label>
+            <label class="text-[#484FFF] text-[14px] font-medium underline cursor-pointer">从本地文件读取</label>
           </a-upload>
         </div>
-        <div class="bg-[#FFFBE6] mt-[30px] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
+        <div class="ml-[120px] bg-[#FFFBE6] mt-[20px] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
           <div class="pt-[2px]">
             <img src="@/assets/images/IconWarning.png" class="h-[14px] w-[14px] mr-[8px]" />
           </div>
@@ -52,8 +52,17 @@
             请妥善保管好密码，如丢失无法找回，可能会造成损失
           </div>
         </div>
-        <div class="text-center mt-[50px]">
-          <a-button class="ant-btn-m" type="primary" :loading="loading" @click="handleCreate">创建</a-button>
+        <div class="mt-[30px] pt-[40px] bt-css flex justify-between items-center">
+          <div>
+            <div class="text-[24px] font-semibold text-[#DC9200]">50,000 Cycles / 30天</div>
+            <div class="text-[14px] flex items-center">账户余额：0 Cycles
+              <img src="@/assets/icons/wenhao.svg" class="h-[16px] w-[16px] ml-[10px]" />
+            </div>
+          </div>
+          <div>
+            <a-button class="ant-btn-ss mr-[20px]" ghost type="primary" :loading="loading" @click="handleCreate">充值</a-button>
+            <a-button class="ant-btn-ss" type="primary" :loading="loading" @click="handleCreate">创建</a-button>
+          </div>
         </div>
       </a-form>
     </div>
@@ -183,5 +192,8 @@ onMounted(() => {
 <style scoped lang="less">
 .warn-msg{
   width: calc(100%-120px);
+}
+.bt-css{
+  border-top: 1px solid #E9E9E9;
 }
 </style>
