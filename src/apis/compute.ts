@@ -98,3 +98,20 @@ export function apiInstanceVncURL(id: string) {
     method: "get",
   });
 }
+
+//重置虚拟机
+export function apiResetVm(id: string, params: resetVmParams) {
+  return httpRequest({
+    url: `/v1/instance/${id}/recreate`,
+    method: "put",
+    data: params
+  });
+}
+
+interface resetVmParams {
+  imageId: number,
+  publicKey: string,
+  password: string,
+  // 非必填
+  dockerCompose?: string
+}

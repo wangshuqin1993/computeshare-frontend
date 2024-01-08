@@ -21,13 +21,17 @@
                 <div class="text-[14px]">
                   <!-- 运行中 -->
                   <div v-if="item.status === 1">
-                     <div class="tips-css" @click="operate(item.id)">访问实例</div>
+                    <div class="tips-css" @click="operate(item.id)">访问实例</div>
                     <div class="tips-css" @click="reStart(item.id)">重启实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
                     <div class="tips-css" @click="configurationMapping(item.id)">配置映射</div>
+                    <div class="tips-css" @click="resetVM(item)">重置虚拟机</div>
                   </div>
                   <!-- 已关闭 -->
-                  <div v-else-if="item.status === 4" class="tips-css" @click="instanceStart(item.id)">启动实例</div>
+                  <div v-else-if="item.status === 4">
+                    <div class="tips-css" @click="instanceStart(item.id)">启动实例</div>
+                    <div class="tips-css" @click="resetVM(item)">重置虚拟机</div>
+                  </div>
                   <!-- 已过期 -->
                   <div v-else-if="item.status === 8" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
                   <div v-else class="tips-css-none">暂无操作</div>
@@ -91,7 +95,8 @@ import {
     apiInstanceStop,
     apiInstanceDelete,
     apiInstanceRestart,
-    apiInstanceVncURL
+    apiInstanceVncURL,
+    apiResetVm
 } from '@/apis/compute';
 
 import CreateModal from "@/views/resource/create.vue";
@@ -158,6 +163,24 @@ const instanceStop = async (id: string) => {
 // 配置映射
 const configurationMapping = (id: string) => {
   emit('changeTabKey')
+}
+
+// 重置虚拟机
+const resetVM = async(item: any) => {
+  console.log('重置虚拟机')
+  const params = {
+    imageId: item.imageId,
+    publicKey: item.publicKey,
+    password: item.password,
+    dockerCompose: ''
+  }
+  const res = await apiResetVm(item.id, params)
+  if (res.code == 200) {
+    getInstanceList()
+    message.success(res.message)
+  } else {
+    message.error(res.message)
+  }
 }
 
 //删除实例
