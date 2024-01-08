@@ -78,8 +78,8 @@ onMounted(() => { // 需要获取到element,所以是onMounted的Hook
         show:false
       },
       type: 'value',
-      min: 0,
-      max: 100,
+      min: 0, //最小值
+      max: 100, //最大值
       interval: 10, //间隔
     },
     series: [
