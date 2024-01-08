@@ -182,10 +182,10 @@ const getInstanceList = async () => {
       let cpuArr = []
       let memoryArr = []
       cpuArr = item.stats.map((en: any) => {
-        return en.cpuUsage
+        return en.cpuUsage 
       })
       memoryArr = item.stats.map((en: any) => {
-        return en.memoryUsage
+        return en.memoryUsage 
       })
       return { cpuArr, memoryArr, ...item }
     })

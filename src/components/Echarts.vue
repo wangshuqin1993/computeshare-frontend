@@ -52,6 +52,7 @@ onMounted(() => { // 需要获取到element,所以是onMounted的Hook
       trigger: 'axis',
       padding: [20, 20],
       // position: 'inside',
+      formatter: '{a}: ({c}%)',
     },
     xAxis: {
       show: false,
@@ -71,12 +72,15 @@ onMounted(() => { // 需要获取到element,所以是onMounted的Hook
     },
     yAxis: {
       axisLabel: { // 取消显示坐标值
-        show: false
+        show: false,
       },
       splitLine: { //取消网格线
         show:false
       },
-      type: 'value'
+      type: 'value',
+      min: 0,
+      max: 100,
+      interval: 10, //间隔
     },
     series: [
       {
