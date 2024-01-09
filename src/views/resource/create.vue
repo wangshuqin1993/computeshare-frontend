@@ -56,11 +56,18 @@
           <div>
             <div class="text-[24px] font-semibold text-[#DC9200]">50,000 Cycles / 30天</div>
             <div class="text-[14px] flex items-center">账户余额：0 Cycles
-              <img src="@/assets/icons/wenhao.svg" class="h-[16px] w-[16px] ml-[10px]" />
+              <a-tooltip color="#FFFFFF">
+                    <template #title>
+                        <div class="text-[14px] text-[#000000] px-[10px]">
+                            Cycle是平台充值币，用于购买平台上的所有资源和服务
+                        </div>
+                    </template>
+                    <img src="@/assets/icons/wenhao.svg" class="h-[16px] w-[16px] ml-[10px] cursor-pointer" />
+                </a-tooltip>
             </div>
           </div>
           <div>
-            <a-button class="ant-btn-ss mr-[20px]" ghost type="primary" :loading="loading" @click="handleCreate">充值</a-button>
+            <a-button class="ant-btn-ss mr-[20px]" ghost type="primary" @click="goCycle">充值</a-button>
             <a-button class="ant-btn-ss" type="primary" :loading="loading" @click="handleCreate">创建</a-button>
           </div>
         </div>
@@ -106,7 +113,10 @@ const formRules = computed(() => {
     password: [requiredRule('请输入密码')],
   };
 });
-
+const goCycle = () => {
+  handleCancel();
+  window.open("/dashboard/Cycles");
+}
 const handleCancel = () => {
   emit('handleCancelCreate');
 }

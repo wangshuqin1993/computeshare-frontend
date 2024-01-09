@@ -12,8 +12,8 @@
       </div>
     </div>
     <div class="mt-[40px]" v-if="'other' == checkedCycle">
-      <a-input autocomplete="off" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量"/>
-      <div class="text-[18px]">¥ 0.00</div>
+      <a-input autocomplete="off" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量" @keyup="cyclesNumber=cyclesNumber.replace(/\D/g,'')"/>
+      <div class="text-[18px]">¥ {{ cyclesNumber ? (cyclesNumber/1000).toFixed(2) : '0.00' }}</div>
     </div>
     <div class="text-center">
       <a-button type="primary" class="ant-btn-s my-[50px]" @click="">确认充值</a-button>
@@ -36,7 +36,7 @@ const cyclesList = ref([
   {id:'2',label:'50,000', price:'50'},
   {id:'3',label:'50,000', price:'50'},
 ]);
-const cyclesNumber = ref('');
+const cyclesNumber = ref<any>();
 const checkedCycle = ref('');
 const checkedCard = (id: any) => {
   checkedCycle.value = id;
