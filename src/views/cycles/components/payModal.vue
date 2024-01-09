@@ -1,7 +1,7 @@
 <template>
   <!-- 选择支付方式 -->
-  <a-modal :title="title" :footer="null" width="700px" centered="true" v-model:open="visible" @cancel="handleCancel">
-    <div class="text-center my-[40px] text-[48px] font-medium">50.00 元</div>
+  <a-modal :title="'购买 ' + formatAmount(cyclesNumber, 0) + ' Cycles'" :footer="null" width="700px" centered="true" v-model:open="visible" @cancel="handleCancel">
+    <div class="text-center my-[40px] text-[48px] font-medium">{{ (cyclesNumber / 1000).toFixed(2) }} 元</div>
     <div class="pay-card" @click="handlePay">
       <div class="pay-left">
         <img src="@/assets/images/alipay.png" class="h-[34px] w-[34px] mr-[20px]" />
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
+import { formatAmount } from '@/utils/index'
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -48,10 +49,9 @@ const props = defineProps({
     default: 0.00
   }
 });
-const { visible } = toRefs(props);
+const { visible,cyclesNumber } = toRefs(props);
 const emit = defineEmits(["handleCancel", "handleDone"])
 
-const title = ref('购买50,000 Cycles');
 const payVisible = ref(false);
 
 const handlePay = () => {
