@@ -2,7 +2,7 @@
   <div class="p-[50px]">
     <a-input autocomplete="off" allowClear="true" v-model:value="cyclesCode" placeholder="请输入兑换码" />
     <div class="text-center">
-      <a-button type="primary" class="ant-btn-s my-[50px]" @click="handleExchange">兑换</a-button>
+      <a-button :disabled="cyclesCode.trim()?.length<5" type="primary" class="ant-btn-s my-[50px]" @click="handleExchange">兑换</a-button>
     </div>
   </div>
   <!-- 充值成功 -->
