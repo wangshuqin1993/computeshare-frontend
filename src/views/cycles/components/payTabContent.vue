@@ -13,7 +13,7 @@
     </div>
     <div class="mt-[40px]" v-if="'other' == checkedCycle">
       <a-input autocomplete="off" allowClear="true" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量" @keyup="cyclesNumber=cyclesNumber.replace(/\D/g,'')"/>
-      <div class="text-[18px]">¥ {{ cyclesNumber ? (cyclesNumber/1000).toFixed(2) : '0.00' }}</div>
+      <div class="text-[18px]">¥ {{ cyclesNumber ? (cyclesNumber/1000).toFixed(3) : '0.000' }}</div>
     </div>
     <div class="text-center">
       <a-button type="primary" class="ant-btn-s my-[50px]" @click="handlePay">确认充值</a-button>
