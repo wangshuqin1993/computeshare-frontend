@@ -35,8 +35,8 @@ import payModal from './payModal.vue';
 
 const cyclesList = ref([
   {id:'1',label:'50,000', price:'50'},
-  {id:'2',label:'50,000', price:'50'},
-  {id:'3',label:'50,000', price:'50'},
+  {id:'2',label:'50,0000', price:'500'},
+  {id:'3',label:'50,00000', price:'5000'},
 ]);
 const cyclesNumber = ref<any>();
 const checkedCycle = ref('');

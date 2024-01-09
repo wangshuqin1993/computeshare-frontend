@@ -1,6 +1,6 @@
 <template>
   <div class="p-[50px]">
-    <a-input autocomplete="off" allowClear="true" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量" @keyup="cyclesNumber=cyclesNumber.replace(/\D/g,'')"/>
+    <a-input autocomplete="off" allowClear="true" v-model:value="cyclesCode" placeholder="请输入兑换码" />
     <div class="text-center">
       <a-button type="primary" class="ant-btn-s my-[50px]" @click="handleExchange">兑换</a-button>
     </div>
@@ -33,8 +33,9 @@ import { ref } from 'vue';
 
 const visibleSuc = ref(false);
 const visibleFail = ref(false);
-const cyclesNumber = ref('');
+const cyclesCode = ref('');
 const handleExchange = () => {
-
+  // visibleSuc.value = true
+  // visibleFail.value = true
 }
 </script>
