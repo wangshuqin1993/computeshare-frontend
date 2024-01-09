@@ -12,11 +12,11 @@
       </div>
     </div>
     <div class="mt-[40px]" v-if="'other' == checkedCycle">
-      <a-input autocomplete="off" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量" @keyup="cyclesNumber=cyclesNumber.replace(/\D/g,'')"/>
+      <a-input autocomplete="off" allowClear="true" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量" @keyup="cyclesNumber=cyclesNumber.replace(/\D/g,'')"/>
       <div class="text-[18px]">¥ {{ cyclesNumber ? (cyclesNumber/1000).toFixed(2) : '0.00' }}</div>
     </div>
     <div class="text-center">
-      <a-button type="primary" class="ant-btn-s my-[50px]" @click="">确认充值</a-button>
+      <a-button type="primary" class="ant-btn-s my-[50px]" @click="handlePay">确认充值</a-button>
     </div>
     <div class="bt-css"></div>
     <div>
@@ -27,9 +27,11 @@
       </div>
     </div>
   </div>
+  <payModal :visible="payVisible" :cyclesNumber="cyclesNumber" @handleCancel="handleCancelPay"></payModal>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import payModal from './payModal.vue';
 
 const cyclesList = ref([
   {id:'1',label:'50,000', price:'50'},
@@ -38,8 +40,15 @@ const cyclesList = ref([
 ]);
 const cyclesNumber = ref<any>();
 const checkedCycle = ref('');
+const payVisible = ref(false);
 const checkedCard = (id: any) => {
   checkedCycle.value = id;
+}
+const handleCancelPay = () => {
+  payVisible.value = false;
+}
+const handlePay = () => {
+  payVisible.value = true;
 }
 </script>
 <style scoped>

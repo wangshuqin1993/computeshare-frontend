@@ -16,7 +16,7 @@
                 <payTabContent ></payTabContent>
               </a-tab-pane>
               <a-tab-pane key="2" tab="兑换">
-                <sdkTabContent></sdkTabContent>
+                <exchangeTabContent></exchangeTabContent>
               </a-tab-pane>
             </a-tabs>
           </div>
@@ -57,7 +57,8 @@
 <script setup lang="ts">
 import { useRouter} from 'vue-router'
 import Header from "@/components/Header.vue";
-import payTabContent from "./components/payTabContent.vue"
+import payTabContent from "./components/payTabContent.vue";
+import exchangeTabContent from './components/exchangeTabContent.vue'
 import { ref } from 'vue';
 
 const router = useRouter()
