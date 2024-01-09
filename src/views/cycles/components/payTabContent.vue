@@ -16,7 +16,7 @@
       <div class="text-[18px]">¥ {{ cyclesNumber ? (cyclesNumber/1000).toFixed(3) : '0.000' }}</div>
     </div>
     <div class="text-center">
-      <a-button type="primary" class="ant-btn-s my-[50px]" @click="handlePay">确认充值</a-button>
+      <a-button :disabled="'other' == checkedCycle && cyclesNumber<1000" type="primary" class="ant-btn-s my-[50px]" @click="handlePay">确认充值</a-button>
     </div>
     <div class="bt-css"></div>
     <div>
@@ -38,8 +38,8 @@ const cyclesList = ref([
   {id:'2',label:'50,0000', price:'500'},
   {id:'3',label:'50,00000', price:'5000'},
 ]);
-const cyclesNumber = ref<any>();
-const checkedCycle = ref('');
+const cyclesNumber = ref<any>('');
+const checkedCycle = ref('1');
 const payVisible = ref(false);
 const checkedCard = (id: any) => {
   checkedCycle.value = id;
