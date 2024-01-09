@@ -1,13 +1,13 @@
 <template>
   <div class="p-[50px]">
     <div class="flex">
-      <div v-for="(item,key) in cyclesList" :key="key" @click="checkedCard(item.id)" :class="{'checked-div' : item.id == checkedCycle}" class="div-card mr-[24px]">
+      <div v-for="(item,key) in cyclesList" :key="key" @click="checkedCard(item)" :class="{'checked-div' : item.id == checkedCycle}" class="div-card mr-[24px]">
         <div>
-          <div class="text-[21px] font-semibold text-[#000000]">{{ item.label }} Cycles</div>
+          <div class="text-[21px] font-semibold text-[#000000]">{{ formatAmount(item.label, 0) }} Cycles</div>
           <div class="text-[18px] text-[#606266] mt-[16px]">¥ {{ item.price }}</div>
         </div>
       </div>
-      <div class="div-card" @click="checkedCard('other')" :class="{'checked-div' : 'other' == checkedCycle}">
+      <div class="div-card" @click="checkedOther('other')" :class="{'checked-div' : 'other' == checkedCycle}">
         自定义…
       </div>
     </div>
@@ -30,19 +30,25 @@
   <payModal :visible="payVisible" :cyclesNumber="cyclesNumber" @handleCancel="handleCancelPay"></payModal>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import payModal from './payModal.vue';
+import { formatAmount } from '@/utils/index'
 
 const cyclesList = ref([
-  {id:'1',label:'50,000', price:'50'},
-  {id:'2',label:'50,0000', price:'500'},
-  {id:'3',label:'50,00000', price:'5000'},
+  {id:'1',label:'50000', price:'50'},
+  {id:'2',label:'500000', price:'500'},
+  {id:'3',label:'5000000', price:'5000'},
 ]);
 const cyclesNumber = ref<any>('');
 const checkedCycle = ref('1');
 const payVisible = ref(false);
-const checkedCard = (id: any) => {
-  checkedCycle.value = id;
+const checkedCard = (item: any) => {
+  checkedCycle.value = item.id;
+  cyclesNumber.value = item.label;
+}
+const checkedOther = (value: any) => {
+  checkedCycle.value = value;
+  cyclesNumber.value = '';
 }
 const handleCancelPay = () => {
   payVisible.value = false;
@@ -50,6 +56,12 @@ const handleCancelPay = () => {
 const handlePay = () => {
   payVisible.value = true;
 }
+onMounted(() => {
+  checkedCard(cyclesList.value[0]);
+});
+defineExpose({
+  cyclesNumber
+});
 </script>
 <style scoped>
 .div-card{

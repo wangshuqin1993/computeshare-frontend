@@ -11,12 +11,12 @@
             <div class="cursor-pointer text-[#484FFF] font-medium" @click="goDetail">充值记录</div>
           </div>
           <div class="bg-[#FFFFFFFF] rounded-[2px] mt-[20px] p-[20px] pl-0">
-            <a-tabs v-model:activeKey="activeKey">
+            <a-tabs v-model:activeKey="activeKey" @change="handleTabs">
               <a-tab-pane key="1" tab="充值">
-                <payTabContent ></payTabContent>
+                <payTabContent ref="payTabRef"></payTabContent>
               </a-tab-pane>
               <a-tab-pane key="2" tab="兑换">
-                <exchangeTabContent></exchangeTabContent>
+                <exchangeTabContent ref="exchangeTabRef"></exchangeTabContent>
               </a-tab-pane>
             </a-tabs>
           </div>
@@ -63,7 +63,16 @@ import { ref } from 'vue';
 
 const router = useRouter()
 const activeKey = ref('1');
+const payTabRef = ref();
+const exchangeTabRef = ref();
 
+const handleTabs = () => {
+  if (activeKey.value == '1') {
+    payTabRef.value.cyclesNumber = '';
+  } else {
+    exchangeTabRef.value.cyclesCode = '';
+  }
+}
 const goDetail = () => {
   router.push('/dashboard/cyclesDetail')
 }

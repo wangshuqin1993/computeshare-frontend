@@ -38,4 +38,7 @@ const handleExchange = () => {
   // visibleSuc.value = true
   // visibleFail.value = true
 }
+defineExpose({
+  cyclesCode
+});
 </script>
