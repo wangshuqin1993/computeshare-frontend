@@ -30,7 +30,7 @@
       <div class="mt-[30px] text-[24px] font-medium">支付中…</div>
       <div class="mt-[20px] text-[18px] font-light">支付过程需要花费一些时间，请耐心等待...</div>
       <a-button class="ant-btn-ss mt-[50px]" type="primary" @click="payVisible=false">已完成支付</a-button>
-      <div class="mt-[10px] text-[14px] text-[#484FFF] cursor-pointer">遇到问题？</div>
+      <div class="mt-[10px] text-[14px] text-[#484FFF] cursor-pointer" @click="contractCustomer">遇到问题？</div>
     </div>
     
   </a-modal>
@@ -39,6 +39,7 @@
 import { ref, toRefs } from 'vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { formatAmount } from '@/utils/index'
+import { message } from 'ant-design-vue';
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -60,6 +61,11 @@ const handlePay = () => {
 }
 const handleCancel = () => {
   emit('handleCancel');
+}
+
+const contractCustomer = () => {
+  payVisible.value = false
+  message.info('请联系客服人员')
 }
 </script>
 <style scoped lang="less">
