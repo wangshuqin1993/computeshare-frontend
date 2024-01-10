@@ -40,6 +40,9 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
 import { message } from 'ant-design-vue';
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   visible: {
@@ -51,8 +54,7 @@ const { visible } = toRefs(props);
 const emit = defineEmits(["handleCancel"]);
 
 const goCycle = () => {
-  handleCancel();
-  window.open("/dashboard/Cycles");
+  router.push("/dashboard/Cycles");
 }
 const handlePay = () => {
   message.warning("Cycle不足，请先充值再试！");

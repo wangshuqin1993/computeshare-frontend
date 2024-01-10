@@ -16,7 +16,9 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="text-[14px] flex">
-              <a-button type="link" >关闭自动续费</a-button>
+              <a-popconfirm title="确定关闭自动续费吗?" ok-text="确认" cancel-text="取消" @confirm="closeAutoPay(record)">
+                <a-button type="link" >关闭自动续费</a-button>
+              </a-popconfirm>
               <a-button type="link" >打开自动续费</a-button> 
               <a-button type="link" @click="payVisible=true">手动续费</a-button>
             </div>
@@ -102,6 +104,15 @@ const getTableData = async () => {
   // if (res.code == 200) {
   //   tableData.value = res.data.list;
   //   pagination.total = res.data.total
+  // }else{
+  //   message.error(res.message)
+  // }
+}
+
+const closeAutoPay = async(record: any) => {
+  // const res = await apiDeleteNetworkMapById(record.id)
+  // if(res.code===200){
+  //   getNetworkMapList()
   // }else{
   //   message.error(res.message)
   // }
