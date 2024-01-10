@@ -68,7 +68,8 @@ const exchangeTabRef = ref();
 
 const handleTabs = () => {
   if (activeKey.value == '1') {
-    payTabRef.value.cyclesNumber = '';
+    payTabRef.value.cyclesMoney = '';
+    payTabRef.value.cyclesNumber = 0;
   } else {
     exchangeTabRef.value.cyclesCode = '';
   }

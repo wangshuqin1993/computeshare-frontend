@@ -12,8 +12,8 @@
       </div>
     </div>
     <div class="mt-[40px]" v-if="'other' == checkedCycle">
-      <a-input autocomplete="off" allowClear="true" v-model:value="cyclesNumber" placeholder="请输入所需Cycles数量" @keyup="cyclesNumber=cyclesNumber.replace(/\D/g,'')"/>
-      <div class="text-[18px]">¥ {{ cyclesNumber ? (cyclesNumber/1000).toFixed(3) : '0.000' }}</div>
+      <a-input autocomplete="off" allowClear="true" v-model:value="cyclesMoney" placeholder="请输入充值金额" @change="setCyclesNum" @keyup="cyclesMoney=cyclesMoney.replace(/\D/g,'')"/>
+      <div class="text-[18px]">{{ formatAmount(cyclesNumber,0) }} Cycles</div>
     </div>
     <div class="text-center">
       <a-button :disabled="'other' == checkedCycle && cyclesNumber<1000" type="primary" class="ant-btn-s my-[50px]" @click="handlePay">确认充值</a-button>
@@ -39,6 +39,7 @@ const cyclesList = ref([
   {id:'2',label:'500000', price:'500'},
   {id:'3',label:'5000000', price:'5000'},
 ]);
+const cyclesMoney = ref<any>('');
 const cyclesNumber = ref<any>('');
 const checkedCycle = ref('1');
 const payVisible = ref(false);
@@ -48,10 +49,14 @@ const checkedCard = (item: any) => {
 }
 const checkedOther = (value: any) => {
   checkedCycle.value = value;
-  cyclesNumber.value = '';
+  cyclesMoney.value = '';
+  cyclesNumber.value = 0;
 }
 const handleCancelPay = () => {
   payVisible.value = false;
+}
+const setCyclesNum = () => {
+  cyclesNumber.value = cyclesMoney.value * 1000;
 }
 const handlePay = () => {
   payVisible.value = true;
@@ -60,6 +65,7 @@ onMounted(() => {
   checkedCard(cyclesList.value[0]);
 });
 defineExpose({
+  cyclesMoney,
   cyclesNumber
 });
 </script>
