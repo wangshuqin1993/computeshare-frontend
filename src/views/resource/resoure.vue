@@ -24,13 +24,15 @@
                     <div class="tips-css" @click="operate(item.id)">访问实例</div>
                     <div class="tips-css" @click="reStart(item.id)">重启实例</div>
                     <div class="tips-css" @click="instanceStop(item.id)">关闭实例</div>
+                    <div class="tips-css" @click="resetVM(item)">重置实例</div>
+                    <div class="tips-css" @click="changeName(item)">修改名称</div>
                     <div class="tips-css" @click="configurationMapping(item.id)">配置映射</div>
-                    <div class="tips-css" @click="resetVM(item)">重置虚拟机</div>
                   </div>
                   <!-- 已关闭 -->
                   <div v-else-if="item.status === 4">
                     <div class="tips-css" @click="instanceStart(item.id)">启动实例</div>
-                    <div class="tips-css" @click="resetVM(item)">重置虚拟机</div>
+                    <div class="tips-css" @click="resetVM(item)">重置实例</div>
+                    <div class="tips-css" @click="changeName(item)">修改名称</div>
                   </div>
                   <!-- 已过期 -->
                   <div v-else-if="item.status === 8" class="tips-css" @click="instanceDelete(item.id)">删除实例</div>
@@ -167,7 +169,7 @@ const configurationMapping = (id: string) => {
 
 // 重置虚拟机
 const resetVM = async(item: any) => {
-  console.log('重置虚拟机')
+  console.log('重置虚拟机',item)
   const params = {
     imageId: item.imageId,
     publicKey: item.publicKey,
@@ -181,6 +183,11 @@ const resetVM = async(item: any) => {
   } else {
     message.error(res.message)
   }
+}
+
+// 修改名称
+const changeName = async(item: any) => {
+  console.log('修改名称:',item)
 }
 
 //删除实例
