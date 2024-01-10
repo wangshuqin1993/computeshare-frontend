@@ -2,27 +2,39 @@
   <Header />
   <div class="p-[20px] scroll-contain-h">
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
+      <div class="mb-[20px] bg-[#FFFBE6] mt-[20px] border border-solid border-[#FFE58F] rounded-[2px] py-[10px] px-[20px] flex">
+        <div class="pt-[2px]">
+          <img src="@/assets/images/IconWarning.png" class="h-[14px] w-[14px] mr-[8px]" />
+        </div>
+        <div class="text-[12px] text-[#595750]">
+          · 为了避免忘记续费影响业务，平台默认自动续费。生效期间所有服务将于到期前9天开始进行续费扣款，如扣款失败会通过短信通知，然后次日继续扣款截止扣款成功或到期。<br>
+          · 自动续费扣款仅可扣除Cycle，请保证Cycle充足。<br>
+          · 未停服的资源，续费后直接延长有效期，已停服的资源，会自动释放掉，不支持重新续费。
+        </div>
+      </div>
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="text-[14px] flex">
               <a-button type="link" >关闭自动续费</a-button>
               <a-button type="link" >打开自动续费</a-button> 
-              <a-button type="link" >手动续费</a-button>
+              <a-button type="link" @click="payVisible=true">手动续费</a-button>
             </div>
           </template>
         </template>
       </a-table>
     </div>
   </div>
+  <handlePayModal :visible="payVisible" @handleCancel="payVisible=false"></handlePayModal>
 </template>
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
+import handlePayModal from './components/handlePayModal.vue'
 
-
-const tableData = ref([])
+const payVisible = ref(false)
+const tableData = ref([{bucket:'123'}])
 const tableColumns = reactive([
   {
     title: '名称',
