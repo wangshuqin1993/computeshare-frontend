@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="mt-[40px]" v-if="'other' == checkedCycle">
-      <a-input autocomplete="off" allowClear="true" v-model:value="cyclesMoney" placeholder="请输入充值金额" @change="setCyclesNum" @keyup="cyclesMoney=cyclesMoney.replace(/\D/g,'')"/>
+      <a-input autocomplete="off" allowClear="true" v-model:value="cyclesMoney" placeholder="请输入充值金额" @change="setCyclesNum" @keyup="setInputValue"/>
       <div class="text-[18px]">{{ formatAmount(cyclesNumber,0) }} Cycles</div>
     </div>
     <div class="text-center">
@@ -56,6 +56,29 @@ const handleCancelPay = () => {
   payVisible.value = false;
 }
 const setCyclesNum = () => {
+  // cyclesNumber.value = cyclesMoney.value * 1000;
+}
+const setInputValue = () => {
+  var reg = /^[0-9]+(.[0-9]{2})?$/;
+  if (!reg.test(cyclesMoney.value)) {
+    let cycleList = cyclesMoney.value.toString().split('');
+    let dianNum = 0; //记录小数点个数
+    let cycleVal = [];
+    cycleList.forEach(element => {
+      if (element == '.') {
+        if (dianNum < 1) {
+          cycleVal.push(element)
+        }
+        dianNum++;
+      } else if (/^[0-9]*$/.test(element)) {
+        cycleVal.push(element)
+      }
+    });
+    cyclesMoney.value = cycleVal.join('');
+    if (cyclesMoney.value.substring(cyclesMoney.value.indexOf('.') + 1).length > 2) {
+      cyclesMoney.value = Number(cyclesMoney.value).toFixed(2);
+    }
+  }
   cyclesNumber.value = cyclesMoney.value * 1000;
 }
 const handlePay = () => {
