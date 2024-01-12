@@ -6,7 +6,7 @@
           <div class="bg-[#FFFFFFFF] rounded-[2px] mb-[2px] h-[100px] px-[20px] flex justify-between items-center">
             <div class="flex items-center">
               <span class="text-[18px] font-medium">Cycles余额</span>
-              <span class="ml-[30px] text-[36px] font-semibold">0.00</span>
+              <span class="ml-[30px] text-[36px] font-semibold">{{ formatAmount(cycleBalance) }}</span>
             </div>
             <div class="cursor-pointer text-[#484FFF] font-medium" @click="goDetail">充值记录</div>
           </div>
@@ -55,28 +55,49 @@
     </div>
 </template>
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { useRouter} from 'vue-router'
+import { message } from 'ant-design-vue';
 import Header from "@/components/Header.vue";
+import { apiGetCycleBalance } from '@/apis/cycles';
+import { formatAmount } from '@/utils/index'
 import payTabContent from "./components/payTabContent.vue";
-import exchangeTabContent from './components/exchangeTabContent.vue'
-import { ref } from 'vue';
+import exchangeTabContent from './components/exchangeTabContent.vue';
 
 const router = useRouter()
 const activeKey = ref('1');
 const payTabRef = ref();
 const exchangeTabRef = ref();
+const cycleBalance = ref(0.00)
+
+//获取cycle余额
+const getCycleBalances = async () => {
+
+  const res = await apiGetCycleBalance();
+  if (res.code == 200) {
+    cycleBalance.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
 
 const handleTabs = () => {
   if (activeKey.value == '1') {
     payTabRef.value.cyclesMoney = '';
     payTabRef.value.cyclesNumber = 0;
   } else {
-    exchangeTabRef.value.cyclesCode = '';
+    if (exchangeTabRef.value) {
+      exchangeTabRef.value.cyclesCode = '';
+    }
   }
 }
 const goDetail = () => {
   router.push('/dashboard/cyclesDetail')
 }
+
+onMounted(() => {
+  getCycleBalances();
+});
 </script>
 <style scoped>
 :deep(.ant-tabs-top > .ant-tabs-nav){

@@ -21,8 +21,8 @@
         <a-form-item label="密码：" name="password">
           <a-input-password class="modal-input" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
-        <a-form-item label="公钥：" name="secretKey" class="!mb-0">
-          <a-textarea class="modal-input" v-model:value="formData.secretKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="500" />
+        <a-form-item label="公钥：" name="publicKey" class="!mb-0">
+          <a-textarea class="modal-input" v-model:value="formData.publicKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="500" />
         </a-form-item>
         <div class="ml-[120px]">
           <a-upload 
@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import { message } from 'ant-design-vue';
-import { apiGetImage } from '@/apis/compute';
+import { apiGetImage, apiResetVm } from '@/apis/compute';
 
 const props = defineProps({
   visible: {
@@ -55,9 +55,13 @@ const props = defineProps({
   resetImageId: {
     type: Number,
     default: 0
+  },
+  id: {
+    type: String,
+    default: ''
   }
 });
-const { visible,resetImageId } = toRefs(props);
+const { visible,resetImageId,id } = toRefs(props);
 const emit = defineEmits(["handleCancel","handleDone"]);
 
 const labelCol = { style: { width: '120px' } };
@@ -67,7 +71,7 @@ const formData = reactive({
   imageId: resetImageId.value,
   username: 'ubuntu',
   password: '',
-  secretKey:'', //公匙
+  publicKey:'', //公匙
 });
 const formRules = computed(() => {
 
@@ -82,12 +86,21 @@ const formRules = computed(() => {
 
 const handleCancel = () => {
   formData.password = '';
-  formData.secretKey = '';
+  formData.publicKey = '';
   formRef.value.resetFields();
   emit('handleCancel');
 }
 const handleReset = async () => {
   await formRef.value.validate();
+
+  const res = await apiResetVm(id.value, formData);
+  if (res.code == 200) {
+    message.success(res.message)
+    handleCancel();
+    emit('handleDone');
+  }else{
+    message.error(res.message)
+  }
 }
 // 操作系统
 const getImage = async () => {
@@ -103,7 +116,7 @@ const getImage = async () => {
 const handleUploadAttachement = async (fileData) => {
   const reader = new FileReader();
   reader.onload = (event) => {
-    formData.secretKey = event.target.result;
+    formData.publicKey = event.target.result;
   };
   reader.readAsText(fileData.file);
 }

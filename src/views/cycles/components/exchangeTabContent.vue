@@ -12,7 +12,7 @@
     </div>
     <div class="text-center">
       <div class="my-[20px] text-[18px] font-light">恭喜您成功兑换</div>
-      <div class="text-[48px] font-medium">50,000 Cycles</div>
+      <div class="text-[48px] font-medium">{{ formatAmount(cyclesNumber) }} Cycles</div>
       <a-button class="ant-btn-ss mt-[50px]" type="primary" @click="visibleSuc=false">确定</a-button>
     </div>
   </a-modal>
@@ -30,13 +30,25 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import { apiCycleRedeem } from '@/apis/cycles';
+import { formatAmount } from '@/utils/index'
 
 const visibleSuc = ref(false);
 const visibleFail = ref(false);
 const cyclesCode = ref('');
-const handleExchange = () => {
-  // visibleSuc.value = true
-  // visibleFail.value = true
+const cyclesNumber = ref(0);
+const handleExchange = async () => {
+  
+  let param = {
+    redeemCode: cyclesCode.value
+  }
+  const res = await apiCycleRedeem(param);
+  if (res.code == 200) {
+    cyclesNumber.value = res.data;
+    visibleSuc.value = true
+  } else {
+    visibleFail.value = true
+  }
 }
 defineExpose({
   cyclesCode

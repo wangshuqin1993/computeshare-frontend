@@ -82,8 +82,8 @@
   </div>
   <CreateModal :createVisible="createVisible" @handleCancelCreate="createVisible = false;" @handleDone="handleDone">
   </CreateModal>
-  <resetVMModal v-if="resetImageId!=0" :visible="resetVisible" :resetImageId="resetImageId" @handleCancel="resetVisible = false;" @handleDone="getInstanceList"></resetVMModal>
-  <changeNameModal :visible="changeVisible" @handleCancel="changeVisible = false;" @handleDone="getInstanceList"></changeNameModal>
+  <resetVMModal v-if="resetImageId!=0" :visible="resetVisible" :id="handleId" :resetImageId="resetImageId" @handleCancel="resetVisible = false;" @handleDone="getInstanceList"></resetVMModal>
+  <changeNameModal v-if="handleId!=''" :visible="changeVisible" :id="handleId" @handleCancel="changeVisible = false;" @handleDone="getInstanceList"></changeNameModal>
 </template>
 
 <script setup lang="ts">
@@ -112,6 +112,7 @@ const createVisible = ref(false);
 const resetVisible = ref(false);
 const resetImageId = ref(0);
 const changeVisible = ref(false);
+const handleId = ref('');
 const echartsWidth = ref('');
 let isLoop = ref()
 
@@ -179,6 +180,7 @@ const resetVM = async(item: any) => {
   console.log('重置虚拟机', item)
   resetVisible.value = true;
   resetImageId.value = item.imageId;
+  handleId.value = item.id;
   // const params = {
   //   imageId: item.imageId,
   //   publicKey: item.publicKey,
@@ -198,6 +200,7 @@ const resetVM = async(item: any) => {
 const changeName = async(item: any) => {
   console.log('修改名称:', item)
   changeVisible.value = true;
+  handleId.value = item.id;
   
 }
 

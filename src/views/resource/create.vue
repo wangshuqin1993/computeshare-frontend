@@ -3,7 +3,7 @@
     <div class="mt-[30px] ">
       <a-form :model="formData" ref="formRef" :rules="formRules" :label-col="labelCol">
         <a-form-item label="规格：" name="specId">
-          <a-radio-group v-model:value="formData.specId">
+          <a-radio-group v-model:value="formData.specId" @change="getInstancePrice">
             <a-radio-button v-for="(item,key) in specList" :key="key" :value="item.id">{{ item.core }}核 {{ item.memory }}GB</a-radio-button>
           </a-radio-group>
         </a-form-item>
@@ -29,8 +29,8 @@
         <!-- <div class="ml-[120px] warn-msg h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
           请妥善保管好密码，如丢失无法找回，可能会造成损失
         </div> -->
-        <a-form-item label="公钥：" name="secretKey" class="!mb-0">
-          <a-textarea class="modal-input" v-model:value="formData.secretKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="500" />
+        <a-form-item label="公钥：" name="publicKey" class="!mb-0">
+          <a-textarea class="modal-input" v-model:value="formData.publicKey" :auto-size="{ minRows: 4, maxRows: 4 }" placeholder="请输入公钥信息..." show-count :maxlength="500" />
         </a-form-item>
         <div class="ml-[120px]">
           <a-upload 
@@ -54,8 +54,8 @@
         </div>
         <div class="mt-[30px] pt-[40px] bt-css flex justify-between items-center">
           <div>
-            <div class="text-[24px] font-semibold text-[#DC9200]">50,000 Cycles / 30天</div>
-            <div class="text-[14px] flex items-center">账户余额：0 Cycles
+            <div class="text-[24px] font-semibold text-[#DC9200]">{{ formatAmount(instanceInfo.cycle,0) }} Cycles / {{ instanceInfo.day }}天</div>
+            <div class="text-[14px] flex items-center">账户余额：{{ formatAmount(cycleBalance) }} Cycles
               <a-tooltip color="#FFFFFF">
                     <template #title>
                         <div class="text-[14px] text-[#000000] px-[10px]">
@@ -78,7 +78,9 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, toRefs } from 'vue';
 import { message } from 'ant-design-vue';
-import { apiGetSpec, apiGetImage, apiGetDuration, apiPostInstance } from '@/apis/compute';
+import { apiGetSpec, apiGetImage, apiInstancePrice, apiPostInstance } from '@/apis/compute';
+import { apiGetCycleBalance } from '@/apis/cycles';
+import { formatAmount } from '@/utils/index'
 
 const props = defineProps({
   createVisible: {
@@ -92,17 +94,18 @@ const labelCol = { style: { width: '120px' } };
 const loading = ref(false);
 const specList = ref([]);
 const imageList = ref([]);
-const file = ref();
-const durationList = ref([]);
+const cycleBalance = ref(0);
+const instanceInfo = ref<any>({});
+// const durationList = ref([]);
 const formRef = ref();
 const formData = reactive({
   specId: 1,
   imageId: 1,
-  duration: 1,
+  // duration: 1,
   name: '',
   username: 'ubuntu',
   password: '',
-  secretKey:'', //公匙
+  publicKey:'', //公匙
 });
 const formRules = computed(() => {
 
@@ -164,28 +167,45 @@ const getImage = async () => {
     message.error(res.message)
   }
 }
-// 使用时长
-const getDuration = async () => {
+//获取cycle余额
+const getCycleBalances = async () => {
 
-  const res = await apiGetDuration();
+  const res = await apiGetCycleBalance();
   if (res.code == 200) {
-    durationList.value = res.data;
+    cycleBalance.value = res.data;
   }else{
     message.error(res.message)
   }
 }
+// 实例的价格和时长，根据规格来的
+const getInstancePrice = async () => {
+
+  const res = await apiInstancePrice(formData.specId.toString());
+  if (res.code == 200) {
+    instanceInfo.value = res.data;
+  }else{
+    message.error(res.message)
+  }
+}
+
+// 使用时长
+// const getDuration = async () => {
+
+//   const res = await apiGetDuration();
+//   if (res.code == 200) {
+//     durationList.value = res.data;
+//   }else{
+//     message.error(res.message)
+//   }
+// }
 //上传文件
 const handleUploadAttachement = async (fileData) => {
   console.log(222222222222, fileData)
-  file.value = fileData.file;
-  readFile(); //读取文件
-}
-const readFile = () => {
   const reader = new FileReader();
   reader.onload = (event) => {
-    formData.secretKey = event.target.result;
+    formData.publicKey = event.target.result;
   };
-  reader.readAsText(file.value);
+  reader.readAsText(fileData.file);
 }
 //文件后缀名验证
 const beforeUpload = (file) => {
@@ -199,7 +219,9 @@ const beforeUpload = (file) => {
 onMounted(() => {
   getSpec();
   getImage();
-  getDuration();
+  getCycleBalances();
+  getInstancePrice();
+  // getDuration();
 })
 </script>
 <style scoped lang="less">
