@@ -61,7 +61,7 @@ export function apiInstanceStart(id: string) {
   return httpRequest({
     url: `/v1/instance/${id}/start`,
     method: "put",
-    data:{}
+    data: {}
   });
 }
 
@@ -70,7 +70,7 @@ export function apiInstanceStop(id: string) {
   return httpRequest({
     url: `/v1/instance/${id}/stop`,
     method: "put",
-    data:{}
+    data: {}
   });
 }
 
@@ -87,7 +87,7 @@ export function apiInstanceRestart(id: string) {
   return httpRequest({
     url: `/v1/instance/${id}/restart`,
     method: "put",
-    data:{}
+    data: {}
   });
 }
 
