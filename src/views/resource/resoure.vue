@@ -82,6 +82,8 @@
   </div>
   <CreateModal :createVisible="createVisible" @handleCancelCreate="createVisible = false;" @handleDone="handleDone">
   </CreateModal>
+  <resetVMModal :visible="resetVisible" @handleCancel="resetVisible = false;" @handleDone="getInstanceList"></resetVMModal>
+  <changeNameModal :visible="changeVisible" @handleCancel="changeVisible = false;" @handleDone="getInstanceList"></changeNameModal>
 </template>
 
 <script setup lang="ts">
@@ -90,6 +92,8 @@ import { message } from "ant-design-vue";
 import { transTimestamp } from '@/utils/dateUtil';
 import { resourceStatus, resourceStatusColor } from '@/enums/index'
 import Footer from "./footer.vue"
+import resetVMModal from "./components/resetVMModal.vue";
+import changeNameModal from "./components/changeNameModal.vue";
 import Echarts from "@/components/Echarts.vue";
 import {
     apiGetInstanceList,
@@ -100,11 +104,13 @@ import {
     apiInstanceVncURL,
     apiResetVm
 } from '@/apis/compute';
-
 import CreateModal from "@/views/resource/create.vue";
+
 const instanceList = ref([]);
 const headRef = ref();
 const createVisible = ref(false);
+const resetVisible = ref(false);
+const changeVisible = ref(false);
 const echartsWidth = ref('');
 let isLoop = ref()
 
@@ -169,25 +175,28 @@ const configurationMapping = (id: string) => {
 
 // 重置虚拟机
 const resetVM = async(item: any) => {
-  console.log('重置虚拟机',item)
-  const params = {
-    imageId: item.imageId,
-    publicKey: item.publicKey,
-    password: item.password,
-    dockerCompose: ''
-  }
-  const res = await apiResetVm(item.id, params)
-  if (res.code == 200) {
-    getInstanceList()
-    message.success(res.message)
-  } else {
-    message.error(res.message)
-  }
+  console.log('重置虚拟机', item)
+  resetVisible.value = true;
+  // const params = {
+  //   imageId: item.imageId,
+  //   publicKey: item.publicKey,
+  //   password: item.password,
+  //   dockerCompose: ''
+  // }
+  // const res = await apiResetVm(item.id, params)
+  // if (res.code == 200) {
+  //   getInstanceList()
+  //   message.success(res.message)
+  // } else {
+  //   message.error(res.message)
+  // }
 }
 
 // 修改名称
 const changeName = async(item: any) => {
-  console.log('修改名称:',item)
+  console.log('修改名称:', item)
+  changeVisible.value = true;
+  
 }
 
 //删除实例
