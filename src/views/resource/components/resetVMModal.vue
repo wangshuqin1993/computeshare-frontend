@@ -51,16 +51,20 @@ const props = defineProps({
   visible: {
     type: Boolean,
     default: false
+  },
+  resetImageId: {
+    type: Number,
+    default: 0
   }
 });
-const { visible } = toRefs(props);
+const { visible,resetImageId } = toRefs(props);
 const emit = defineEmits(["handleCancel","handleDone"]);
 
 const labelCol = { style: { width: '120px' } };
 const imageList = ref([]);
 const formRef = ref();
 const formData = reactive({
-  imageId: 1,
+  imageId: resetImageId.value,
   password: '',
   secretKey:'', //公匙
 });

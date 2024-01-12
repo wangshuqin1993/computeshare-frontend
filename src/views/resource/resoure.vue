@@ -82,7 +82,7 @@
   </div>
   <CreateModal :createVisible="createVisible" @handleCancelCreate="createVisible = false;" @handleDone="handleDone">
   </CreateModal>
-  <resetVMModal :visible="resetVisible" @handleCancel="resetVisible = false;" @handleDone="getInstanceList"></resetVMModal>
+  <resetVMModal v-if="resetImageId!=0" :visible="resetVisible" :resetImageId="resetImageId" @handleCancel="resetVisible = false;" @handleDone="getInstanceList"></resetVMModal>
   <changeNameModal :visible="changeVisible" @handleCancel="changeVisible = false;" @handleDone="getInstanceList"></changeNameModal>
 </template>
 
@@ -110,6 +110,7 @@ const instanceList = ref([]);
 const headRef = ref();
 const createVisible = ref(false);
 const resetVisible = ref(false);
+const resetImageId = ref(0);
 const changeVisible = ref(false);
 const echartsWidth = ref('');
 let isLoop = ref()
@@ -177,6 +178,7 @@ const configurationMapping = (id: string) => {
 const resetVM = async(item: any) => {
   console.log('重置虚拟机', item)
   resetVisible.value = true;
+  resetImageId.value = item.imageId;
   // const params = {
   //   imageId: item.imageId,
   //   publicKey: item.publicKey,
