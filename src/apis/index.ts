@@ -38,3 +38,8 @@ export function apiPwdLogin(params: AddLoginParams) {
     data: params,
   });
 }
+
+export interface basePageInfo {
+  page: number,
+  size: number,
+}

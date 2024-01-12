@@ -29,8 +29,11 @@ export function apiGetDuration() {
 interface instanceParams {
   specId: number,
   imageId: number,
-  duration: number,
+  // duration: number,
   name: string,
+  publicKey: string,
+  password: string,
+  dockerCompose?: string,//暂不传
 }
 export function apiPostInstance(params: instanceParams) {
   return httpRequest({
@@ -99,7 +102,7 @@ export function apiInstanceVncURL(id: string) {
   });
 }
 
-//重置虚拟机
+// 重置实例
 export function apiResetVm(id: string, params: resetVmParams) {
   return httpRequest({
     url: `/v1/instance/${id}/recreate`,
@@ -114,4 +117,25 @@ interface resetVmParams {
   password: string,
   // 非必填
   dockerCompose?: string
+}
+
+// 修改实例名称
+export function apiRenameInstance(id: string, params: nameParams) {
+  return httpRequest({
+    url: `/v1/instance/${id}/rename`,
+    method: "put",
+    data: params
+  });
+}
+
+interface nameParams {
+  name: string
+}
+
+// 实例的价格和时长，根据规格来的
+export function apiInstancePrice(specId: string) {
+  return httpRequest({
+    url: `/v1/compute/spec/price?specId=${specId}`,
+    method: "get",
+  });
 }
