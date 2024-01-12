@@ -100,9 +100,11 @@ export const getPonitStr = (str: string, start: number, end: number) => {
 // 数字千分位添加逗号
 // value:需要格式化的数字
 //fixedNum:小数点后面保留位数
-export const formatAmount = (value: any, fixedNum = 2) => {
+export const formatAmount = (value: any, fixedNum = 0) => {
   if (!isNaN(parseFloat(value))) {
-    value = parseFloat(value).toFixed(fixedNum); // 保留两位小数
+    if (fixedNum > 0) {
+      value = parseFloat(value).toFixed(fixedNum); // 保留两位小数
+    }
     const parts = value.toString().split('.');
     parts[0] = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'); // 每三位数字之间添加逗号
     return parts.join('.');

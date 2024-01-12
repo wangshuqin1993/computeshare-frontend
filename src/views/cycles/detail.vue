@@ -18,6 +18,9 @@ import { useRouter} from 'vue-router'
 import Header from "@/components/Header.vue";
 import { sidebarName } from '@/enums/index';
 import { transTimestamp } from '@/utils/dateUtil';
+import { apiGetTransactionList } from '@/apis/cycles'
+import { message } from 'ant-design-vue';
+import { formatAmount } from '@/utils/index'
 
 const router = useRouter()
 const curBarName = ref(router.currentRoute.value.name);
@@ -28,18 +31,19 @@ const tableData = ref([])
 const tableColumns = reactive([
   {
     title: '操作名称',
-    dataIndex: 'bucket',
-    key: 'bucket',
+    dataIndex: 'operation',
+    key: 'operation',
   },
   {
     title: '金额',
-    dataIndex: 'bucket',
-    key: 'bucket',
+    dataIndex: 'cycle',
+    key: 'cycle',
+    customRender: ({ text }) =>  formatAmount(text),
   },
   {
     title: '操作时间',
-    dataIndex: 'createdTime',
-    key: 'createdTime',
+    dataIndex: 'operationTime',
+    key: 'operationTime',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   }
 ])
@@ -72,13 +76,13 @@ const getTableData = async () => {
     page: pagination.current,
     size: pagination.pageSize
   }
-  // const res = await apiBucketList(params);
-  // if (res.code == 200) {
-  //   tableData.value = res.data.list;
-  //   pagination.total = res.data.total
-  // }else{
-  //   message.error(res.message)
-  // }
+  const res = await apiGetTransactionList(params);
+  if (res.code == 200) {
+    tableData.value = res.data.data;
+    pagination.total = res.data.total
+  }else{
+    message.error(res.message)
+  }
 }
 
 onMounted(() => {
@@ -92,6 +96,8 @@ onMounted(() => {
       path:''
     },
   ]
+
+  getTableData();
 })
 </script>
 <style lang="less" scoped>
