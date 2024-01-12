@@ -12,18 +12,18 @@
             <a-radio-button v-for="(item,key) in imageList" :key="key" :value="item.id">{{ item.name }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="使用时长：" name="duration">
+        <!-- <a-form-item label="使用时长：" name="duration">
           <a-radio-group v-model:value="formData.duration">
             <a-radio-button  v-for="(item,key) in durationList" :key="key" :value="item.duration">{{ item.name }}</a-radio-button>
           </a-radio-group>
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="实例名称：" name="name">
           <a-input class="modal-input" autocomplete="off" v-model:value="formData.name" placeholder="请输入实例名称"/>
         </a-form-item>
         <a-form-item label="用户名：" name="username">
-          <div class="!text-[16px] font-medium leading-[42px]">ubuntu</div>
+          <div class="!text-[16px] font-medium leading-[42px]">{{ formData.username }}</div>
         </a-form-item>
-        <a-form-item label="密码：" name="password" class="!mb-[10px]">
+        <a-form-item label="密码：" name="password">
           <a-input-password class="modal-input" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
         <!-- <div class="ml-[120px] warn-msg h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
@@ -100,7 +100,7 @@ const formData = reactive({
   imageId: 1,
   duration: 1,
   name: '',
-  // username: 'ubuntu',
+  username: 'ubuntu',
   password: '',
   secretKey:'', //公匙
 });
@@ -109,6 +109,9 @@ const formRules = computed(() => {
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
   return {
+    specId: [requiredRule('请选择规格')],
+    imageId: [requiredRule('请选择操作系统')],
+    username: [requiredRule('请输入用户名称')],
     name: [requiredRule('请输入实例名称')],
     password: [requiredRule('请输入密码')],
   };

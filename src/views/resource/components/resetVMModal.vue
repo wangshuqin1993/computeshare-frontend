@@ -16,9 +16,9 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="用户名：" name="username">
-          <div class="!text-[16px] font-medium leading-[42px]">ubuntu</div>
+          <div class="!text-[16px] font-medium leading-[42px]">{{ formData.username }}</div>
         </a-form-item>
-        <a-form-item label="密码：" name="password" class="!mb-[10px]">
+        <a-form-item label="密码：" name="password">
           <a-input-password class="modal-input" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
         <a-form-item label="公钥：" name="secretKey" class="!mb-0">
@@ -51,16 +51,21 @@ const props = defineProps({
   visible: {
     type: Boolean,
     default: false
+  },
+  resetImageId: {
+    type: Number,
+    default: 0
   }
 });
-const { visible } = toRefs(props);
+const { visible,resetImageId } = toRefs(props);
 const emit = defineEmits(["handleCancel","handleDone"]);
 
 const labelCol = { style: { width: '120px' } };
 const imageList = ref([]);
 const formRef = ref();
 const formData = reactive({
-  imageId: 1,
+  imageId: resetImageId.value,
+  username: 'ubuntu',
   password: '',
   secretKey:'', //公匙
 });
@@ -69,6 +74,8 @@ const formRules = computed(() => {
   const requiredRule = (message: string) => ({ required: true, trigger: 'change', message });
   
   return {
+    imageId: [requiredRule('请选择操作系统')],
+    username: [requiredRule('请输入用户名称')],
     password: [requiredRule('请输入密码')],
   };
 });
