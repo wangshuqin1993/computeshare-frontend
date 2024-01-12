@@ -102,12 +102,10 @@ import {
     apiInstanceDelete,
     apiInstanceRestart,
     apiInstanceVncURL,
-    apiResetVm
 } from '@/apis/compute';
 import CreateModal from "@/views/resource/create.vue";
 
 const instanceList = ref([]);
-const headRef = ref();
 const createVisible = ref(false);
 const resetVisible = ref(false);
 const resetImageId = ref(0);
@@ -132,7 +130,6 @@ const operate = (id: string) => {
 // 创建实例
 const showCreateModal = () => {
   createVisible.value = true
-  // headRef.value.showCreateModal();
 }
 
 //启动实例
@@ -181,19 +178,6 @@ const resetVM = async(item: any) => {
   resetVisible.value = true;
   resetImageId.value = item.imageId;
   handleId.value = item.id;
-  // const params = {
-  //   imageId: item.imageId,
-  //   publicKey: item.publicKey,
-  //   password: item.password,
-  //   dockerCompose: ''
-  // }
-  // const res = await apiResetVm(item.id, params)
-  // if (res.code == 200) {
-  //   getInstanceList()
-  //   message.success(res.message)
-  // } else {
-  //   message.error(res.message)
-  // }
 }
 
 // 修改名称
