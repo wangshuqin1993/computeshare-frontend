@@ -16,53 +16,58 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="text-[14px] flex">
-              <a-popconfirm title="确定关闭自动续费吗?" ok-text="确认" cancel-text="取消" @confirm="closeAutoPay(record)">
+              <a-popconfirm title="确定关闭自动续费吗?" ok-text="确认" cancel-text="取消" @confirm="closeAutoPay(record.id)">
                 <a-button type="link" >关闭自动续费</a-button>
               </a-popconfirm>
-              <a-button type="link" >打开自动续费</a-button> 
-              <a-button type="link" @click="payVisible=true">手动续费</a-button>
+              <a-button type="link" @click="openAutoPay(record.id)">打开自动续费</a-button> 
+              <a-button type="link" @click="getInstanceInfo(record.id)">手动续费</a-button>
             </div>
           </template>
         </template>
       </a-table>
     </div>
   </div>
-  <handlePayModal :visible="payVisible" @handleCancel="payVisible=false"></handlePayModal>
+  <handlePayModal :visible="payVisible" @instanceInfo="instanceInfo" @handleCancel="payVisible=false"></handlePayModal>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
+import { renewalStatus } from '@/enums/index';
 import handlePayModal from './components/handlePayModal.vue'
+import { apiGetRenewalList, apiCloseCycle, apiOpenCycle, apiGetInstanceInfo } from '@/apis/renewal';
+import { message } from "ant-design-vue";
 
 const payVisible = ref(false)
-const tableData = ref([{bucket:'123'}])
+const instanceInfo = ref();
+const tableData = ref([])
 const tableColumns = reactive([
   {
     title: '名称',
-    dataIndex: 'bucket',
-    key: 'bucket',
+    dataIndex: 'productName',
+    key: 'productName',
   },
   {
     title: '描述',
-    dataIndex: 'bucket',
-    key: 'bucket',
+    dataIndex: 'productDesc',
+    key: 'productDesc',
   },
   {
     title: '状态',
-    dataIndex: 'bucket',
-    key: 'bucket',
+    dataIndex: 'state',
+    key: 'state',
+    customRender: ({ text }) =>  renewalStatus[text],
   },
   {
     title: '到期时间',
-    dataIndex: 'createdTime',
-    key: 'createdTime',
+    dataIndex: 'dueTime',
+    key: 'dueTime',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
     title: '续费时间',
-    dataIndex: 'createdTime',
-    key: 'createdTime',
+    dataIndex: 'renewalTime',
+    key: 'renewalTime',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   },
   {
@@ -100,23 +105,47 @@ const getTableData = async () => {
     page: pagination.current,
     size: pagination.pageSize
   }
-  // const res = await apiBucketList(params);
-  // if (res.code == 200) {
-  //   tableData.value = res.data.list;
-  //   pagination.total = res.data.total
-  // }else{
-  //   message.error(res.message)
-  // }
+  const res = await apiGetRenewalList(params);
+  if (res.code == 200) {
+    tableData.value = res.data.data;
+    pagination.total = res.data.total
+  }else{
+    message.error(res.message)
+  }
 }
 
-const closeAutoPay = async(record: any) => {
-  // const res = await apiDeleteNetworkMapById(record.id)
-  // if(res.code===200){
-  //   getNetworkMapList()
-  // }else{
-  //   message.error(res.message)
-  // }
+//打开自动续费
+const openAutoPay = async(id: any) => {
+  const res = await apiOpenCycle(id)
+  if(res.code===200){
+    getTableData()
+  }else{
+    message.error(res.message)
+  }
 }
+// 关闭自动续费
+const closeAutoPay = async(id: any) => {
+  const res = await apiCloseCycle(id)
+  if(res.code===200){
+    getTableData()
+  }else{
+    message.error(res.message)
+  }
+}
+// 手动续费弹框的实例信息
+const getInstanceInfo = async (id:any) => {
+  const res = await apiGetInstanceInfo(id)
+  if (res.code === 200) {
+    instanceInfo.value = res.data;
+    payVisible.value = true;
+  }else{
+    message.error(res.message)
+  }
+}
+
+onMounted(() => {
+  getTableData();
+});
 </script>
 <style lang="less" scoped>
 

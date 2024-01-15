@@ -56,3 +56,8 @@ export enum boundDomainStatusColor {
   'bg-[#F52222]' = 2,
   'bg-[#008FFF]' = 3
 }
+
+export enum renewalStatus {
+  '服务中' = 0,
+  '已停止' = 1,
+}

@@ -41,6 +41,7 @@
 import { toRefs } from 'vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from "vue-router";
+import { apiManualCycle } from "@/apis/renewal"
 
 const router = useRouter();
 
@@ -48,16 +49,25 @@ const props = defineProps({
   visible: {
     type: Boolean,
     default: false
+  },
+  instanceInfo: {
+    type: Object as any,
+    default: {}
   }
 });
-const { visible } = toRefs(props);
+const { visible, instanceInfo } = toRefs(props);
 const emit = defineEmits(["handleCancel"]);
 
 const goCycle = () => {
   router.push("/dashboard/Cycles");
 }
-const handlePay = () => {
+const handlePay = async () => {
   message.warning("Cycle不足，请先充值再试！");
+  const res = await apiManualCycle(instanceInfo.value.id)
+  if (res.code === 200) {
+  }else{
+    message.error(res.message)
+  }
 }
 const handleCancel = () => {
   emit('handleCancel');
