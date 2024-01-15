@@ -27,7 +27,7 @@
       </a-table>
     </div>
   </div>
-  <handlePayModal :visible="payVisible" @instanceInfo="instanceInfo" @handleCancel="payVisible=false"></handlePayModal>
+  <handlePayModal :visible="payVisible" @instanceInfo="instanceInfo" @handleCancel="payVisible=false" @loadTable="getTableData"></handlePayModal>
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
@@ -117,7 +117,8 @@ const getTableData = async () => {
 //打开自动续费
 const openAutoPay = async(id: any) => {
   const res = await apiOpenCycle(id)
-  if(res.code===200){
+  if (res.code === 200) {
+    message.success(res.message);
     getTableData()
   }else{
     message.error(res.message)
@@ -127,6 +128,7 @@ const openAutoPay = async(id: any) => {
 const closeAutoPay = async(id: any) => {
   const res = await apiCloseCycle(id)
   if(res.code===200){
+    message.success(res.message);
     getTableData()
   }else{
     message.error(res.message)
