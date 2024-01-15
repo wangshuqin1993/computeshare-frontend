@@ -33,6 +33,7 @@ import { ref } from 'vue';
 import { apiCycleRedeem } from '@/apis/cycles';
 import { formatAmount } from '@/utils/index'
 
+const emit = defineEmits(["getCycleBalances"])
 const visibleSuc = ref(false);
 const visibleFail = ref(false);
 const cyclesCode = ref('');
@@ -46,6 +47,7 @@ const handleExchange = async () => {
   if (res.code == 200) {
     cyclesNumber.value = res.data;
     visibleSuc.value = true
+    emit('getCycleBalances');
   } else {
     visibleFail.value = true
   }

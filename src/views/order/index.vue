@@ -4,8 +4,8 @@
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'action'">
-             
+          <template v-if="column.dataIndex === 'cycle'">
+             <div>{{ record.symbol }} {{ formatAmount(record.cycle) }} Cycles</div>
           </template>
         </template>
       </a-table>
@@ -13,42 +13,40 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import Header from "@/components/Header.vue";
 import { transTimestamp } from '@/utils/dateUtil';
+import { formatAmount } from '@/utils/index'
+import { apiGetOrderList } from '@/apis/order'
+import { message } from "ant-design-vue";
 
 
 const tableData = ref([])
 const tableColumns = reactive([
   {
     title: '订单号',
-    dataIndex: 'bucket',
-    key: 'bucket',
-    width: '20%',
+    dataIndex: 'orderNo',
+    key: 'orderNo',
   },
   {
     title: '名称',
-    dataIndex: 'bucket',
-    key: 'bucket',
-    width: '20%',
+    dataIndex: 'productName',
+    key: 'productName',
   },
   {
     title: '描述',
-    dataIndex: 'bucket',
-    key: 'bucket',
-    width: '20%',
+    dataIndex: 'productDesc',
+    key: 'productDesc',
   },
   {
     title: '金额',
-    dataIndex: 'bucket',
-    key: 'bucket',
-    width: '20%',
+    dataIndex: 'cycle',
+    key: 'cycle',
   },
   {
     title: '购买时间',
-    dataIndex: 'createdTime',
-    key: 'createdTime',
-    width: '20%',
+    dataIndex: 'createTime',
+    key: 'createTime',
     customRender: ({ text: date }) =>  transTimestamp(date*1),
   }
 ])
@@ -81,14 +79,18 @@ const getTableData = async () => {
     page: pagination.current,
     size: pagination.pageSize
   }
-  // const res = await apiBucketList(params);
-  // if (res.code == 200) {
-  //   tableData.value = res.data.list;
-  //   pagination.total = res.data.total
-  // }else{
-  //   message.error(res.message)
-  // }
+  const res = await apiGetOrderList(params);
+  if (res.code == 200) {
+    tableData.value = res.data.data;
+    pagination.total = res.data.total
+  }else{
+    message.error(res.message)
+  }
 }
+
+onMounted(() => {
+  getTableData();
+});
 </script>
 <style lang="less" scoped>
 

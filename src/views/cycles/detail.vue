@@ -4,8 +4,8 @@
     <div class="bg-[#FFFFFF] rounded-[2px] p-[20px]">
       <a-table :columns="tableColumns" :data-source="tableData" :pagination="pagination" >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'action'">
-             
+          <template v-if="column.dataIndex === 'cycle'">
+             <div>{{ record.symbol }} {{ formatAmount(record.cycle) }} Cycles</div>
           </template>
         </template>
       </a-table>
@@ -38,7 +38,7 @@ const tableColumns = reactive([
     title: '金额',
     dataIndex: 'cycle',
     key: 'cycle',
-    customRender: ({ text }) =>  formatAmount(text),
+    // customRender: ({ text }) =>  formatAmount(text),
   },
   {
     title: '操作时间',
