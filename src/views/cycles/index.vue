@@ -13,7 +13,7 @@
           <div class="bg-[#FFFFFFFF] rounded-[2px] mt-[20px] p-[20px] pl-0">
             <a-tabs v-model:activeKey="activeKey" @change="handleTabs">
               <a-tab-pane key="1" tab="充值">
-                <payTabContent ref="payTabRef" ></payTabContent>
+                <payTabContent ref="payTabRef" @getCycleBalances="getCycleBalances"></payTabContent>
               </a-tab-pane>
               <a-tab-pane key="2" tab="兑换">
                 <exchangeTabContent ref="exchangeTabRef" @getCycleBalances="getCycleBalances"></exchangeTabContent>

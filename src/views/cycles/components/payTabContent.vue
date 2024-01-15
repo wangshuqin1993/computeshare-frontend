@@ -34,6 +34,8 @@ import { onMounted, ref } from 'vue';
 import payModal from './payModal.vue';
 import { formatAmount } from '@/utils/index'
 
+const emit = defineEmits(['getCycleBalances'])
+
 const cyclesList = ref([
   {id:'1',label:'50000', price:'50'},
   {id:'2',label:'500000', price:'500'},
@@ -54,6 +56,8 @@ const checkedOther = (value: any) => {
 }
 const handleCancelPay = () => {
   payVisible.value = false;
+  // 每次关闭弹框查询一下cycles的余额
+  emit('getCycleBalances')
 }
 const setCyclesNum = () => {
   // cyclesNumber.value = cyclesMoney.value * 1000;

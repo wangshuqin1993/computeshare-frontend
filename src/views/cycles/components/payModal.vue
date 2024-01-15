@@ -29,17 +29,18 @@
       <LoadingOutlined  :style="{fontSize: '72px',color: '#484FFF'}" />
       <div class="mt-[30px] text-[24px] font-medium">支付中…</div>
       <div class="mt-[20px] text-[18px] font-light">支付过程需要花费一些时间，请耐心等待...</div>
-      <a-button class="ant-btn-ss mt-[50px]" type="primary" @click="payVisible=false">已完成支付</a-button>
+      <a-button class="ant-btn-ss mt-[50px]" type="primary" @click="payDone">已完成支付</a-button>
       <div class="mt-[10px] text-[14px] text-[#484FFF] cursor-pointer" @click="contractCustomer">遇到问题？</div>
     </div>
     
   </a-modal>
 </template>
 <script setup lang="ts">
-import { ref, toRefs } from 'vue';
+import { ref, toRefs, onUnmounted } from 'vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { formatAmount } from '@/utils/index'
 import { message } from 'ant-design-vue';
+import { apiRechargeCycles, apiGetRechargeState } from '@/apis/cycles'
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -53,20 +54,67 @@ const props = defineProps({
 const { visible,cyclesNumber } = toRefs(props);
 const emit = defineEmits(["handleCancel", "handleDone"])
 
+// 订单号，需要全局使用
+const outTradeNo = ref('')
+const isOrderLoopTimer = ref()
+
 const payVisible = ref(false);
 
-const handlePay = () => {
-  handleCancel();
-  payVisible.value = true;
+const handlePay = async() => {
+  const params = {
+    rechargeChannel: 1,//支付宝传1
+    cycle: cyclesNumber.value,
+    amount: (cyclesNumber.value / 1000).toFixed(2)
+  }
+  const res = await apiRechargeCycles(params)
+  if(res.code === 200){
+    outTradeNo.value = res.data.outTradeNo
+    handleCancel();
+    payVisible.value = true;
+    window.open(res.data.url)
+    checkOutTradeNoStatus()
+  }else{
+    message.error(res.message)
+  }
 }
+
+// 每次关闭弹框都刷新cycles余额
 const handleCancel = () => {
   emit('handleCancel');
 }
 
+// 查询订单状态
+const checkOutTradeNoStatus = async()=>{
+  isOrderLoopTimer.value = window.setInterval(async()=>{
+    const res = await apiGetRechargeState(outTradeNo.value)
+    // 交易成功 || 交易关闭 || 交易结束
+    if(res.data === 'TRADE_SUCCESS' || res.data === 'TRADE_CLOSED' || res.data === 'TRADE_FINISHED'){
+      payVisible.value = false;
+      handleCancel();
+      window.clearInterval(isOrderLoopTimer.value)
+    }
+  },1000)
+}
+
+// 支付完成
+const payDone = ()=>{
+  payVisible.value = false;
+  handleCancel();
+}
+
 const contractCustomer = () => {
   payVisible.value = false
+  handleCancel();
   message.info('请联系客服人员')
 }
+
+defineExpose({
+  outTradeNo
+})
+
+onUnmounted(()=>{
+  window.clearInterval(isOrderLoopTimer.value)
+})
 </script>
 <style scoped lang="less">
 .pay-card{
