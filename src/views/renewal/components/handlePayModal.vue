@@ -56,7 +56,7 @@ const props = defineProps({
   }
 });
 const { visible, instanceInfo } = toRefs(props);
-const emit = defineEmits(["handleCancel"]);
+const emit = defineEmits(["handleCancel","loadTable"]);
 
 const goCycle = () => {
   router.push("/dashboard/Cycles");
@@ -65,6 +65,9 @@ const handlePay = async () => {
   message.warning("Cycle不足，请先充值再试！");
   const res = await apiManualCycle(instanceInfo.value.id)
   if (res.code === 200) {
+    message.success(res.message);
+    handleCancel();
+    emit('loadTable');
   }else{
     message.error(res.message)
   }
