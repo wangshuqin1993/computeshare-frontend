@@ -4,7 +4,7 @@ import { basePageInfo } from "./index";
 interface rechargeCyclesParams {
   rechargeChannel: number,
   cycle: number,
-  amount: number
+  amount: number | string
 }
 
 // 购买cycle
