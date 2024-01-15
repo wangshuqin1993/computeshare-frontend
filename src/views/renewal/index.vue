@@ -16,10 +16,12 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="text-[14px] flex">
-              <a-popconfirm title="确定关闭自动续费吗?" ok-text="确认" cancel-text="取消" @confirm="closeAutoPay(record.id)">
-                <a-button type="link" >关闭自动续费</a-button>
-              </a-popconfirm>
-              <a-button type="link" @click="openAutoPay(record.id)">打开自动续费</a-button> 
+              <div v-if="record.state == 0">
+                <a-popconfirm v-if="record.autoRenew" title="确定关闭自动续费吗?" ok-text="确认" cancel-text="取消" @confirm="closeAutoPay(record.id)">
+                  <a-button type="link" >关闭自动续费</a-button>
+                </a-popconfirm>
+                <a-button v-else type="link" @click="openAutoPay(record.id)">打开自动续费</a-button> 
+              </div>
               <a-button type="link" @click="getInstanceInfo(record.id)">手动续费</a-button>
             </div>
           </template>
