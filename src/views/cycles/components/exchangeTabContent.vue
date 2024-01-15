@@ -40,17 +40,17 @@ const cyclesCode = ref('');
 const cyclesNumber = ref(0);
 const handleExchange = async () => {
   
-  let param = {
-    redeemCode: cyclesCode.value
-  }
-  const res = await apiCycleRedeem(param);
-  if (res.code == 200) {
-    cyclesNumber.value = res.data;
-    visibleSuc.value = true
-    emit('getCycleBalances');
-  } else {
-    visibleFail.value = true
-  }
+  // let param = {
+  //   redeemCode: cyclesCode.value
+  // }
+  // const res = await apiCycleRedeem(param);
+  // if (res.code == 200) {
+  //   cyclesNumber.value = res.data;
+  //   visibleSuc.value = true
+  //   emit('getCycleBalances');
+  // } else {
+  //   visibleFail.value = true
+  // }
 }
 defineExpose({
   cyclesCode
