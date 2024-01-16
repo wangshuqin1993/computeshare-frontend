@@ -2,20 +2,20 @@
   <!-- 选择支付方式 -->
   <a-modal :title="'购买 ' + formatAmount(cyclesNumber, 0) + ' Cycles'" :footer="null" width="700px" centered="true" v-model:open="visible" @cancel="handleCancel">
     <div class="text-center my-[40px] text-[48px] font-medium">{{ (cyclesNumber / 1000).toFixed(2) }} 元</div>
-    <div class="pay-card cursor-pointer" @click="handlePay">
+    <div class="pay-card cursor-pointer" @click="handlePay(1)">
       <div class="pay-left">
         <img src="@/assets/images/alipay.png" class="h-[34px] w-[34px] mr-[20px]" />
         <span>支付宝支付</span>
       </div>
     </div>
-    <div class="pay-card !border-[#ECECEC]">
+    <div class="pay-card !border-[#ECECEC]" @click="handlePay(2)">
       <div class="pay-left">
         <img src="@/assets/images/wechat.png" class="h-[34px] w-[34px] mr-[20px]" />
         <span class="text-[#A8A8A8]">微信支付</span>
       </div>
       <div class="text-[#A8A8A8] text-[12px]">Coming Soon…</div>
     </div>
-    <div class="pay-card !border-[#ECECEC]">
+    <div class="pay-card !border-[#ECECEC]" @click="handlePay(3)">
       <div class="pay-left">
         <img src="@/assets/images/bankCard.png" class="h-[34px] w-[34px] mr-[20px]" />
         <span class="text-[#A8A8A8]">银行卡支付</span>
@@ -60,9 +60,9 @@ const isOrderLoopTimer = ref()
 
 const payVisible = ref(false);
 
-const handlePay = async() => {
+const handlePay = async(recharge:any) => {
   const params = {
-    rechargeChannel: 1,//支付宝传1
+    rechargeChannel: recharge,//支付宝传1
     cycle: cyclesNumber.value,
     amount: (cyclesNumber.value / 1000).toFixed(2)
   }
