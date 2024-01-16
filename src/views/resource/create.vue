@@ -132,11 +132,12 @@ const handleCancel = () => {
 }
 
 const handleCreateDone = () => {
+  handleCancel();
   emit('handleDone');
 }
 
-const goRenewal = async () => {
-  await emit('handleCancelCreate');;
+const goRenewal = () => {
+  handleCancel();
   window.open("/dashboard/renewal");
 }
 
@@ -145,8 +146,9 @@ const handleCreate = async () => {
   const res = await apiPostInstance(formData);
   if (res.code == 200) {
     handleCreateDone();
+    handleCancel();
     message.success(res.message)
-    formData.name = ''
+    // formData.name = ''
   }else{
     message.error(res.message)
   }
