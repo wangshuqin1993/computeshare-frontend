@@ -124,6 +124,10 @@ const goCycle = () => {
   window.open("/dashboard/Cycles");
 }
 const handleCancel = () => {
+  formData.name = '';
+  formData.password = '';
+  formData.publicKey = '';
+  formRef.value.resetFields();
   emit('handleCancelCreate');
 }
 
@@ -223,6 +227,7 @@ onMounted(() => {
   getInstancePrice();
   // getDuration();
 })
+
 </script>
 <style scoped lang="less">
 .warn-msg{
