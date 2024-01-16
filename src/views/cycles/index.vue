@@ -8,8 +8,7 @@
               <span class="text-[18px] font-medium">Cycles余额</span>
               <span class="ml-[30px] text-[36px] font-semibold">{{ formatAmount(cycleBalance) }}</span>
             </div>
-            <!--  @click="goDetail" -->
-            <div class="cursor-pointer text-[#484FFF] font-medium">充值记录</div>
+            <div @click="goDetail" class="cursor-pointer text-[#484FFF] font-medium">充值记录</div>
           </div>
           <div class="bg-[#FFFFFFFF] rounded-[2px] mt-[20px] p-[20px] pl-0">
             <a-tabs v-model:activeKey="activeKey" @change="handleTabs">
