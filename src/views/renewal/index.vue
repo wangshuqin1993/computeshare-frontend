@@ -20,16 +20,18 @@
                 <a-popconfirm v-if="record.autoRenew" title="确定关闭自动续费吗?" ok-text="确认" cancel-text="取消" @confirm="closeAutoPay(record.id)">
                   <a-button type="link" >关闭自动续费</a-button>
                 </a-popconfirm>
-                <a-button v-else type="link" @click="openAutoPay(record.id)">打开自动续费</a-button> 
+                <div v-else>
+                  <a-button type="link" @click="openAutoPay(record.id)">打开自动续费</a-button> 
+                  <a-button type="link" @click="getInstanceInfo(record.id)">手动续费</a-button>
+                </div>
               </div>
-              <a-button type="link" @click="getInstanceInfo(record.id)">手动续费</a-button>
             </div>
           </template>
         </template>
       </a-table>
     </div>
   </div>
-  <handlePayModal :visible="payVisible" @instanceInfo="instanceInfo" @handleCancel="payVisible=false" @loadTable="getTableData"></handlePayModal>
+  <handlePayModal :visible="payVisible" :instanceInfo="instanceInfo" @handleCancel="payVisible=false" @loadTable="getTableData"></handlePayModal>
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
@@ -41,7 +43,7 @@ import { apiGetRenewalList, apiCloseCycle, apiOpenCycle, apiGetInstanceInfo } fr
 import { message } from "ant-design-vue";
 
 const payVisible = ref(false)
-const instanceInfo = ref();
+const instanceInfo = ref({});
 const tableData = ref([])
 const tableColumns = reactive([
   {
@@ -137,7 +139,7 @@ const closeAutoPay = async(id: any) => {
   }
 }
 // 手动续费弹框的实例信息
-const getInstanceInfo = async (id:any) => {
+const getInstanceInfo = async (id: any) => {
   const res = await apiGetInstanceInfo(id)
   if (res.code === 200) {
     instanceInfo.value = res.data;

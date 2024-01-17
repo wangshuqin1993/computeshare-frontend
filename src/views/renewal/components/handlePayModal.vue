@@ -4,21 +4,21 @@
       <div>
         <div class="div-card">
           <div class="title">实例名称：</div>
-          <div class="title-value">实例名称</div>
+          <div class="title-value">{{ instanceInfo.instanceName }}</div>
         </div>
         <div class="div-card">
           <div class="title">规格：</div>
-          <div class="title-value">2核 4GB</div>
+          <div class="title-value">{{ instanceInfo.instanceSpec }}</div>
         </div>
         <div class="div-card">
           <div class="title">操作系统：</div>
-          <div class="title-value">Ubuntu 22.04</div>
+          <div class="title-value">{{ instanceInfo.image }}</div>
         </div>
       </div>
       <div class="mt-[50px] pt-[40px] bt-css flex justify-between items-center">
         <div>
-          <div class="text-[24px] font-semibold text-[#DC9200]">50,000 Cycles / 30天</div>
-          <div class="text-[14px] flex items-center">账户余额：0 Cycles
+          <div class="text-[24px] font-semibold text-[#DC9200]">{{ formatAmount(instanceInfo.extendPrice) }} Cycles / {{ instanceInfo.extendDay }}天</div>
+          <div class="text-[14px] flex items-center">账户余额：{{ formatAmount(instanceInfo.balance,2) }} Cycles
             <a-tooltip color="#FFFFFF">
                   <template #title>
                       <div class="text-[14px] text-[#000000] px-[10px]">
@@ -41,6 +41,7 @@
 import { toRefs } from 'vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from "vue-router";
+import { formatAmount } from '@/utils/index'
 import { apiManualCycle } from "@/apis/renewal"
 
 const router = useRouter();
@@ -51,7 +52,7 @@ const props = defineProps({
     default: false
   },
   instanceInfo: {
-    type: Object as any,
+    type: Object,
     default: {}
   }
 });
@@ -62,7 +63,6 @@ const goCycle = () => {
   router.push("/dashboard/Cycles");
 }
 const handlePay = async () => {
-  message.warning("Cycle不足，请先充值再试！");
   const res = await apiManualCycle(instanceInfo.value.id)
   if (res.code === 200) {
     message.success(res.message);
