@@ -23,7 +23,7 @@
     </div>
     <div class="text-center">
       <div class="my-[20px] text-[24px] font-medium">兑换失败</div>
-      <div class="text-[18px] font-light">可能该兑换码已使用或超出有效期</div>
+      <div class="text-[18px] font-light">{{ errorInfo }}</div>
       <a-button class="ant-btn-ss mt-[50px]" type="primary" @click="visibleFail=false">确定</a-button>
     </div>
   </a-modal>
@@ -36,21 +36,23 @@ import { formatAmount } from '@/utils/index'
 const emit = defineEmits(["getCycleBalances"])
 const visibleSuc = ref(false);
 const visibleFail = ref(false);
+const errorInfo = ref('');
 const cyclesCode = ref('');
 const cyclesNumber = ref(0);
 const handleExchange = async () => {
   
-  // let param = {
-  //   redeemCode: cyclesCode.value
-  // }
-  // const res = await apiCycleRedeem(param);
-  // if (res.code == 200) {
-  //   cyclesNumber.value = res.data;
-  //   visibleSuc.value = true
-  //   emit('getCycleBalances');
-  // } else {
-  //   visibleFail.value = true
-  // }
+  let param = {
+    redeemCode: cyclesCode.value
+  }
+  const res = await apiCycleRedeem(param);
+  if (res.code == 200) {
+    cyclesNumber.value = res.data;
+    visibleSuc.value = true
+    emit('getCycleBalances');
+  } else {
+    visibleFail.value = true;
+    errorInfo.value = res.message;
+  }
 }
 defineExpose({
   cyclesCode
