@@ -175,9 +175,9 @@ const configurationMapping = (id: string) => {
 // 重置虚拟机
 const resetVM = async(item: any) => {
   console.log('重置虚拟机', item)
-  // resetVisible.value = true;
-  // resetImageId.value = item.imageId;
-  // handleId.value = item.id;
+  resetVisible.value = true;
+  resetImageId.value = item.imageId;
+  handleId.value = item.id;
 }
 
 // 修改名称
