@@ -24,7 +24,7 @@
     </div>
   </a-modal>
   <!-- 支付中 -->
-  <a-modal :footer="null" width="700px" centered="true" v-model:open="payVisible" @cancel="payVisible=false">
+  <a-modal :footer="null" width="700px" centered="true" v-model:open="payVisible" @cancel="closePayStatusModal">
     <div class="text-center mt-[50px]">
       <LoadingOutlined  :style="{fontSize: '72px',color: '#484FFF'}" />
       <div class="mt-[30px] text-[24px] font-medium">支付中…</div>
@@ -61,6 +61,9 @@ const isOrderLoopTimer = ref()
 const payVisible = ref(false);
 
 const handlePay = async(recharge:any) => {
+  if(recharge==2 || recharge==3){
+    return
+  }
   const params = {
     rechargeChannel: recharge,//支付宝传1
     cycle: cyclesNumber.value,
@@ -102,6 +105,12 @@ const payDone = ()=>{
   handleCancel();
 }
 
+// 取消支付，关闭弹框
+const closePayStatusModal = ()=>{
+  payVisible.value = false;
+  clearInterval(isOrderLoopTimer.value)
+}
+
 const contractCustomer = () => {
   payVisible.value = false
   handleCancel();
@@ -113,7 +122,7 @@ defineExpose({
 })
 
 onUnmounted(()=>{
-  window.clearInterval(isOrderLoopTimer.value)
+  clearInterval(isOrderLoopTimer.value)
 })
 </script>
 <style scoped lang="less">
