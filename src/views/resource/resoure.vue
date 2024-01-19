@@ -183,8 +183,8 @@ const resetVM = async(item: any) => {
 // 修改名称
 const changeName = async(item: any) => {
   console.log('修改名称:', item)
-  // changeVisible.value = true;
-  // handleId.value = item.id;
+  changeVisible.value = true;
+  handleId.value = item.id;
   
 }
 
