@@ -27,7 +27,7 @@
           <div class="right-title">云服务器</div>
           <div class="right-desc">
             <div>租用云服务器</div>
-            <div>50,000 Cycles /30天</div>
+            <div>50,000+ Cycles /30天</div>
           </div>
           <div class="right-desc2">
             <div>适用于测试环境搭建</div>
