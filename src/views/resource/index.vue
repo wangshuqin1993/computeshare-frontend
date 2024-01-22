@@ -2,12 +2,12 @@
 <template>
   <div class="bg-[#FFFFFF]">
     <div class="top-css">
-      <a-tabs v-model:activeKey="activeKey">
+      <a-tabs v-model:activeKey="activeKey" @change="handleTabs">
         <a-tab-pane key="1" tab="云服务器">
           <Resoure @changeTabKey="changeTabKey"></Resoure>
         </a-tab-pane>
         <a-tab-pane key="2" tab="网络映射">
-          <NetworkMap></NetworkMap>
+          <NetworkMap ref="networkRef"></NetworkMap>
         </a-tab-pane>
       </a-tabs>
       <div class="flex justify-end absolute w-[36px] top-[18px] right-[40px]">
@@ -28,7 +28,7 @@ const curBarName = ref(router.currentRoute.value.name);
 const createVisible = ref(false);
 
 const activeKey = ref('1');
-
+const networkRef = ref();
 const emit = defineEmits(["handleDone"])
 
 // 创建实例
@@ -38,6 +38,14 @@ const showCreateModal = () => {
 
 const changeTabKey = ()=>{
   activeKey.value = '2'
+}
+
+const handleTabs = () => {
+  if (activeKey.value == '2') { 
+    if (networkRef.value) {
+      networkRef.value.getNetworkMapList();
+    }
+  }
 }
 
 watch(() => router.currentRoute.value,

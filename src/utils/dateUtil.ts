@@ -78,7 +78,8 @@ export function transTimestamp(datetime: any, dateSeprator = '-', timeSeprator =
     const year = `${date.getUTCFullYear()}`
     let month = `${date.getUTCMonth() + 1}`
     let day = `${date.getUTCDate()}`
-    let hour = `${date.getUTCHours()}`
+    // let hour = `${date.getUTCHours()}`
+    let hour = `${date.getHours()}`
     let minute = `${date.getUTCMinutes()}`
     let second = `${date.getUTCSeconds()}`
 

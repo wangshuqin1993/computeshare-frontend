@@ -45,8 +45,8 @@ const networkMappingId = ref('')
 const columns = [
   {
     title: '实例',
-    dataIndex: 'instanceName',
-    key: 'instanceName',
+    dataIndex: 'name',
+    key: 'name',
     align:'center'
   },
   {
@@ -172,6 +172,9 @@ onMounted(() => {
   getNetworkMapList();
 })
 
+defineExpose({
+  getNetworkMapList
+});
 </script>
 
 <style scoped lang="less">
