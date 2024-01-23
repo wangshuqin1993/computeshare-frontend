@@ -45,8 +45,8 @@ const networkMappingId = ref('')
 const columns = [
   {
     title: '实例',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'instanceName',
+    key: 'instanceName',
     align:'center'
   },
   {
