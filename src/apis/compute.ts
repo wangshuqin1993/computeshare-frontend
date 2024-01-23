@@ -51,6 +51,14 @@ export function apiGetInstanceList() {
   });
 }
 
+//创建映射可用的实例列表
+export function apiGetUseInstanceList() {
+  return httpRequest({
+    url: "/v1/instance?status=1",
+    method: "get",
+  });
+}
+
 //获取实例
 export function apiGetInstance(id: string) {
   return httpRequest({

@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { ref, toRefs, onMounted, watch } from "vue";
-import { apiGetInstanceList } from '@/apis/compute';
+import { apiGetUseInstanceList } from '@/apis/compute';
 import { apiNetworkMap, apiPublicNetworkInfo } from "@/apis/mapping";
 import { message } from "ant-design-vue";
 
@@ -85,7 +85,7 @@ const formState = ref<FormState>({
 });
 
 const getInstanceList = async () => {
-  const res = await apiGetInstanceList();
+  const res = await apiGetUseInstanceList();
   if (res.code == 200) {
     instanceList.value = res.data
   }
