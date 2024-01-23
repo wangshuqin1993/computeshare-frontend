@@ -75,13 +75,13 @@ export function transTimestamp(datetime: any, dateSeprator = '-', timeSeprator =
     return '';
   } else {
     const date = new Date(datetime)
-    const year = `${date.getUTCFullYear()}`
-    let month = `${date.getUTCMonth() + 1}`
-    let day = `${date.getUTCDate()}`
+    const year = `${date.getFullYear()}`
+    let month = `${date.getMonth() + 1}`
+    let day = `${date.getDate()}`
     // let hour = `${date.getUTCHours()}`
     let hour = `${date.getHours()}`
-    let minute = `${date.getUTCMinutes()}`
-    let second = `${date.getUTCSeconds()}`
+    let minute = `${date.getMinutes()}`
+    let second = `${date.getSeconds()}`
 
     if (month.length === 1) {
       month = `0${month}`
