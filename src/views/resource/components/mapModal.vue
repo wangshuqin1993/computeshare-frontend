@@ -17,7 +17,7 @@
 
           <a-form-item label="云服务器实例" name="instanceName"
             :rules="[{ required: true, message: '请选择云服务器实例' }]">
-            <a-select class="modal-select" v-model:value="formState.instanceName" placeholder="请选择云服务器实例" @select="selectCloudInstance">
+            <a-select class="modal-select" v-model:value="formState.instanceId" placeholder="请选择云服务器实例" @select="selectCloudInstance">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
               }}</a-select-option>
             </a-select>
@@ -74,6 +74,7 @@ interface FormState {
   gatewayIp: string, //公网IP
   des: string,//映射描述
   id: string,//映射id
+  instanceId: string,//实例id
 }
 
 const formState = ref<FormState>({
@@ -83,7 +84,8 @@ const formState = ref<FormState>({
   gatewayPort: 0,
   gatewayIp: '',
   des: '',
-  id: ''
+  id: '',
+  instanceId: ''
 });
 
 const getInstanceList = async () => {
@@ -97,7 +99,7 @@ const createMap = async () => {
   await formRef.value.validate();
   let param = {
     name: formState.value.des,
-    computerId: formState.value.instanceName,
+    computerId: formState.value.instanceId,
     computerPort: Number(formState.value.instancePort),
     protocol: formState.value.name,
   }
@@ -126,6 +128,7 @@ watch(
       formRef.value.clearValidate();
     }
     if (Object.keys(value).length > 0) {
+      formState.value.instanceId = value.instanceId;
       formState.value.gatewayPort = value.gatewayPort;
       formState.value.instanceName = value.instanceName;
       formState.value.instancePort = value.instancePort;
@@ -141,7 +144,8 @@ watch(
         gatewayPort: '',
         gatewayIp: '',
         des: '',
-        id: ''
+        id: '',
+        instanceId: ''
       }
     }
     console.log("watch:",value);

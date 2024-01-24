@@ -129,6 +129,7 @@ const createMap = async () => {
 const editMap = (record: any) => {
   formStateData.value = record
   mapValue.value = true
+  // console.log('editMap',record)
 }
 
 const delNetwork = async(record: any) => {
