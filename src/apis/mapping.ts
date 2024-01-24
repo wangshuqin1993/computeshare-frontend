@@ -42,6 +42,15 @@ export function apiDeleteNetworkMapById(id:string) {
   });
 }
 
+// 编辑网络映射
+export function apiPutNetworkMapById(id:string, params:networkMap) {
+  return httpRequest({
+    url: `/v1/network-mappings/${id}`,
+    method: "put",
+    data: params
+  });
+}
+
 // 获取公网Ip和端口
 export function apiPublicNetworkInfo(computerId: string) {
   return httpRequest({

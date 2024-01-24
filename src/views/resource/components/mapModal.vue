@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { ref, toRefs, onMounted, watch } from "vue";
 import { apiGetUseInstanceList } from '@/apis/compute';
-import { apiNetworkMap, apiPublicNetworkInfo } from "@/apis/mapping";
+import { apiNetworkMap, apiPublicNetworkInfo, apiPutNetworkMapById } from "@/apis/mapping";
 import { message } from "ant-design-vue";
 
 const props = defineProps({
@@ -73,6 +73,7 @@ interface FormState {
   gatewayPort: number | string, //公网端口
   gatewayIp: string, //公网IP
   des: string,//映射描述
+  id: string,//映射id
 }
 
 const formState = ref<FormState>({
@@ -81,7 +82,8 @@ const formState = ref<FormState>({
   instancePort: '',
   gatewayPort: 0,
   gatewayIp: '',
-  des: ''
+  des: '',
+  id: ''
 });
 
 const getInstanceList = async () => {
@@ -99,8 +101,14 @@ const createMap = async () => {
     computerPort: Number(formState.value.instancePort),
     protocol: formState.value.name,
   }
-  const res = await apiNetworkMap(param);
-  if(res.code == 200) {
+  // 如果有 id 是编辑，没有则是新建
+  let res = undefined
+  if(formState.value.id){
+    res = await apiPutNetworkMapById(formState.value.id, param)
+  }else{
+    res = await apiNetworkMap(param);
+  }
+  if(res?.code == 200) {
     emit('createSuccess')
   }else{
     message.error(res.message)
@@ -121,9 +129,10 @@ watch(
       formState.value.gatewayPort = value.gatewayPort;
       formState.value.instanceName = value.instanceName;
       formState.value.instancePort = value.instancePort;
-      formState.value.name = value.name;
+      formState.value.name = value.protocol;
       formState.value.gatewayIp = value.gatewayIp;
-      formState.value.des = value.des;
+      formState.value.des = value.name;
+      formState.value.id = value.id;
     } else {
       formState.value = {
         name: '',
@@ -132,6 +141,7 @@ watch(
         gatewayPort: '',
         gatewayIp: '',
         des: '',
+        id: ''
       }
     }
     console.log("watch:",value);

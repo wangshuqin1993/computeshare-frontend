@@ -14,7 +14,7 @@
             </template>
             <template v-if="column.key === 'action'">
               <span class="text-[16px]">
-                <span @click="editMap(record)" class="text-[#9DA1F3]">编辑</span>
+                <span @click="editMap(record)" class="cursor-pointer text-[#484FFF]">编辑</span>
                 <span @click="configurationDomain(record)" class="cursor-pointer text-[#484FFF] mx-[20px]">配域名</span>
                 <a-popconfirm title="确定删除吗?" ok-text="确认" cancel-text="取消" @confirm="delNetwork(record)">
                   <span class="cursor-pointer text-[#F52222]">删除</span>
@@ -127,7 +127,8 @@ const createMap = async () => {
 }
 
 const editMap = (record: any) => {
-  return
+  formStateData.value = record
+  mapValue.value = true
 }
 
 const delNetwork = async(record: any) => {
