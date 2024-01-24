@@ -27,10 +27,10 @@
             :rules="[{ required: true, message: '请输入私网端口' }]">
             <a-input class="modal-input" v-model:value="formState.instancePort" placeholder="请输入" />
           </a-form-item>
-          <a-form-item label="公网ip" name="password" :rules="[{ required: false }]">
+          <a-form-item label="公网ip" name="gatewayIp" :rules="[{ required: false }]">
             <div class="leading-[42px]">{{ formState.gatewayIp }}</div>
           </a-form-item>
-          <a-form-item label="公网端口" name="password" :rules="[{ required: false }]">
+          <a-form-item label="公网端口" name="gatewayPort" :rules="[{ required: false }]">
             <div class="leading-[42px]">{{ formState.gatewayPort }}</div>
           </a-form-item>
           <div class="text-center mt-[50px]">
