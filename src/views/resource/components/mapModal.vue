@@ -15,7 +15,7 @@
             </a-select>
           </a-form-item>
 
-          <a-form-item label="云服务器实例" name="instanceName"
+          <a-form-item label="云服务器实例" name="instanceId"
             :rules="[{ required: true, message: '请选择云服务器实例' }]">
             <a-select class="modal-select" v-model:value="formState.instanceId" placeholder="请选择云服务器实例" @select="selectCloudInstance">
               <a-select-option :value="item.id" v-for="item in instanceList" :key="item.id">{{ item.name
@@ -153,7 +153,7 @@ watch(
 );
 
 const selectCloudInstance = ()=>{
-  getPublicNetwrokInfo(formState.value.instanceName)
+  getPublicNetwrokInfo(formState.value.instanceId)
 }
 
 const getPublicNetwrokInfo = async(id: string)=>{
