@@ -158,7 +158,8 @@ const selectCloudInstance = ()=>{
 
 const getPublicNetwrokInfo = async(id: string)=>{
   const res = await apiPublicNetworkInfo(id)
-  if(res.code===200){
+  // 编辑的时候不可变
+  if(res.code===200 && !formState.value.id){
     formState.value.gatewayIp = res.data.publicIp
     formState.value.gatewayPort = res.data.publicPort
   }
