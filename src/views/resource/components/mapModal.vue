@@ -4,13 +4,13 @@
       <div class="mt-[32px]">
         <a-form :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }" autocomplete="off"
            ref="formRef">
-          <a-form-item label="映射描述" name="des"
+          <a-form-item label="映射描述" name="name"
             :rules="[{ required: true, message: '请输入映射描述' }]">
-            <a-input class="modal-input" v-model:value="formState.des" placeholder="请输入映射描述" />
+            <a-input class="modal-input" v-model:value="formState.name" placeholder="请输入映射描述" />
           </a-form-item>
 
-          <a-form-item label="支持协议" name="name" :rules="[{ required: true, message: '请选择支持协议' }]">
-            <a-select class="modal-select" v-model:value="formState.name" placeholder="请选择支持协议">
+          <a-form-item label="支持协议" name="protocol" :rules="[{ required: true, message: '请选择支持协议' }]">
+            <a-select class="modal-select" v-model:value="formState.protocol" placeholder="请选择支持协议">
               <a-select-option value="TCP">TCP</a-select-option>
             </a-select>
           </a-form-item>
@@ -67,23 +67,23 @@ const emit = defineEmits(['closeModal', 'createSuccess'])
 const formRef = ref()
 const instanceList = ref([]);
 interface FormState {
-  name: string; //协议
+  protocol: string; //协议
   instanceName: string; //实例
   instancePort: string, //私网端口
   gatewayPort: number | string, //公网端口
   gatewayIp: string, //公网IP
-  des: string,//映射描述
+  name: string,//映射描述
   id: string,//映射id
   instanceId: string,//实例id
 }
 
 const formState = ref<FormState>({
-  name: '',
+  protocol: '',
   instanceName: '',
   instancePort: '',
   gatewayPort: 0,
   gatewayIp: '',
-  des: '',
+  name: '',
   id: '',
   instanceId: ''
 });
@@ -98,10 +98,10 @@ const getInstanceList = async () => {
 const createMap = async () => {
   await formRef.value.validate();
   let param = {
-    name: formState.value.des,
+    name: formState.value.name,
     computerId: formState.value.instanceId,
     computerPort: Number(formState.value.instancePort),
-    protocol: formState.value.name,
+    protocol: formState.value.protocol,
   }
   // 如果有 id 是编辑，没有则是新建
   let res = undefined
@@ -132,18 +132,18 @@ watch(
       formState.value.gatewayPort = value.gatewayPort;
       formState.value.instanceName = value.instanceName;
       formState.value.instancePort = value.instancePort;
-      formState.value.name = value.protocol;
+      formState.value.protocol = value.protocol;
       formState.value.gatewayIp = value.gatewayIp;
-      formState.value.des = value.name;
+      formState.value.name = value.name;
       formState.value.id = value.id;
     } else {
       formState.value = {
-        name: '',
+        protocol: '',
         instanceName: '',
         instancePort: '',
         gatewayPort: '',
         gatewayIp: '',
-        des: '',
+        name: '',
         id: '',
         instanceId: ''
       }
