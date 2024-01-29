@@ -1,6 +1,6 @@
 # 共享算力前端项目
 
-技术框架：Vue 3 + TypeScript + Vite
+技术框架：Vue 3 + TypeScript + Vite + Tailwindcss
 启动项目指定：npm run dev
 项目文件夹介绍：
   apis：接口封装
