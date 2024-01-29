@@ -131,6 +131,11 @@ export const cookieUtil = {
     // debugger
   },
 
+  //删除cookie
+  delCookie: function(name){
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  },
+
   /*获取cookie*/
   get: function (name) {
     var cookieName = encodeURIComponent(name);
