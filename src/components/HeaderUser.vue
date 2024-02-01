@@ -15,6 +15,7 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from "vue-router";
+import { cookieUtil } from '@/utils/index'
 
 const router = useRouter();
 const goUser = () => {
@@ -39,6 +40,7 @@ const goDeveloper = ()=>{
 
 const logout = () => {
   localStorage.removeItem('token')
+  cookieUtil.delCookie('token')
   router.push('/login')
 }
 </script>
