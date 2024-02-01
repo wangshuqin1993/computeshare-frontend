@@ -24,7 +24,7 @@
           <div class="!text-[16px] font-medium leading-[42px]">{{ formData.username }}</div>
         </a-form-item>
         <a-form-item label="密码：" name="password">
-          <a-input-password class="modal-input" autocomplete="off" v-model:value="formData.password" placeholder="请输入密码"/>
+          <a-input-password class="modal-input" autocomplete="new-password" v-model:value="formData.password" placeholder="请输入密码"/>
         </a-form-item>
         <!-- <div class="ml-[120px] warn-msg h-[62px] bg-[#FFDBD9] leading-[62px] pl-[20px] text-[14px] text-[#262626] rounded-[2px]">
           请妥善保管好密码，如丢失无法找回，可能会造成损失
@@ -234,7 +234,7 @@ watch(
 onMounted(() => {
   getSpec();
   getImage();
-  getCycleBalances();
+  // getCycleBalances();
   getInstancePrice();
   // getDuration();
 })
