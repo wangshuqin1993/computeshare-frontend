@@ -76,7 +76,7 @@
   </a-modal>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, toRefs } from 'vue';
+import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import { apiGetSpec, apiGetImage, apiInstancePrice, apiPostInstance } from '@/apis/compute';
 import { apiGetCycleBalance } from '@/apis/cycles';
@@ -222,6 +222,15 @@ const beforeUpload = (file) => {
     return false;
   }
 };
+
+watch(
+  () => props.createVisible,
+  (value) => {
+    if (value) {
+      getCycleBalances();
+    }
+  }, { deep: true, immediate: true }
+);
 onMounted(() => {
   getSpec();
   getImage();
