@@ -28,7 +28,8 @@ export default defineConfig({
     open: false, //启动后是否自动打开浏览器
     proxy: {
       "/api": {
-        target: "https://api.computeshare.newtouch.com/",
+        // https://api.test-computeshare.tntlinking.com/
+        target: "https://api.test-computeshare.tntlinking.com/",
         // target: "http://127.0.0.1:8000/",
         changeOrigin: true, //是否跨域
         ws: true,
