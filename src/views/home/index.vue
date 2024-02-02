@@ -8,8 +8,8 @@
                   <router-link :to="item.name">
                       <div class="flex items-center">
                         <!-- 小图标默认是暗色，选中是亮色 -->
-                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] mr-[17px] dark-img inline-block group-hover:hidden" />
-                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] mr-[17px] demo-img hidden group-hover:inline-block" />
+                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] w-[20px] mr-[17px] dark-img inline-block group-hover:hidden" />
+                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] w-[20px] mr-[17px] demo-img hidden group-hover:inline-block" />
                         <span>{{ sidebarName[item.name] }}</span>
                       </div>
                   </router-link>
