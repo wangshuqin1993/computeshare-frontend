@@ -69,7 +69,7 @@ const imageList = ref([]);
 const formRef = ref();
 const formData = reactive({
   imageId: resetImageId.value,
-  username: 'root',
+  username: 'ubuntu',
   password: '',
   publicKey:'', //公匙
 });
