@@ -51,7 +51,7 @@
       </a-button>
     </a-upload>
   </div>
-
+  <UploadModal ref="uploadModalRef"></UploadModal>
 </template>
 
 <script setup lang="ts">
@@ -60,9 +60,11 @@ import { message, type UploadChangeParam } from 'ant-design-vue';
 import { useRouter, useRoute } from "vue-router";
 import { apiUploadScript } from '@/apis/script';
 import { apiUploadFileToS3 } from '@/apis/s3_storage';
+import UploadModal from '@/components/UpdateModal.vue';
 
 const router = useRouter();
 const route = useRoute();
+const uploadModalRef = ref();
 const bucketName = (route.query.bucketName || '').toString();
 const props = defineProps({
   suffixNames:{
@@ -87,7 +89,10 @@ const curBarName = ref(router.currentRoute.value.name);
 
 const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
-  console.log(222222222222,fileData)
+  console.log(222222222222, fileData)
+  uploadModalRef.value.visible = true;
+  uploadModalRef.value.uploadType = '';
+  uploadModalRef.value.fileName = fileData.file.name;
   // debugger
   let formData = new FormData();
   await formData.append('file', fileData.file);
@@ -106,6 +111,7 @@ const handleUploadAttachement = async (fileData) => {
   }
   if (res.code == 200) {
     emit('refreshList')
+    uploadModalRef.value.uploadType = 'suc';
     message.success(res.message);
   } else {
     message.error(res.message)
