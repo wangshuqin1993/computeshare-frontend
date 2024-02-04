@@ -91,8 +91,11 @@ const fileList = ref([]);
 const handleUploadAttachement = async (fileData) => {
   console.log(222222222222, fileData)
   uploadModalRef.value.visible = true;
-  uploadModalRef.value.uploadType = '';
-  uploadModalRef.value.fileName = fileData.file.name;
+  uploadModalRef.value.fileInfo = {
+    uid: fileData.file.uid,
+    fileName: fileData.file.name,
+    type: '',
+  };
   // debugger
   let formData = new FormData();
   await formData.append('file', fileData.file);
@@ -109,13 +112,20 @@ const handleUploadAttachement = async (fileData) => {
     res = await apiUploadScript(formData);
     scriptInfo.value = res.data
   }
+  let fileType = '';
   if (res.code == 200) {
     emit('refreshList')
-    uploadModalRef.value.uploadType = 'suc';
+    fileType = 'suc';
     message.success(res.message);
   } else {
+    fileType = 'error';
     message.error(res.message)
   }
+  uploadModalRef.value.fileInfo = {
+    uid: fileData.file.uid,
+    fileName: fileData.file.name,
+    type: fileType,
+  };
 };
 function handleDrop(e: DragEvent) {
   console.log(e);
