@@ -21,35 +21,31 @@
           <div class="text-[#484FFF] cursor-pointer" @click="cancelUpload">取消</div>
         </div> 
         <div v-for="(data,key) in fileList" :key="key">
-          <!-- <div v-for="data in item" > 
-            <div v-if="typeof data == 'object'"> -->
-              <div v-if="data.type == 'suc'">
-                <div class="flex justify-between px-[24px] py-[10px]">
-                  <div class="flex">
-                    <img src="@/assets/images/file2.png" class="h-[24px] w-[24px] mr-[10px]" />
-                    <div class="text-ellipsis">{{ data.fileName }}</div>
-                  </div>
-                  <img src="@/assets/images/success.png" class="h-[24px] w-[24px] " />
-                </div>
+          <div v-if="data.type == 'suc'">
+            <div class="flex justify-between px-[24px] py-[10px]">
+              <div class="flex">
+                <img src="@/assets/images/file2.png" class="h-[24px] w-[24px] mr-[10px]" />
+                <div class="text-ellipsis">{{ data.fileName }}</div>
               </div>
-              <div v-else-if="data.type == 'cancel'">
-                <div class="flex px-[24px] py-[10px]">
-                  <img src="@/assets/images/file1.png" class="h-[24px] w-[24px] mr-[10px]" />
-                  <div class="text-ellipsis">{{ data.fileName }}</div>
-                  <div class="ml-[10px]">已取消上传</div>
-                </div>
+              <img src="@/assets/images/success.png" class="h-[24px] w-[24px] " />
+            </div>
+          </div>
+          <div v-else-if="data.type == 'cancel'">
+            <div class="flex px-[24px] py-[10px]">
+              <img src="@/assets/images/file1.png" class="h-[24px] w-[24px] mr-[10px]" />
+              <div class="text-ellipsis">{{ data.fileName }}</div>
+              <div class="ml-[10px]">已取消上传</div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="flex justify-between px-[24px] py-[10px]">
+              <div class="flex">
+                <img src="@/assets/images/file1.png" class="h-[24px] w-[24px] mr-[10px]" />
+                <div class="text-ellipsis">{{ data.fileName  }}</div>
               </div>
-              <div v-else>
-                <div class="flex justify-between px-[24px] py-[10px]">
-                  <div class="flex">
-                    <img src="@/assets/images/file1.png" class="h-[24px] w-[24px] mr-[10px]" />
-                    <div class="text-ellipsis">{{ data.fileName  }}</div>
-                  </div>
-                  <LoadingOutlined  :style="{fontSize: '20px',color: '#484FFF'}" />
-                </div>
-              </div>
-            <!-- </div>
-          </div> -->
+              <LoadingOutlined  :style="{fontSize: '20px',color: '#484FFF'}" />
+            </div>
+          </div>
         </div>
       </div>
     </a-drawer>
