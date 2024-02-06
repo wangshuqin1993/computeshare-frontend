@@ -44,6 +44,7 @@
   </div>
   <CreateFileModal ref="createFileRef" :prefixName="prefixName" :showVisible="fileVisible" :bucketName="bucketName" @loadTable="getTableData" @closeModal="fileVisible=false"></CreateFileModal>
   <DeleteModal :showVisible="delVisible" :delType="delType" :bucketName="bucketName" :bucketKey="bucketKey" @closeModal="delVisible=false" @loadTable="getTableData"></DeleteModal>
+  
 </template>
 
 <script setup lang="ts">

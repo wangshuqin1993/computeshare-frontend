@@ -8,8 +8,8 @@
                   <router-link :to="item.name">
                       <div class="flex items-center">
                         <!-- 小图标默认是暗色，选中是亮色 -->
-                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] mr-[17px] dark-img inline-block group-hover:hidden" />
-                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] mr-[17px] demo-img hidden group-hover:inline-block" />
+                        <img :src="getImageURL(`${item.name+'Dark'}.png`)" class="h-[20px] w-[20px] mr-[17px] dark-img inline-block group-hover:hidden" />
+                        <img :src="getImageURL(`${item.name}.png`)" class="h-[20px] w-[20px] mr-[17px] demo-img hidden group-hover:inline-block" />
                         <span>{{ sidebarName[item.name] }}</span>
                       </div>
                   </router-link>
@@ -55,7 +55,8 @@ onBeforeMount(() => {
     return item.meta.isShow && !item.meta.isPersonal
   })
   serviceBool.value = serviceArr.map((item: any) => { return item.name }).includes(curBarName.value)
-  if (serviceBool.value) {
+  // isPersonal=false，则不是账户类菜单，用来区分不显示出来的子菜单
+  if (serviceBool.value || !router.currentRoute.value.meta.isPersonal) {
     menuRouterList.value = serviceArr
   }
 
@@ -64,6 +65,7 @@ onBeforeMount(() => {
     return item.meta.isShow && item.meta.isPersonal
   })
   userBool.value = userArr.map((item: any) => { return item.name }).includes(curBarName.value)
+  // isPersonal=true，是账户类菜单，用来区分不显示出来的账户类子菜单
   if (userBool.value || router.currentRoute.value.meta.isPersonal){
     menuRouterList.value = userArr
   }

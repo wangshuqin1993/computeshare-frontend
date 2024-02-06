@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
+import type { ConfigEnv } from 'vite';
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from "node:url";
 import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default ({ mode }: ConfigEnv) => defineConfig({
   plugins: [
     vue(),
     createSvgIconsPlugin({
@@ -28,7 +29,8 @@ export default defineConfig({
     open: false, //启动后是否自动打开浏览器
     proxy: {
       "/api": {
-        target: "https://api.computeshare.newtouch.com/",
+        // https://api.test-computeshare.tntlinking.com/
+        target: loadEnv(mode, process.cwd()).VITE_BASE_API,
         // target: "http://127.0.0.1:8000/",
         changeOrigin: true, //是否跨域
         ws: true,

@@ -1,7 +1,12 @@
 # 共享算力前端项目
 
 技术框架：Vue 3 + TypeScript + Vite + Tailwindcss
+
+测试环境分支：develop
+生产环境分支：master
+
 启动项目指定：npm run dev
+
 项目文件夹介绍：
   apis：接口封装
   assets：放图片图标
@@ -11,7 +16,7 @@
   design：样式文件
     components：公共组件封装
   enums：枚举字段封装
-  request：接口调用封装
+  request：axios的二次封装
   router：页面跳转封装
   stores：拓展方法封装
   utils：公共方法封装

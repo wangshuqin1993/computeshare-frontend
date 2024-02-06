@@ -24,6 +24,7 @@ let router = createRouter({
           component: () => import('@/views/script/index.vue'),
           meta: {
             isShow: false,
+            isPersonal: false,
             sidebarMap: ['Script'],
           }
         },
@@ -42,7 +43,7 @@ let router = createRouter({
           name: "StorageDetail",
           component: () => import('@/views/storage/detail.vue'),
           meta: {
-            isShow: true,
+            isShow: false,
             isPersonal: false,
             sidebarMap: ['Storage'],
           }
