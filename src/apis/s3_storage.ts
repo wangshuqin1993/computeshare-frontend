@@ -40,6 +40,8 @@ export function apiBucketList(params: baseParams) {
   });
 }
 
+let controller = new AbortController();
+
 // 上传文件到s3
 export function apiUploadFileToS3(bucketName: string, params: uploadS3) {
   return httpRequest({
@@ -48,9 +50,18 @@ export function apiUploadFileToS3(bucketName: string, params: uploadS3) {
     data: params,
     headers: {
       'Content-Type': 'multipart/form-data'
-    }
+    },
+    signal: controller.signal
   });
 }
+
+// 取消上传
+export function cancelUploadToS3() {
+  // 取消请求
+  controller.abort()
+  controller = new AbortController();
+}
+
 interface uploadS3 {
   prefix?: string, //prefix：文件夹的名字
   file: any,

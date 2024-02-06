@@ -51,7 +51,7 @@
       </a-button>
     </a-upload>
   </div>
-  <UploadModal ref="uploadModalRef"></UploadModal>
+  <UploadModal ref="uploadModalRef" @cancelUploadFn="cancelUploadFn"></UploadModal>
 </template>
 
 <script setup lang="ts">
@@ -59,7 +59,7 @@ import { ref ,toRefs, watch} from "vue";
 import { message, type UploadChangeParam } from 'ant-design-vue';
 import { useRouter, useRoute } from "vue-router";
 import { apiUploadScript } from '@/apis/script';
-import { apiUploadFileToS3 } from '@/apis/s3_storage';
+import { apiUploadFileToS3, cancelUploadToS3 } from '@/apis/s3_storage';
 import UploadModal from '@/components/UpdateModal.vue';
 
 const router = useRouter();
@@ -127,6 +127,13 @@ const handleUploadAttachement = async (fileData) => {
     type: fileType,
   };
 };
+
+// 取消上传
+const cancelUploadFn = ()=>{
+  console.log('执行了取消上传')
+  cancelUploadToS3()
+}
+
 function handleDrop(e: DragEvent) {
   console.log(e);
 }

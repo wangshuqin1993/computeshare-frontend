@@ -49,7 +49,14 @@ service.interceptors.response.use(
     return dataAxios;
   },
   function (error: any) {
-    if (error.response.status === 401) {
+    console.log('error11111111111111',error)
+    if(error.code === "ERR_CANCELED"){
+      // 请求取消
+      return {
+        code: -10001,
+        message: '已取消'
+      }
+    }else if (error.response.status === 401) {
       localStorage.setItem('token', '');
       window.location.href = '/login';
     }

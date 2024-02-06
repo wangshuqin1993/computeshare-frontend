@@ -18,7 +18,7 @@
       <div v-if="showContent">
         <div v-if="fileNum.loading > 0" class="flex justify-between bg-[#fafafa] px-[24px] py-[10px]">
           <div>正在开始上传...</div>
-          <!-- <div class="text-[#484FFF] cursor-pointer" @click="cancelUpload">取消</div> -->
+          <div class="text-[#484FFF] cursor-pointer" @click="cancelUpload">取消</div>
         </div> 
         <div v-for="(data,key) in fileList" :key="key">
           <div v-if="data.type == 'suc'">
@@ -55,6 +55,8 @@
 import { ref, watch } from 'vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 
+const emit = defineEmits(['cancelUploadFn'])
+
 const showContent = ref(true); //内容是否显示
 const visible = ref(false); // 弹框显示字段
 const fileInfo = ref<any>({}); // 上传文件
@@ -76,6 +78,7 @@ const cancelUpload = () => {
   emptyData();
   fileMap.forEach(function(data, key) {
     if (data.type == '') { // 有数据正在上传
+      emit('cancelUploadFn')
       data.type = 'cancel';
       fileMap.set(key, data);
       fileNum.value.cancel++;
