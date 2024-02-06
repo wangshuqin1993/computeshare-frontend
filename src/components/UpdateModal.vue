@@ -30,7 +30,7 @@
               <img src="@/assets/images/success.png" class="h-[24px] w-[24px] " />
             </div>
           </div>
-          <div v-else-if="data.type == 'cancel'">
+          <div v-else-if="data.type == 'cancel' || data.type == 'error'">
             <div class="flex px-[24px] py-[10px]">
               <img src="@/assets/images/file1.png" class="h-[24px] w-[24px] mr-[10px]" />
               <div class="text-ellipsis">{{ data.fileName }}</div>
@@ -82,7 +82,7 @@ const cancelUpload = () => {
       data.type = 'cancel';
       fileMap.set(key, data);
       fileNum.value.cancel++;
-    } else if (data.type == 'cancel') { // 数据上传取消
+    } else if (data.type == 'cancel' || data.type == 'error') { // 数据上传取消
       fileNum.value.cancel++;
     }
     fileList.value.push(data);
@@ -106,7 +106,7 @@ watch(() => fileInfo.value,
           fileNum.value.loading++;
         } else if (data.type == 'suc') { // 数据上传成功
           fileNum.value.suc++;
-        } else if (data.type == 'cancel') { // 数据上传取消
+        } else if (data.type == 'cancel' || data.type == 'error') { // 数据上传取消
           fileNum.value.cancel++;
         }
         fileList.value.push(data);
