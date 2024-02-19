@@ -103,7 +103,7 @@ const formData = reactive({
   imageId: 1,
   // duration: 1,
   name: '',
-  username: 'root',
+  username: 'ubuntu',
   password: '',
   publicKey:'', //公匙
 });
