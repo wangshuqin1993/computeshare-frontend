@@ -6,7 +6,7 @@
 
         <div class="max-w-[1280px] mx-auto text-center">
           <div class="text-[64px] pt-[190px]">一种开放的算力载体</div>
-          <div>通过聚合个人和团体的闲置算力资源，利用智能配置为用户和供应商提供弹性的计算服务，实现计算资源的高效共享与优化配置</div>
+          <div class="text-[#596273]">通过聚合个人和团体的闲置算力资源，利用智能配置为用户和供应商提供弹性的计算服务，实现计算资源的高效共享与优化配置</div>
           <div class="flex justify-center mx-auto mt-[48px] items-center">
             <a-button type="primary" class="mr-[16px] w-[136px] h-[42px]" @click="router.push('/login')">开始使用</a-button>
             <div class="">提供算力></div>
@@ -17,16 +17,16 @@
     <div class="section">
       <div class="text-center main-content-two pt-[96px]">
         <div class="text-[48px]">共享算力如何运行</div>
-        <div>通过聚合个人和团体的闲置算力资源，利用智能配置为用户和供应商提供弹性的计算服务，<br />实现计算资源的高效共享与优化配置</div>
+        <div class="text-[#596273]">通过聚合个人和团体的闲置算力资源，利用智能配置为用户和供应商提供弹性的计算服务，<br />实现计算资源的高效共享与优化配置</div>
         <div class="mt-[136px] w-[700px] mx-auto relative">
           <img src="@/assets/images/page2_bg1.png" class="" />
           <div class="absolute w-[300px] top-0">
-            <div class="text-right text-[#484FFF]">对于提供商</div>
+            <div class="text-right text-[#30A4F2]">对于提供商</div>
             <div class="text-left text-[#596273] text-[14px]"> 通过聚合个人和团体的闲置算力资源，利用智能配置为用户和供应商提供弹性的计算服务，实现计算资源的高效共享与优化配置
             </div>
           </div>
           <div class="absolute w-[300px] top-[75px] right-[-150px]">
-            <div class="text-left text-[#484FFF]">对于使用者</div>
+            <div class="text-left text-[#2554FC]">对于使用者</div>
             <div class="text-left text-[#596273] text-[14px]">通过聚合个人和团体的闲置算力资源，利用智能配置为用户和供应商提供弹性的计算服务，实现计算资源的高效共享与优化配置
             </div>
           </div>
@@ -55,9 +55,9 @@
       </div>
     </div>
     <div class="section">
-      <div class=" main-content-four pt-[96px] md:px-[96px] px-[32px]">
-        <div class=" text-center text-[36px] mb-[96px]">产品特性</div>
-        <div class="flex grid justify-center grid-cols-3 gap-16 max-w-[1440px] mx-auto">
+      <div class=" main-content-four pt-[96px] relative">
+        <div class=" text-center text-[36px] mb-[96px] md:px-[96px] px-[32px]">产品特性</div>
+        <div class="flex grid justify-center grid-cols-3 gap-16 max-w-[1440px] mx-auto md:px-[96px] px-[32px]">
           <div class="bg-white rounded-[12px] border border-solid border-[#F1F3FE] p-[32px] item-css pb-[80px]">
             <img src="@/assets/images/page4_icon1.png" class="h-[50px]" />
             <div class="text-[18px] item-title mt-[16px] mb-[8px]">开放共享计算资源</div>
@@ -74,16 +74,18 @@
             <div class="text-[14px] text-[#596273]">通过简单的API即可访问弹性的计算资源,无需购置昂贵的硬件设备也能获得强大的计算能力,极大降低了开发使用的成本门槛。</div>
           </div>
         </div>
+        <Footer class="absolute bottom-0 left-0 w-[100%]"></Footer>
       </div>
+
     </div>
   </div>
-
 </template>
 <script lang='ts' setup>
 import { ref } from "vue";
 import { onMounted, onUnmounted } from "vue";
 import { ArrowRightOutlined } from '@ant-design/icons-vue';
 import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
 import fullpage from 'fullpage.js';
 import { useRouter } from "vue-router";
 const isScroll = ref(false)

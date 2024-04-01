@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto h-[54px] px-[32px] fixed w-full top-0 left-0 z-50" ref="headerRef">
-    <div class="max-w-[1440px] flex justify-between items-center mx-auto ">
+    <div class="max-w-[1440px] flex justify-between items-center mx-auto  h-[54px]">
       <div class="flex items-center justify-between">
         <img src="@/assets/images/logo-b.png" class="h-[24px]" />
         <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" @click="changeMenuItem" />
