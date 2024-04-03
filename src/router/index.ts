@@ -138,7 +138,7 @@ router.beforeEach((to, from, next) => {
   // 如果用户已登录
   if (token) {
     // 访问登录页则跳回首页
-    if (to.path == "/login" || to.path === '/home') {
+    if (to.path == "/login") {
       next({ path: "/" });
     } else {
       // 如果访问其他页面则放行

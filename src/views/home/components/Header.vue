@@ -6,9 +6,12 @@
         <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" @click="changeMenuItem" />
       </div>
 
-      <div>
+      <div v-if="!token">
         <a-button class="mr-[12px]" @click="router.push('/login')">登录</a-button>
         <a-button type="primary" @click="router.push('/login')">注册</a-button>
+      </div>
+      <div v-else>
+        <img src="@/assets/images/user-logo.png" class="h-[36px]" />
       </div>
     </div>
 
@@ -21,6 +24,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const headerRef = ref();
 const current = ref<string[]>(['']);
+const token = ref<string>('')
 const items = ref<MenuProps['items']>([
   {
     key: 'power',
@@ -61,6 +65,9 @@ const changeMenuItem = ({ item, key, keyPath }) => {
 
 }
 
+onMounted(() => {
+  token.value = localStorage.getItem('token') || ''
+})
 </script>
 <style lang='less' scoped>
 :deep(.ant-menu-light) {
